@@ -140,9 +140,9 @@ $$
 
 所以$w^{\pi}(A) \leq f(A), \forall \pi$
 
-另外，$w(\{\sigma(1), \sigma(2), \ldots, \sigma(k)\}) = f(\{\sigma(1), \sigma(2), \ldots, \sigma(k)\}) $，$\forall k$。
+另外，注意到 $\forall \sigma, \forall 1\leq k \leq n, w^\sigma(\{\sigma(1), \sigma(2), \ldots, \sigma(k)\}) = f(\{\sigma(1), \sigma(2), \ldots, \sigma(k)\})$。
 
-满足 $n$ 个线性无关约束，故 $w^{\pi}$ 是 $B(f)$ 的顶点。
+所以 $w^{\sigma}$ 满足 $n$ 个线性无关约束，故 $w^{\sigma}$ 是 $B(f)$ 的顶点。
 
 $\square$
 
