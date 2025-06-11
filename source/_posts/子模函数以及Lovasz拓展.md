@@ -70,7 +70,7 @@ $$
 
 这个定义可以看作是对函数 $f$ 在每个集合 $S_i$ 上的值进行加权平均，其中权重是相邻元素之间的差值。
 
-另一个等价的定义是，令 $B(f)$ 为 $f$ 的拟阵多面体（polymatrioid）
+另一个等价的定义是，令 $B(f)$ 为 $f$ 的拟阵多面体（polymatroid）
 
 $$
 B(f) = \{ w\in \mathbb{R}^n : w(N) = f(N), w(A) \leq f(A) \text{ for all } A \subseteq N \}
