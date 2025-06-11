@@ -76,10 +76,10 @@ $$
 按 $\{x_{\sigma(i)}\}$ 分段积分：
 $$
 \begin{align*}
-\hat{f}(x) &= \int_{x_{\sigma(1)}}^1 f(\{i \in N : x_i \geq \lambda\}) d\lambda + \int_{x_{\sigma(2)}}^{x_{\sigma(1)}} f(\{i \in N : x_i \geq \lambda\}) d\lambda + \ldots + \int_{x_{\sigma(n)}}^{x_{\sigma(n-1)}} f(\{i \in N : x_i \geq \lambda\}) d\lambda \\
-&= f(\{i \in N : x_i \geq x_{\sigma(1)}\}) \cdot (1 - x_{\sigma(1)}) + f(\{i \in N : x_i \geq x_{\sigma(2)}\}) \cdot (x_{\sigma(1)} - x_{\sigma(2)}) + \ldots + f(\{i \in N : x_i \geq x_{\sigma(n)}\}) \cdot (x_{\sigma(n-1)} - x_{\sigma(n)}) \\
-&= \sum_{i=1}^n f(\{i \in N : x_i \geq x_{\sigma(i)}\}) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)}) \\
-&= \sum_{i=1}^n f(S_i) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)})
+\hat{f}(x) &= \int_{\sigma(n)}^1 f(\{j \in N : x_j \geq \lambda\}) d\lambda + \sum_{i=1}^{n} \int_{x_{\sigma(i+1)}}^{x_{\sigma(i)}} f(\{j \in N : x_j \geq \lambda\}) \, d\lambda \\
+&= 0 + \sum_{i=0}^{n} f(\{j \in N : x_j \geq x_{\sigma(i)}\}) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+&= \sum_{i=1}^{n} f(\{j \in N : x_j \geq x_{\sigma(i)}\}) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+&= \sum_{i=1}^{n} f(S_i) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)})
 \end{align*}
 $$
 证毕
