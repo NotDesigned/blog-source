@@ -83,3 +83,69 @@ $$
 \end{align*}
 $$
 证毕
+
+### Lovász拓展在子模函数上的性质
+
+我们有如下定理：
+
+**定理**：对于函数 $f: 2^N \to \mathbb{R}$，$f$ 是子模函数当且仅当其 Lovász 拓展 $\hat{f}$ 是凸函数。
+
+充分性：如果 $f$ 是子模函数，则对于任意的 $x, y \in \mathbb{R}^n$ 和 $\theta \in [0, 1]$，都有：
+$$
+\hat{f}(\theta x + (1 - \theta) y) \leq \theta \hat{f}(x) + (1 - \theta) \hat{f}(y)
+$$
+证明：由 Lovász 拓展的定义，我们有：
+$$
+\begin{align*}
+\hat{f}(\theta x + (1 - \theta) y) &= \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N : (\theta x + (1 - \theta) y)_i \geq \lambda\})] \\
+&= \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N : \theta x_i + (1 - \theta) y_i \geq \lambda\})] \\
+&\leq \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[\theta f(\{i \in N : x_i \geq \lambda\}) + (1 - \theta) f(\{i \in N : y_i \geq \lambda\})] \\
+&= \theta \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N : x_i \geq \lambda\})] + (1 - \theta) \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N : y_i \geq \lambda\})] \\
+&= \theta \hat{f}(x) + (1 - \theta) \hat{f}(y)
+\end{align*}
+$$
+因此，$\hat{f}$ 是凸函数。
+
+必要性：如果 $\hat{f}$ 是凸函数，则对于任意的 $A \subseteq B$ 和 $x \in N \setminus B$，（这里将$f$视作$\hat f$限制到$\{0,1\}^N$上）
+
+都有：
+$$
+f(A \cup \{x\}) - f(A) \geq f(B \cup \{x\}) - f(B)
+$$
+证明：
+
+令 $A' = A \cup \{x\}$ 和 $B' = B \cup \{x\}$
+
+$$
+\mathbb{1}_{A'}+\mathbb{1}_{B} = \mathbb{1}_{A} + \mathbb{1}_{B'} 
+$$
+因此，
+$$
+\begin{align*}
+\hat{f}(\frac 12 \mathbb{1}_{A'} +\frac 12\mathbb{1}_{B}) &\leq \frac 12 \hat{f}(\mathbb{1}_{A'}) + \frac 12 \hat{f}(\mathbb{1}_{B}) \\
+\iff \hat{f}(\frac 12 \mathbb{1}_{A} +\frac 12\mathbb{1}_{B'}) &\leq \frac 12 f(A') + \frac 12 f(B) \\
+\end{align*}
+$$
+
+现在我们用Lovász拓展的定义来计算左侧，设 $z = \frac 12 \mathbb{1}_{A} +\frac 12\mathbb{1}_{B'}$，则：
+- 对于 $i \in A$，$z_i = 1$
+- 对于 $i \in (B\setminus A)\cup \{x\}$，$z_i = 1/2$
+- 其他情况， $z_i = 0$
+
+所以
+$$
+\begin{align*}
+\hat{f}(\frac 12 \mathbb{1}_{A} +\frac 12\mathbb{1}_{B'}) &= \int_0^{\frac 12} f(\{i \in N : z_i \geq \lambda\}) d\lambda + \int_{\frac 12}^1 f(\{i \in N : z_i \geq \lambda\}) d\lambda \\
+&= \int_0^{\frac 12} f(B') d\lambda + \int_{\frac 12}^1 f(A) d\lambda \\
+&= \frac 12 f(B') + \frac 12 f(A) \\
+\end{align*}
+$$
+
+因此，我们得到了：
+$$
+\begin{align*}
+\frac 12 f(B') + \frac 12 f(A) &\leq \frac 12 f(A') + \frac 12 f(B)\\
+\iff f(A \cup \{x\}) - f(A) &\geq f(B \cup \{x\}) - f(B)
+\end{align*}
+$$
+这就证明了必要性。
