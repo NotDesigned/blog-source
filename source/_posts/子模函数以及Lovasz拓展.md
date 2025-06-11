@@ -50,3 +50,36 @@ $$
 
 Lovász拓展被称为拓展，因为它保留了离散点集上的函数值。注意到，对于离散点$z\in \{0,1\}^n, \lambda \in [0, 1]$，都有：$\{ i | z_i\geq \lambda\} = \{ i | z_i = 1 \} = S$。所以 $\hat f$与 $f$ 在离散点集上是相同的。
 
+### 另一个等价的构造定义
+
+将向量 $x$ 的分量按降序重新排列为 $x_{\sigma(1)} \geq x_{\sigma(2)} \geq \ldots \geq x_{\sigma(n)}$，然后定义集合序列 $S_i = \{ \sigma(1), \sigma(2), \ldots, \sigma(i) \} = \{i \in N : x_i \geq x_{\sigma(i)}\}$。
+
+则：
+
+$$
+\hat{f}(x) = \sum_{i=1}^n f(S_{i}) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)})
+$$
+
+并约定 $x_{\sigma(n+1)} = 0$。
+
+这个定义可以看作是对函数 $f$ 在每个集合 $S_i$ 上的值进行加权平均，其中权重是相邻元素之间的差值。
+
+### 等价性证明
+
+从概率定义出发
+$$
+\begin{align*}
+\hat{f}(x) &= \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N : x_i \geq \lambda\})] \\
+&= \int_0^1 f(\{i \in N : x_i \geq \lambda\}) d\lambda \\
+\end{align*}
+$$
+按 $\{x_{\sigma(i)}\}$ 分段积分：
+$$
+\begin{align*}
+\hat{f}(x) &= \int_{x_{\sigma(1)}}^1 f(\{i \in N : x_i \geq \lambda\}) d\lambda + \int_{x_{\sigma(2)}}^{x_{\sigma(1)}} f(\{i \in N : x_i \geq \lambda\}) d\lambda + \ldots + \int_{x_{\sigma(n)}}^{x_{\sigma(n-1)}} f(\{i \in N : x_i \geq \lambda\}) d\lambda \\
+&= f(\{i \in N : x_i \geq x_{\sigma(1)}\}) \cdot (1 - x_{\sigma(1)}) + f(\{i \in N : x_i \geq x_{\sigma(2)}\}) \cdot (x_{\sigma(1)} - x_{\sigma(2)}) + \ldots + f(\{i \in N : x_i \geq x_{\sigma(n)}\}) \cdot (x_{\sigma(n-1)} - x_{\sigma(n)}) \\
+&= \sum_{i=1}^n f(\{i \in N : x_i \geq x_{\sigma(i)}\}) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+&= \sum_{i=1}^n f(S_i) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)})
+\end{align*}
+$$
+证毕
