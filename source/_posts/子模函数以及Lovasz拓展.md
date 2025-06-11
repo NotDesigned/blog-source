@@ -140,7 +140,9 @@ $$
 
 所以$w^{\pi}(A) \leq f(A), \forall \pi$
 
-因此，$B(f)$ 的顶点是所有排列的边际贡献向量。
+另外，$w(\{\sigma(1), \sigma(2), \ldots, \sigma(k)\}) = f(\{\sigma(1), \sigma(2), \ldots, \sigma(k)\}) $，$\forall k$。
+
+满足 $n$ 个线性无关约束，故 $w^{\pi}$ 是 $B(f)$ 的顶点。
 
 $\square$
 
@@ -148,7 +150,9 @@ $\square$
 
 不难知道最优解 $w*$ 一定是对应排列 $\sigma$ 的顶点。
 
-所以
+注意到 $\{j| j \in N : \sigma^{-1}(j) \leq i\} = \{j| x_j \geq x_{\sigma(i)}\}$
+
+我们有：
 
 $$
 \begin{align*}
