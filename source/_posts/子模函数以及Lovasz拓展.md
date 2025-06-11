@@ -45,30 +45,49 @@ $$
 对于函数 $f: 2^N \to \mathbb{R}$，其Lovász拓展定义为：
 
 $$
+\begin{align}
 \hat{f}(x) = \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N : x_i \geq \lambda\})]
+\end{align}
 $$
 
 其中 $x = (x_1, x_2, \ldots, x_n)\in \mathbb{R}^n$。
 
 Lovász拓展被称为拓展，因为它保留了离散点集上的函数值。注意到，对于离散点$z\in \{0,1\}^n, \lambda \in [0, 1]$，都有：$\{ i | z_i\geq \lambda\} = \{ i | z_i = 1 \} = S$。所以 $\hat f$与 $f$ 在离散点集上是相同的。
 
-### 另一个等价的构造定义
+### 等价的构造定义
 
 将向量 $x$ 的分量按降序重新排列为 $x_{\sigma(1)} \geq x_{\sigma(2)} \geq \ldots \geq x_{\sigma(n)}$，然后定义集合序列 $S_i = \{ \sigma(1), \sigma(2), \ldots, \sigma(i) \} = \{i \in N : x_i \geq x_{\sigma(i)}\}$。
 
 则：
 
 $$
+\begin{align}
 \hat{f}(x) = \sum_{i=1}^n f(S_{i}) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)})
+\end{align}
 $$
 
 并约定 $x_{\sigma(n+1)} = 0$。
 
 这个定义可以看作是对函数 $f$ 在每个集合 $S_i$ 上的值进行加权平均，其中权重是相邻元素之间的差值。
 
+另一个等价的定义是，令 $B(f)$ 为 $f$ 的拟阵多面体（polymatrioid）
+
+$$
+B(f) = \{ w\in \mathbb{R}^n : w(N) = f(N), w(A) \leq f(A) \text{ for all } A \subseteq N \}
+$$
+
+则
+
+$$
+\begin{align}
+\hat{f}(x) = \max_{y \in B(f)} \langle x, y \rangle 
+\end{align}
+$$
+
 ### 等价性证明
 
-从概率定义出发
+$(1)\iff (2)$
+
 $$
 \begin{align*}
 \hat{f}(x) &= \mathbb{E}_{\lambda \sim \text{Uniform}(0,1)}[f(\{i \in N : x_i \geq \lambda\})] \\
@@ -84,7 +103,63 @@ $$
 &= \sum_{i=1}^{n} f(S_i) \cdot (x_{\sigma(i)} - x_{\sigma(i+1)})
 \end{align*}
 $$
-证毕
+
+$(2) \iff (3)$
+
+**引理：**
+
+对于子模函数 $f$，其拟阵多面体 $B(f)$ 的顶点一一对应于排列 $\pi$
+$$
+\begin{align*}
+w_i^{\pi} = f(\{j \in N : \sigma^{-1}(j) \leq \sigma^{-1}(i)\}) - f(\{j \in N : \sigma^{-1}(j) < \sigma^{-1}(i)\})
+\end{align*}
+$$
+
+证明：
+
+$w^{\pi}(N)=f(N)$是平凡的
+
+对于任意的 $A \subseteq N$，考虑一个排列 $\tau$，它首先列出 $A$ 中的元素（按某种顺序），然后列出 $N \setminus A$ 中的元素。
+
+对于这个排列 $\tau$，我们有：
+$$
+\begin{align*}
+w^{\tau}(A) &= f(A) - f(\emptyset) \\
+&= f(A)
+\end{align*}
+$$
+
+现在考虑任意的排列 $\pi$，我们可以证明如果某个 $a\notin A$ 出现在 $b\in A$ 的前面，则交换它们的位置不会减少 $w(A)$ 的值。
+
+原来 $b$ 的贡献是 $f(S\cup \{a,b\}) - f(S\cup \{a\})$，
+交换后变为 $f(S\cup {b}) - f(S)$。
+
+而子模函数性质告诉我们，$f(S\cup \{a,b\}) - f(S\cup \{a\}) \geq f(S\cup \{b\}) - f(S)$。
+
+因此，$w^{\pi}(A)$ 在所有排列 $\pi$ 中是最大的。
+
+所以$w^{\pi}(A) \leq f(A), \forall \pi$
+
+因此，$B(f)$ 的顶点是所有排列的边际贡献向量。
+
+$\square$
+
+现在我们可以证明 $(2) \iff (3)$。
+
+不难知道最优解 $w*$ 一定是对应排列 $\sigma$ 的顶点。
+
+所以
+
+$$
+\begin{align*}
+\hat{f}(x) &= \max_{y \in B(f)} \langle x, y \rangle \\
+&= \max_{\pi} \langle x, w^{\pi} \rangle \\
+&= \sum_{i=1}^{n} x_{\sigma(i)} (f(\{j \in N : \sigma^{-1}(j) \leq i\}) - f(\{j \in N : \sigma^{-1}(j) < i\})) \\
+&= \sum_{i=1}^{n} x_{\sigma(i)} (f(\{j \in N : x_j \geq x_{\sigma(i)}\}) - f(\{j \in N : x_j > x_{\sigma(i)}\})) \\
+&= \sum_{i=1}^{n} f(\{j \in N : x_j \geq x_{\sigma(i)}\}) (x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+&= \sum_{i=1}^{n} f(S_i) (x_{\sigma(i)} - x_{\sigma(i+1)}) \\
+\end{align*}
+$$
 
 ### Lovász拓展在子模函数上的性质
 
