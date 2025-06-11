@@ -40,6 +40,8 @@ $$
 
 ## Lovász拓展 (Lovász Extension)
 
+> In a word, the Lovasz extension is a weighted average of the values at the corners.
+
 对于函数 $f: 2^N \to \mathbb{R}$，其Lovász拓展定义为：
 
 $$
