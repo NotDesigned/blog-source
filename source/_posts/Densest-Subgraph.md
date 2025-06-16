@@ -77,12 +77,13 @@ So $\rho^*=\rho(S^*,T^*)=\max_{c} \text{OPT(LP(c))}$
 The dual program of the DDS problem can be formulated as follows:
 
 $$
-\begin{align*} 
-\mathsf{DP}(c):&&\min&&\max_{u \in V} \{{r}_{\alpha}(u),&\text{ }{r}_{\beta}(u)\}\\ 	
-&& \text{s.t.}	&& \alpha_{u,v}+\beta_{v,u}&=1,&& \forall (u,v) \in E\\ 	
-&& && 2\sqrt{c} \sum_{(u,v) \in E}\alpha_{u,v}&={r}_{\alpha}(u),&& \forall u \in V \\  	
-&& && \frac{2}{\sqrt{c}} \sum_{(u,v) \in E}\beta_{v,u}&={r}_{\beta}(v),	&& \forall v \in V \\  
-&&	&& \alpha_{u,v} , \beta_{v,u} &\geq 0,&& \forall (u,v) \in E   \end{align*}
+\begin{align*}
+\mathsf{DP}(c):&&\min && \max_{u \in V} \{r_{\alpha}(u), r_{\beta}(u)\}\\
+&& \text{s.t.} && \alpha_{u,v}+\beta_{v,u} &=1, && \forall (u,v) \in E\\
+&& && 2\sqrt{c} \sum_{(u,v) \in E}\alpha_{u,v} &= r_{\alpha}(u), && \forall u \in V \\
+&& && \frac{2}{\sqrt{c}} \sum_{(u,v) \in E}\beta_{v,u} &= r_{\beta}(v), && \forall v \in V \\
+&& && \alpha_{u,v}, \beta_{v,u} &\geq 0, && \forall (u,v) \in E
+\end{align*}
 $$
 
 ### Quadratic Program
