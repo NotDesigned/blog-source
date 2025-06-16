@@ -33,6 +33,9 @@ where each $f_i$ is a simple submodular function.
 
 Additionally, we assume minimizing $F_i+w$ is easy, i.e., there exists efficient oracles to find the minimizer of $F_i + w$ for each $i$ and $w\in \mathbb R^n$.
 
+We want to minimize $F$.
+
+We pivot to the minimization of the Lovász extension $f$.
 
 Let $f$ be the Lovász extension of $F$ written as the support function of the base polytope $B(F)$:
 $$
@@ -42,4 +45,24 @@ where $B(F) = \{w\in \mathbb{R}^n: w(A) \leq F(A), \forall A\subseteq V, w(V)=F(
 
 And let $f_i$ be the Lovász extension of $F_i$, $B_i$ be the base polytope of $F_i$.
 
-We want to minimize $F$.
+The paper considers a proximal version of the problem:
+
+$$
+\min_{x\in \mathbb{R}^n} f(x) + \frac{1}{2}\|x\|^2 \equiv \min_{x\in \mathbb{R}^n} \sum_{i=1}^r f_i(x) + \frac{1}{2r}\|x\|^2
+$$
+
+Given an optimal solution $x$ to the proximal problem, one can obtain an optimal solution to the discrete problem by thresholding $x$ at $0$; more precisely, the optimal solution to the discrete problem is given by $A = \{i: x_i \geq 0\}$.
+
+#### Lemma 1
+
+The dual of the proximal problem is given by:
+
+$$
+\max_{y^(1)\in B_1, \ldots, y^(r)\in B_r} -\frac{1}{2}\|\sum_{i=1}^r y^{(i)}\|^2.
+$$
+
+The primal and dual variables are related by:
+$$
+x = -\sum_{i=1}^r y^{(i)}.
+$$
+
