@@ -21,7 +21,7 @@ Reference:
 The Undirected Densest Subgraph (DS) problem is defined as follows:
 
 $$
-\max_{S\subseteq V} \frac{E(S)}{\sqrt{|S|}}
+\max_{S\subseteq V} \frac{E(S)}{|S|}
 $$
 
 where $E(S)$ is the number of edges in the subgraph induced by $S$.
@@ -82,7 +82,7 @@ $$
 && \text{s.t.} && \alpha_{u,v}+\beta_{v,u} &=1, && \forall (u,v) \in E\\
 && && 2\sqrt{c} \sum_{(u,v) \in E}\alpha_{u,v} &= r_{\alpha}(u), && \forall u \in V \\
 && && \frac{2}{\sqrt{c}} \sum_{(u,v) \in E}\beta_{v,u} &= r_{\beta}(v), && \forall v \in V \\
-&& && \alpha_{u,v}, \beta_{v,u} &\geq 0, && \forall (u,v) \in E
+&& && \alpha_{u,v}, \beta_{v,u} &\geq 0 && \forall (u,v) \in E
 \end{align*}
 $$
 
