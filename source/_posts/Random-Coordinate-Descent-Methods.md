@@ -16,9 +16,7 @@ Knowledge prerequisite on submodular function (in Chinese):
 
 [子模函数以及Lovasz拓展](https://notdesigned.github.io/2025/06/11/%E5%AD%90%E6%A8%A1%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ALovasz%E6%8B%93%E5%B1%95/)
 
-## Question 
-
-### Preliminaries
+## Preliminaries
 
 Let $V = \{1,2,\ldots, n\}$. 
 
@@ -53,7 +51,7 @@ $$
 
 Given an optimal solution $x$ to the proximal problem, one can obtain an optimal solution to the discrete problem by thresholding $x$ at $0$; more precisely, the optimal solution to the discrete problem is given by $A = \{i: x_i \geq 0\}$.
 
-#### Lemma 1
+### Lemma 1
 
 The dual of the proximal problem is given by:
 
