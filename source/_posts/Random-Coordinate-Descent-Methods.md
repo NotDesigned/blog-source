@@ -79,16 +79,110 @@ $$
 $$
 
 The dual of such quadratic program is formulated as follows:
+
+### Lagrangian relaxation
 $$
 \begin{align*}
-\mathsf{DQP}(c):&&\min_{x\in \mathbb R^{2n}} && \frac{1}{2}x^TWx + \sum_{(u,v)\in E}\max(x_u,x_{n+v})\\
+L = & \sqrt{c} \sum_{u} w_\alpha(u)^2 + \frac{1}{\sqrt{c}} \sum_{v} w_\beta(v)^2 \\
+& + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
+& + \sum_{u \in V} \mu_u\left(w_\alpha(u) - \sum_{(u,v) \in E} \alpha_{u,v}\right) \\
+& + \sum_{v \in V} \nu_v\left(w_\beta(v) - \sum_{(u,v) \in E} \beta_{v,u}\right) \\
+& - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u}
+\end{align*}
+$$
+
+Now consider the KKT conditions:
+
+### KKT Conditions
+
+#### Stationarity Conditions
+$$
+\begin{align*}
+\frac{\partial L}{\partial \alpha_{u,v}} &= -\lambda_{u,v} - \mu_{u} - \rho_{u,v} = 0 \\
+\frac{\partial L}{\partial \beta_{v,u}} &= -\lambda_{u,v} - \nu_{v} - \sigma_{v,u} = 0 \\
+\frac{\partial L}{\partial w_\alpha(u)} &= 2\sqrt{c} w_\alpha(u) - \sum_{u\in V} \mu_u = 0 \\
+\frac{\partial L}{\partial w_\beta(v)} &= \frac{2}{\sqrt{c}} w_\beta(v) - \sum_{v\in V} \nu_v = 0\\
+\end{align*}
+$$
+$$
+\begin{align*}
+\Rightarrow 
+\begin{cases}
+w_{\alpha}(u) &= -\frac{\mu_u}{2\sqrt{c}} \\
+w_{\beta}(v) &= -\frac{\nu_v\sqrt{c}}{2}\\
+\lambda_{u,v} &= -\mu_u - \rho_{u,v} = -\nu_v - \sigma_{v,u}\\
+\end{cases}
+\end{align*}
+$$
+
+#### Primal Feasibility Conditions
+$$
+\begin{align*}
+\alpha_{u,v} + \beta_{v,u} &= 1, && \forall (u,v) \in E \\
+\sum_{(u,v) \in E} \alpha_{u,v} &= w_{\alpha}(u), && \forall u \in V \\
+\sum_{(u,v) \in E} \beta_{v,u} &= w_{\beta}(v), && \forall v \in V \\
+\alpha_{u,v}, \beta_{v,u} &\geq 0, && \forall (u,v) \in E
+\end{align*}
+$$
+
+#### Dual Feasibility Conditions
+
+$$
+\begin{align*}
+\rho_{u,v} &\geq 0, && \forall (u,v) \in E \\
+\sigma_{v,u} &\geq 0, && \forall (u,v) \in E
+\end{align*}
+$$
+
+#### Complementary Slackness Conditions
+$$
+\begin{align*}
+\rho_{u,v} \cdot \alpha_{u,v} &= 0, && \forall (u,v) \in E \\
+\sigma_{v,u} \cdot \beta_{v,u} &= 0, && \forall (u,v) \in E
+\end{align*}
+$$
+
+### Analysis & Simplification
+
+Substituting $w_{\alpha}, w_{\beta}$ back to Lagrangian:
+$$
+\begin{align*}
+L = & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} \\
+& + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
+& + \sum_{u \in V} \mu_u\left(\frac{\mu_u}{2\sqrt{c}} - \sum_{(u,v) \in E} \alpha_{u,v}\right) \\
+& + \sum_{v \in V} \nu_v\left(\frac{\nu_v\sqrt{c}}{2} - \sum_{(u,v) \in E} \beta_{v,u}\right) \\
+& - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u} \\
+=& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
+& + \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{(u,v) \in E} \mu_u \sum_{(u,v) \in E} \alpha_{u,v} \\
+& + \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{(u,v) \in E} \nu_v \sum_{(u,v) \in E} \beta_{v,u} \\
+& - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u} \\
+=& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
+& + \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{(u,v) \in E} \mu_u w_{\alpha}(u) \\
+& + \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{(u,v) \in E} \nu_v w_{\beta}(v) \\
+& - \sum_{(u,v) \in E} (\rho_{u,v} + \lambda_{u,v}) \alpha_{u,v} - \sum_{(u,v) \in E} (\sigma_{v,u} + \lambda_{u,v}) \beta_{v,u} \\
+=& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
+& + \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{(u,v) \in E} \mu_u w_{\alpha}(u) \\
+& + \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{(u,v) \in E} \nu_v w_{\beta}(v) \\
+& + \sum_{(u,v) \in E} \mu_u  \alpha_{u,v} + \sum_{(u,v) \in E}  \nu_v \beta_{v,u} \\
+=& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
+& + \sum_{(u,v) \in E} \mu_u  \alpha_{u,v} + \sum_{(u,v) \in E}  \nu_v \beta_{v,u} \\
+= & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} + \sum_{u\in V} \frac{\mu_u^2}{2\sqrt{c}} + \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} \\
+=& \frac{3}{4\sqrt{c}} \sum_{u\in V} \mu_u^2 + \frac{3\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 + \sum_{(u,v) \in E} \lambda_{u,v}
+\end{align*}
+$$
+
+### Dual Quadratic Program
+
+$$
+\begin{align*}
+\mathsf{DQP}(c):&&\min_{x\in \mathbb R^{2n}} && \frac{3}{4}x^TWx + \sum_{(u,v)\in E}\max(x_u,x_{n+v})\\
 
 && \text{s.t.} && x_u\geq 0, && \forall u\in V\\
 && && x_{n+v}\geq 0, && \forall v\in V\\
 && && x_u + x_{n+v} = 1, && \forall (u,v)\in E\\
 \text{where } W=\begin{bmatrix}
-\frac{1}{2\sqrt c}I_n & 0 \\
-0 & \frac{\sqrt{c}}{2}I_n
+\frac{1}{\sqrt c}I_n & 0 \\
+0 & \sqrt{c}I_n
 \end{bmatrix}
 \end{align*}
 $$
