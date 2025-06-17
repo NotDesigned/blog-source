@@ -146,36 +146,25 @@ $$
 
 ### Analysis & Simplification
 
-Substituting $w_{\alpha}, w_{\beta}$ back to Lagrangian:
+Substituting stationarity conditions back to Lagrangian:
 $$
 \begin{align*}
-L = & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} \\
+\inf_{\alpha,\beta,w}L(\alpha,\beta,w,\lambda,\mu,\nu,\rho,\sigma) = & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} \\
 & + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
 & + \sum_{u \in V} \mu_u\left(-\frac{\mu_u}{2\sqrt{c}} - \sum_{(u,v) \in E} \alpha_{u,v}\right) \\
 & + \sum_{v \in V} \nu_v\left(-\frac{\nu_v\sqrt{c}}{2} - \sum_{(u,v) \in E} \beta_{v,u}\right) \\
 & - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u} \\
 
-=& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
-& - \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{u \in V} \mu_u \sum_{(u,v) \in E} \alpha_{u,v} \\
-& - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{v \in V} \nu_v \sum_{(u,v) \in E} \beta_{v,u} \\
+=& -\frac {1}{4}\sum_{u} \frac{\mu_u^2}{\sqrt{c} } - \frac{1}{4} \sum_{v} \nu_v^2\sqrt{c} + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
+& - \sum_{u \in V} \mu_u \sum_{(u,v) \in E} \alpha_{u,v} \\
+& - \sum_{v \in V} \nu_v \sum_{(u,v) \in E} \beta_{v,u} \\
 & - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u} \\
 
-=& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
-& - \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{u \in V} \mu_u w_{\alpha}(u) \\
-& - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{v \in V} \nu_v w_{\beta}(v) \\
-& - \sum_{(u,v) \in E} (\rho_{u,v} + \lambda_{u,v}) \alpha_{u,v} - \sum_{(u,v) \in E} (\sigma_{v,u} + \lambda_{u,v}) \beta_{v,u} \\
+=& -\frac {1}{4}\sum_{u} \frac{\mu_u^2}{\sqrt{c} } - \frac{1}{4} \sum_{v} \nu_v^2\sqrt{c} + \sum_{(u,v) \in E} \lambda_{u,v} \\
+& - \sum_{(u,v) \in E} (\mu_u + \nu_v + \lambda_{u,v}) \alpha_{u,v} \\
+& - \sum_{(u,v) \in E} (\mu_u + \nu_v + \lambda_{u,v}) \beta_{v,u} \\
 
-=& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
-& - \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{u \in V} \mu_u w_{\alpha}(u) \\
-& - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{v \in V} \nu_v w_{\beta}(v) \\
-& + \sum_{(u,v) \in E} \mu_u  \alpha_{u,v} + \sum_{(u,v) \in E}  \nu_v \beta_{v,u} \\
-
-=& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
-& + \sum_{(u,v) \in E} \mu_u  \alpha_{u,v} + \sum_{(u,v) \in E}  \nu_v \beta_{v,u} \\
-
-= & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} - \sum_{u\in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} \\
-
-=& -\frac{1}{4\sqrt{c}} \sum_{u\in V} \mu_u^2  -\frac{\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 + \sum_{(u,v) \in E} \lambda_{u,v}
+=& -\frac {1}{4}\sum_{u} \frac{\mu_u^2}{\sqrt{c} } - \frac{1}{4} \sum_{v} \nu_v^2\sqrt{c} + \sum_{(u,v) \in E} \lambda_{u,v} \\
 \end{align*}
 $$
 
