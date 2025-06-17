@@ -180,18 +180,18 @@ So the dual objective function can be simplified to:
 $$
 \begin{align*}
 \mathsf{DQP}(c) &= \max_{\mu,\nu,\lambda} -\frac{1}{4\sqrt{c}} \sum_{u\in V} \mu_u^2  -\frac{\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 - \sum_{(u,v) \in E} \max(\mu_u , \nu_v)\\
-
 \end{align*}
 $$
 
-
 ### Dual Quadratic Program
+
+Set $x=(-\mu, -\nu)$, we can rewrite the dual quadratic program as follows:
 
 $$
 \begin{align*}
-\mathsf{DQP}(c):&&\min_{x\in \mathbb R^{2n}} && \frac{1}{4}x^TWx + \sum_{(u,v)\in E}\max(x_u,x_{n+v})\\
+\mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{4}x^TWx + \sum_{(u,v)\in E}\max(x_u,x_{n+v})\\
 
-\text{where } W=\begin{bmatrix}
+&\text{where } W=\begin{bmatrix}
 \frac{1}{\sqrt c}I_n & 0 \\
 0 & \sqrt{c}I_n
 \end{bmatrix}
