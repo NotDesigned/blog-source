@@ -66,6 +66,8 @@ $$
 
 ## Application on Densest Subgraph Problem
 
+To see the definition, please refer to the [Densest Subgraph Problem](https://notdesigned.github.io/2025/06/16/Densest-Subgraph/) post.
+
 The quadratic formulation of DDS problem is defined as follows:
 
 $$
