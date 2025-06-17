@@ -173,9 +173,26 @@ L = & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\
 
 = & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} - \sum_{u\in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} \\
 
-=& \frac{1}{4\sqrt{c}} \sum_{u\in V} \mu_u^2 + \frac{\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 + \sum_{(u,v) \in E} \lambda_{u,v}
+=& -\frac{1}{4\sqrt{c}} \sum_{u\in V} \mu_u^2  -\frac{\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 + \sum_{(u,v) \in E} \lambda_{u,v}
 \end{align*}
 $$
+
+To maximize lambda, WLOG
+
+When $\mu_u\geq \nu_v$, we can set $\rho_{u,v} = 0$ and $\sigma_{v,u} = \mu_u-\nu_v$. Then $\lambda_{u,v} = - \mu_u - \rho_{u,v} = -\mu_u$.
+
+When $\nu_v\geq \mu_u$, we can set $\rho_{u,v} = \nu_v - \mu_u$ and $\sigma_{v,u} = 0$. Then $\lambda_{u,v} = -\nu_v - \sigma_{v,u} = -\nu_v$.
+
+Thus, the analysis shows that we can set $\lambda_{u,v} = -\max(\mu_u, \nu_v)$.
+
+So the dual objective function can be simplified to:
+$$
+\begin{align*}
+\mathsf{DQP}(c) &= \max_{\mu,\nu,\lambda} -\frac{1}{4\sqrt{c}} \sum_{u\in V} \mu_u^2  -\frac{\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 - \sum_{(u,v) \in E} \max(\mu_u , \nu_v)\\
+
+\end{align*}
+$$
+
 
 ### Dual Quadratic Program
 
