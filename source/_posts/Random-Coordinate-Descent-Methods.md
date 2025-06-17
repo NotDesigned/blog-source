@@ -225,4 +225,4 @@ $$
 
 Obviously we have $w_{j}=0$ for all $j\neq u \text{ or } {v+n}$. (Here use $v+n$ to denote the vertex corresponding to $v$ in the second copy of $V$.)
 
-And $w_{u}+w_{v+n} = 1$.
+And $w_{u}+w_{v+n} = -1$.
