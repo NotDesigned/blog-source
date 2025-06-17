@@ -214,7 +214,7 @@ $$
 Let define the submodular function $F:2^{V\coprod V}\to \mathbb R$ as follows:
 
 $$
-F(S,T) = \sum_{i=1}^{|E|} F_{u,v}(S,T) 
+F(S,T) = \sum_{(u,v)\in E} F_{u,v}(S,T) = |E(S,T)|
 $$
 
 $F_{u,v}(S,T)$ is defined as follows:
@@ -222,9 +222,9 @@ $F_{u,v}(S,T)$ is defined as follows:
 $$
 F_{u,v}(S,T) = \begin{cases}
 0 & \text{if } u\notin S \text{ and } v\notin T \\
-1 & \text{if } u\in S \text{ and } v\notin T \\
-1 & \text{if } u\notin S \text{ and } v\in T\\
-1 & \text{if } u\in S \text{ and } v\in T 
+0 & \text{if } u\in S \text{ and } v\notin T \\
+0 & \text{if } u\notin S \text{ and } v\in T\\
+-1 & \text{if } u\in S \text{ and } v\in T 
 \end{cases}
 $$
 
