@@ -203,7 +203,7 @@ $$
 Let define the submodular function $F:2^{V\coprod V}\to \mathbb R$ as follows:
 
 $$
-F(S,T) = \sum_{(u,v)\in E} F_{u,v}(S,T) = |E(S,T)|
+F(S,T) = \sum_{(u,v)\in E} F_{u,v}(S,T) = -|E(S,T)|
 $$
 
 $F_{u,v}(S,T)$ is defined as follows:
