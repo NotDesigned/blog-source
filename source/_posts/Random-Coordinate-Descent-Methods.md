@@ -200,9 +200,6 @@ $$
 \begin{align*}
 \mathsf{DQP}(c):&&\min_{x\in \mathbb R^{2n}} && \frac{1}{4}x^TWx + \sum_{(u,v)\in E}\max(x_u,x_{n+v})\\
 
-&& \text{s.t.} && x_u\geq 0, && \forall u\in V\\
-&& && x_{n+v}\geq 0, && \forall v\in V\\
-&& && x_u + x_{n+v} = 1, && \forall (u,v)\in E\\
 \text{where } W=\begin{bmatrix}
 \frac{1}{\sqrt c}I_n & 0 \\
 0 & \sqrt{c}I_n
