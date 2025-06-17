@@ -179,7 +179,7 @@ L = & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\
 \end{align*}
 $$
 
-To maximize lambda, WLOG
+To maximize $\lambda_{u,v}$, WLOG
 
 When $\mu_u\geq \nu_v$, we can set $\rho_{u,v} = 0$ and $\sigma_{v,u} = \mu_u-\nu_v$. Then $\lambda_{u,v} = - \mu_u - \rho_{u,v} = -\mu_u$.
 
@@ -237,4 +237,3 @@ $$
 Obviously we have $w_{j}=0$ for all $j\neq u \text{ or } {v+n}$. (Here use $v+n$ to denote the vertex corresponding to $v$ in the second copy of $V$.)
 
 And $w_{u}+w_{v+n} = 1$.
-
