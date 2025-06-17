@@ -100,8 +100,8 @@ $$
 \begin{align*}
 \frac{\partial L}{\partial \alpha_{u,v}} &= -\lambda_{u,v} - \mu_{u} - \rho_{u,v} = 0 \\
 \frac{\partial L}{\partial \beta_{v,u}} &= -\lambda_{u,v} - \nu_{v} - \sigma_{v,u} = 0 \\
-\frac{\partial L}{\partial w_\alpha(u)} &= 2\sqrt{c} w_\alpha(u) - \sum_{u\in V} \mu_u = 0 \\
-\frac{\partial L}{\partial w_\beta(v)} &= \frac{2}{\sqrt{c}} w_\beta(v) - \sum_{v\in V} \nu_v = 0\\
+\frac{\partial L}{\partial w_\alpha(u)} &= 2\sqrt{c} w_\alpha(u) - \mu_u = 0 \\
+\frac{\partial L}{\partial w_\beta(v)} &= \frac{2}{\sqrt{c}} w_\beta(v) - \nu_v = 0\\
 \end{align*}
 $$
 $$
@@ -149,25 +149,31 @@ $$
 \begin{align*}
 L = & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} \\
 & + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
-& + \sum_{u \in V} \mu_u\left(\frac{\mu_u}{2\sqrt{c}} - \sum_{(u,v) \in E} \alpha_{u,v}\right) \\
-& + \sum_{v \in V} \nu_v\left(\frac{\nu_v\sqrt{c}}{2} - \sum_{(u,v) \in E} \beta_{v,u}\right) \\
+& + \sum_{u \in V} \mu_u\left(-\frac{\mu_u}{2\sqrt{c}} - \sum_{(u,v) \in E} \alpha_{u,v}\right) \\
+& + \sum_{v \in V} \nu_v\left(-\frac{\nu_v\sqrt{c}}{2} - \sum_{(u,v) \in E} \beta_{v,u}\right) \\
 & - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u} \\
+
 =& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
-& + \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{(u,v) \in E} \mu_u \sum_{(u,v) \in E} \alpha_{u,v} \\
-& + \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{(u,v) \in E} \nu_v \sum_{(u,v) \in E} \beta_{v,u} \\
+& - \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{u \in V} \mu_u \sum_{(u,v) \in E} \alpha_{u,v} \\
+& - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{v \in V} \nu_v \sum_{(u,v) \in E} \beta_{v,u} \\
 & - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u} \\
+
 =& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
-& + \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{(u,v) \in E} \mu_u w_{\alpha}(u) \\
-& + \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{(u,v) \in E} \nu_v w_{\beta}(v) \\
+& - \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{u \in V} \mu_u w_{\alpha}(u) \\
+& - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{v \in V} \nu_v w_{\beta}(v) \\
 & - \sum_{(u,v) \in E} (\rho_{u,v} + \lambda_{u,v}) \alpha_{u,v} - \sum_{(u,v) \in E} (\sigma_{v,u} + \lambda_{u,v}) \beta_{v,u} \\
+
 =& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
-& + \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{(u,v) \in E} \mu_u w_{\alpha}(u) \\
-& + \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{(u,v) \in E} \nu_v w_{\beta}(v) \\
+& - \sum_{u \in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{u \in V} \mu_u w_{\alpha}(u) \\
+& - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} - \sum_{v \in V} \nu_v w_{\beta}(v) \\
 & + \sum_{(u,v) \in E} \mu_u  \alpha_{u,v} + \sum_{(u,v) \in E}  \nu_v \beta_{v,u} \\
+
 =& \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} \\
 & + \sum_{(u,v) \in E} \mu_u  \alpha_{u,v} + \sum_{(u,v) \in E}  \nu_v \beta_{v,u} \\
-= & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} + \sum_{u\in V} \frac{\mu_u^2}{2\sqrt{c}} + \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} \\
-=& \frac{3}{4\sqrt{c}} \sum_{u\in V} \mu_u^2 + \frac{3\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 + \sum_{(u,v) \in E} \lambda_{u,v}
+
+= & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} + \sum_{(u,v) \in E} \lambda_{u,v} - \sum_{u\in V} \frac{\mu_u^2}{2\sqrt{c}} - \sum_{v \in V} \frac{\nu_v^2\sqrt{c}}{2} \\
+
+=& \frac{1}{4\sqrt{c}} \sum_{u\in V} \mu_u^2 + \frac{\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 + \sum_{(u,v) \in E} \lambda_{u,v}
 \end{align*}
 $$
 
@@ -175,7 +181,7 @@ $$
 
 $$
 \begin{align*}
-\mathsf{DQP}(c):&&\min_{x\in \mathbb R^{2n}} && \frac{3}{4}x^TWx + \sum_{(u,v)\in E}\max(x_u,x_{n+v})\\
+\mathsf{DQP}(c):&&\min_{x\in \mathbb R^{2n}} && \frac{1}{4}x^TWx + \sum_{(u,v)\in E}\max(x_u,x_{n+v})\\
 
 && \text{s.t.} && x_u\geq 0, && \forall u\in V\\
 && && x_{n+v}\geq 0, && \forall v\in V\\
