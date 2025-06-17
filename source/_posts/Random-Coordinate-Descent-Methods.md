@@ -207,6 +207,8 @@ $$
 \end{align*}
 $$
 
+#### Submodular Function Representation
+
 Let define the submodular function $F:2^{V\coprod V}\to \mathbb R$ as follows:
 
 $$
