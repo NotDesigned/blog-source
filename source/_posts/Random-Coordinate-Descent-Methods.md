@@ -72,10 +72,8 @@ The quadratic formulation of DDS problem is defined as follows:
 
 $$
 \begin{align*}
-\mathsf{QP}(c):&&\min&&\sqrt c \cdot \sum_{u\in V}w_{\alpha}(u)^2+\frac 1{\sqrt c} \cdot & \sum_{v\in V}w_{\beta}(v)^2 \\
+\mathsf{QP}(c):&&\min&&\sqrt c \cdot \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2+\frac 1{\sqrt c} \cdot & \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
 && \text{s.t.}&&\alpha_{u,v}+\beta_{v,u} &=1,&& \forall (u,v) \in E\\
-&& &&\sum_{(u,v) \in E}\alpha_{u,v}&=w_{\alpha}(u),&& \forall u \in V \\
-&& &&\sum_{(u,v) \in E}\beta_{v,u}&=w_{\beta}(v),&& \forall v \in V \\
 && &&\alpha_{u,v},\beta_{v,u} &\geq 0 && \forall (u,v) \in E
 \end{align*}
 $$
@@ -85,10 +83,8 @@ The dual of such quadratic program is formulated as follows:
 ### Lagrangian relaxation
 $$
 \begin{align*}
-L = & \sqrt{c} \sum_{u} w_\alpha(u)^2 + \frac{1}{\sqrt{c}} \sum_{v} w_\beta(v)^2 \\
+L = & \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
 & + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
-& + \sum_{u \in V} \mu_u\left(w_\alpha(u) - \sum_{(u,v) \in E} \alpha_{u,v}\right) \\
-& + \sum_{v \in V} \nu_v\left(w_\beta(v) - \sum_{(u,v) \in E} \beta_{v,u}\right) \\
 & - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u}
 \end{align*}
 $$
@@ -100,19 +96,29 @@ Now consider the KKT conditions:
 #### Stationarity Conditions
 $$
 \begin{align*}
-\frac{\partial L}{\partial \alpha_{u,v}} &= -\lambda_{u,v} - \mu_{u} - \rho_{u,v} = 0 \\
-\frac{\partial L}{\partial \beta_{v,u}} &= -\lambda_{u,v} - \nu_{v} - \sigma_{v,u} = 0 \\
-\frac{\partial L}{\partial w_\alpha(u)} &= 2\sqrt{c} w_\alpha(u) + \mu_u = 0 \\
-\frac{\partial L}{\partial w_\beta(v)} &= \frac{2}{\sqrt{c}} w_\beta(v) + \nu_v = 0\\
+\frac{\partial L}{\partial \alpha_{u,v}} &= 2\sqrt{c} \sum_{(u,s) \in E}\alpha_{u,s} - \lambda_{u,v} - \rho_{u,v} = 0 \\
+\frac{\partial L}{\partial \beta_{v,u}} &= \frac{2}{\sqrt{c}} \sum_{(t,v) \in E}\beta_{v,t} - \lambda_{u,v} - \sigma_{v,u} = 0
+\end{align*}
+$$
+
+Define:
+$$
+w_{\alpha}(u) = \sum_{(u,v) \in E}\alpha_{u,v}, \quad w_{\beta}(v) = \sum_{(u,v) \in E}\beta_{v,u}
+$$
+
+Then:
+$$
+\begin{align*}
+2\sqrt{c} w_{\alpha}(u) - \lambda_{u,v} - \rho_{u,v} &= 0\\
+\frac{2}{\sqrt{c}} w_{\beta}(v) - \lambda_{u,v} - \sigma_{v,u} &= 0
 \end{align*}
 $$
 $$
 \begin{align*}
 \Rightarrow 
 \begin{cases}
-w_{\alpha}(u) &= -\frac{\mu_u}{2\sqrt{c}} \\
-w_{\beta}(v) &= -\frac{\nu_v\sqrt{c}}{2}\\
-\lambda_{u,v} &= -\mu_u - \rho_{u,v} = -\nu_v - \sigma_{v,u}\\
+\lambda_{u,v} + \rho_{u,v} &= 2\sqrt{c} \sum_{(u,s) \in E}\alpha_{u,s}\\
+\lambda_{u,v} + \sigma_{v,u} &= \frac{2}{\sqrt{c}} \sum_{(t,v) \in E}\beta_{v,t}
 \end{cases}
 \end{align*}
 $$
@@ -121,8 +127,6 @@ $$
 $$
 \begin{align*}
 \alpha_{u,v} + \beta_{v,u} &= 1, && \forall (u,v) \in E \\
-\sum_{(u,v) \in E} \alpha_{u,v} &= w_{\alpha}(u), && \forall u \in V \\
-\sum_{(u,v) \in E} \beta_{v,u} &= w_{\beta}(v), && \forall v \in V \\
 \alpha_{u,v}, \beta_{v,u} &\geq 0, && \forall (u,v) \in E
 \end{align*}
 $$
@@ -146,55 +150,87 @@ $$
 
 ### Analysis & Simplification
 
+From the stationarity conditions, we notice that for any vertex $u$, the quantity $2\sqrt{c} \sum_{(u,s) \in E}\alpha_{u,s}$ must be equal to $\lambda_{u,v} + \rho_{u,v}$ for **all edges** $(u,v)$ incident to $u$. This gives us:
+
+$$\lambda_{u,v_1} + \rho_{u,v_1} = \lambda_{u,v_2} + \rho_{u,v_2} = \cdots$$ 
+
+for all edges $(u,v_1), (u,v_2), \ldots$ incident to vertex $u$.
+
+Similarly, for any vertex $v$:
+$$\lambda_{u_1,v} + \sigma_{v,u_1} = \lambda_{u_2,v} + \sigma_{v,u_2} = \cdots$$
+
+Let us define:
+$$x_u := 2\sqrt{c} \sum_{(u,s) \in E}\alpha_{u,s}, \quad y_v := \frac{2}{\sqrt{c}} \sum_{(t,v) \in E}\beta_{v,t}$$
+
+Then we have:
+$$\lambda_{u,v} + \rho_{u,v} = x_u, \quad \lambda_{u,v} + \sigma_{v,u} = y_v$$
+
 Substituting stationarity conditions back to Lagrangian:
 $$
 \begin{align*}
-\inf_{\alpha,\beta,w}L(\alpha,\beta,w,\lambda,\mu,\nu,\rho,\sigma) = & \sqrt{c} \sum_{u} \frac{\mu_u^2}{4c} + \frac{1}{\sqrt{c}} \sum_{v} \frac{\nu_v^2c}{4} \\
+\inf_{\alpha,\beta,w}L(\alpha,\beta,w,\lambda,\rho,\sigma) = & \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
 & + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
-& + \sum_{u \in V} \mu_u\left(-\frac{\mu_u}{2\sqrt{c}} - \sum_{(u,v) \in E} \alpha_{u,v}\right) \\
-& + \sum_{v \in V} \nu_v\left(-\frac{\nu_v\sqrt{c}}{2} - \sum_{(u,v) \in E} \beta_{v,u}\right) \\
-& - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u} \\
-
-=& -\frac {1}{4}\sum_{u} \frac{\mu_u^2}{\sqrt{c} } - \frac{1}{4} \sum_{v} \nu_v^2\sqrt{c} + \sum_{(u,v) \in E} \lambda_{u,v}(1 - \alpha_{u,v} - \beta_{v,u}) \\
-& - \sum_{u \in V} \mu_u \sum_{(u,v) \in E} \alpha_{u,v} \\
-& - \sum_{v \in V} \nu_v \sum_{(u,v) \in E} \beta_{v,u} \\
-& - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u} \\
-
-=& -\frac {1}{4}\sum_{u} \frac{\mu_u^2}{\sqrt{c} } - \frac{1}{4} \sum_{v} \nu_v^2\sqrt{c} + \sum_{(u,v) \in E} \lambda_{u,v} \\
-& - \sum_{(u,v) \in E} (\mu_u + \nu_v + \lambda_{u,v}) \alpha_{u,v} \\
-& - \sum_{(u,v) \in E} (\mu_u + \nu_v + \lambda_{u,v}) \beta_{v,u} \\
-
-=& -\frac {1}{4}\sum_{u} \frac{\mu_u^2}{\sqrt{c} } - \frac{1}{4} \sum_{v} \nu_v^2\sqrt{c} + \sum_{(u,v) \in E} \lambda_{u,v} \\
+& - \sum_{(u,v) \in E} \rho_{u,v} \alpha_{u,v} - \sum_{(u,v) \in E} \sigma_{v,u} \beta_{v,u}\\
+= & \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+& + \sum_{(u,v) \in E} \lambda_{u,v} \\
+& - \sum_{(u,v) \in E} (\lambda_{u,v} + \rho_{u,v}) \alpha_{u,v} - \sum_{(u,v) \in E} (\lambda_{u,v} + \sigma_{v,u}) \beta_{v,u}\\
+= & \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+& + \sum_{(u,v) \in E} \lambda_{u,v} - \sum_{(u,v) \in E} \left(2\sqrt{c} \sum_{(u,s) \in E}\alpha_{u,s}\right) \alpha_{u,v} \\
+& - \sum_{(u,v) \in E} \left(\frac{2}{\sqrt{c}} \sum_{(t,v) \in E}\beta_{v,t}\right) \beta_{v,u} \\
+= & \sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+& + \sum_{(u,v) \in E} \lambda_{u,v} - 2\sqrt{c} \sum_{u \in V} \left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 \\
+& - \frac{2}{\sqrt{c}} \sum_{v \in V} \left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+= & -\sqrt{c} \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 - \frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2 \\
+& + \sum_{(u,v) \in E} \lambda_{u,v} \\
+= & -\frac{1}{4\sqrt{c}} \sum_{u\in V} x_u^2 - \frac{\sqrt{c}}{4} \sum_{v\in V} y_v^2 + \sum_{(u,v) \in E} \lambda_{u,v}
 \end{align*}
 $$
 
-To maximize $\lambda_{u,v}$, WLOG
+To maximize the dual objective, we want to maximize $\lambda_{u,v}$ which means minimizing $\rho_{u,v} + \sigma_{v,u}$ subject to:
 
-When $\mu_u\geq \nu_v$, we can set $\rho_{u,v} = 0$ and $\sigma_{v,u} = \mu_u-\nu_v$. Then $\lambda_{u,v} = - \mu_u - \rho_{u,v} = -\mu_u$.
+- $\rho_{u,v}, \sigma_{v,u} \geq 0$
+- $\lambda_{u,v} = x_u - \rho_{u,v} = y_v - \sigma_{v,u}$
 
-When $\nu_v\geq \mu_u$, we can set $\rho_{u,v} = \nu_v - \mu_u$ and $\sigma_{v,u} = 0$. Then $\lambda_{u,v} = -\nu_v - \sigma_{v,u} = -\nu_v$.
+This gives us $\rho_{u,v} - \sigma_{v,u} = x_u - y_v$.
 
-Thus, the analysis shows that we can set $\lambda_{u,v} = -\max(\mu_u, \nu_v)$.
+**Case 1:** If $x_u \geq y_v$, set $\sigma_{v,u} = 0$ and $\rho_{u,v} = x_u - y_v \geq 0$. Then $\lambda_{u,v} = y_v$.
+
+**Case 2:** If $x_u \leq y_v$, set $\rho_{u,v} = 0$ and $\sigma_{v,u} = y_v - x_u \geq 0$. Then $\lambda_{u,v} = x_u$.
+
+Therefore: $\lambda_{u,v} = \min(x_u, y_v)$.
 
 So the dual objective function can be simplified to:
 $$
 \begin{align*}
-\mathsf{DQP}(c) &= \max_{\mu,\nu,\lambda} -\frac{1}{4\sqrt{c}} \sum_{u\in V} \mu_u^2  -\frac{\sqrt{c}}{4} \sum_{v\in V} \nu_v^2 - \sum_{(u,v) \in E} \max(\mu_u , \nu_v)\\
+\mathsf{DQP}(c) &= \max_{x,y} -\frac{1}{4\sqrt{c}} \sum_{u\in V} x_u^2 - \frac{\sqrt{c}}{4} \sum_{v\in V} y_v^2 + \sum_{(u,v) \in E} \min(x_u, y_v)
 \end{align*}
 $$
 
-### Dual Quadratic Program
-
-Set $x=(-\mu, -\nu)$, we can rewrite the dual quadratic program as follows:
+And the constraints are given by the primal feasibility conditions, which is equivalent to:
 
 $$
 \begin{align*}
-\mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{4}x^TWx + \sum_{(u,v)\in E}\min(x_u,x_{n+v})\\
+\frac{1}{2\sqrt{c}}\sum_{u \in V} x_u + \frac{\sqrt{c}}{2}\sum_{v \in V} y_v = |E| \\
+x_u, y_v \geq 0, \quad \forall u \in V, v \in V
+\end{align*}
+$$
 
+Because a valid solution of primal can be constructed by using flow theory.
+
+### Dual Quadratic Program
+
+Set new $x=(\frac{x}{2}, \frac{y}{2})$, we can rewrite the dual quadratic program as follows:
+
+$$
+\begin{align*}
+\mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{2}x^TWx - \sum_{(u,v)\in E}\min(x_u,x_{n+v})\\
+&\text{s.t. } a^Tx = |E| \\
+&\quad\quad\quad x_u, y_v \geq 0, \quad \forall u \in V, v \in V \\
 &\text{where } W=\begin{bmatrix}
 \frac{1}{\sqrt c}I_n & 0 \\
 0 & \sqrt{c}I_n
 \end{bmatrix}
+, \quad \vec{a} = [\frac{1}{2\sqrt{c}}, \frac{\sqrt{c}}{2}, \ldots, \frac{1}{2\sqrt{c}}, \frac{\sqrt{c}}{2}]^T
 \end{align*}
 $$
 
