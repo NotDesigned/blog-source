@@ -189,7 +189,7 @@ Set $x=(-\mu, -\nu)$, we can rewrite the dual quadratic program as follows:
 
 $$
 \begin{align*}
-\mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{4}x^TWx + \sum_{(u,v)\in E}\max(x_u,x_{n+v})\\
+\mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{4}x^TWx + \sum_{(u,v)\in E}\min(x_u,x_{n+v})\\
 
 &\text{where } W=\begin{bmatrix}
 \frac{1}{\sqrt c}I_n & 0 \\
