@@ -102,8 +102,8 @@ $$
 \begin{align*}
 \frac{\partial L}{\partial \alpha_{u,v}} &= -\lambda_{u,v} - \mu_{u} - \rho_{u,v} = 0 \\
 \frac{\partial L}{\partial \beta_{v,u}} &= -\lambda_{u,v} - \nu_{v} - \sigma_{v,u} = 0 \\
-\frac{\partial L}{\partial w_\alpha(u)} &= 2\sqrt{c} w_\alpha(u) - \mu_u = 0 \\
-\frac{\partial L}{\partial w_\beta(v)} &= \frac{2}{\sqrt{c}} w_\beta(v) - \nu_v = 0\\
+\frac{\partial L}{\partial w_\alpha(u)} &= 2\sqrt{c} w_\alpha(u) + \mu_u = 0 \\
+\frac{\partial L}{\partial w_\beta(v)} &= \frac{2}{\sqrt{c}} w_\beta(v) + \nu_v = 0\\
 \end{align*}
 $$
 $$
