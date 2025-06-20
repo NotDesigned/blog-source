@@ -230,7 +230,7 @@ $$
 \frac{1}{\sqrt c}I_n & 0 \\
 0 & \sqrt{c}I_n
 \end{bmatrix}
-, \quad \vec{a} = [\sqrt{c}, \sqrt{c}, \ldots, \frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}}, \ldots, \frac{1}{\sqrt{c}}]^T
+, \quad \vec{a} = [\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}, \frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}}, \ldots, \frac{1}{\sqrt{c}}]^T
 \end{align*}
 $$
 
