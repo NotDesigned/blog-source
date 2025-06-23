@@ -230,7 +230,7 @@ $$
 \frac{1}{\sqrt c}I_n & 0 \\
 0 & \sqrt{c}I_n
 \end{bmatrix}
-, \quad \vec{a} = [\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}, \frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}}, \ldots, \frac{1}{\sqrt{c}}]^T
+, \quad \vec{a} = [\frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}}, \ldots, \frac{1}{\sqrt{c}},\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}]^T
 \end{align*}
 $$
 
@@ -262,3 +262,132 @@ $$
 Obviously we have $w_{j}=0$ for all $j\neq u \text{ or } {v+n}$. (Here use $v+n$ to denote the vertex corresponding to $v$ in the second copy of $V$.)
 
 And $w_{u}+w_{v+n} = -1$.
+
+the Lovász extension of $F_{u,v}$ is given by:
+
+$$
+f_{u,v}(x) = \max_{w\in B(F_{u,v})} \langle w, x \rangle
+$$
+
+which just equals to $-\min(x_u, x_{n+v})$.
+
+Thus, the dual quadratic program can be rewritten as:
+$$
+\begin{align*}
+\mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{2}x^TWx + \sum_{(u,v)\in E} f_{u,v}(x)\\
+&\text{s.t. } a^Tx = |E| \\
+&\quad\quad\quad x_u, y_v \geq 0, \quad \forall u \in V, v \in V \\
+&\text{where } W=\begin{bmatrix}
+\frac{1}{\sqrt c}I_n & 0 \\
+0 & \sqrt{c}I_n
+\end{bmatrix}, \quad \vec{a} = [\frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}}, \ldots, \frac{1}{\sqrt{c}},\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}]^T
+\end{align*}
+$$
+
+## Another Derivation 
+
+Just ignore the quadratic term, we can rewrite the dual quadratic program as a ratio linear program (RLP):
+$$
+\begin{align*}
+\mathsf{RLP}(c):&\max_{x\in \mathbb R^{2n}}  \sum_{(u,v)\in E}\min(x_u,x_{n+v})\\
+&\text{s.t. } a^Tx = |E| \\
+&\quad\quad\quad x_u, y_v \geq 0, \quad \forall u \in V, v \in V \\
+&\text{where } \vec{a} = [\frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}}, \ldots, \frac{1}{\sqrt{c}},\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}]^T
+\end{align*}
+$$
+
+Let's introduce the definition of c-biased density:
+$$
+\rho_c(S,T) = \frac{2 \sqrt c \sqrt {c'}}{c+c'}  \frac{|E(S,T)|}{\sqrt{|S||T|}}=\frac{2|E(S,T)|}{\frac{1}{\sqrt c} |S|+ \sqrt c |T|}\\
+\text{where } c' = \frac{|S|}{|T|}
+$$
+
+And the c-biased DDS is defined as the subgraph G(S,T) such that $\rho_c(S,T)$ is maximized.
+
+We have the following theorem: 
+### Theorem 1
+
+The optimal value of $\mathsf{RLP}(c)$, $\text{OPT}({\mathsf{RLP}(c)})=\frac{|E|}{2}\rho^*_c(S,T)$ and the optimal solution can be recovered by thresholding.
+
+#### Proof
+
+First, we show that $\text{OPT}({\mathsf{RLP}(c)})\geq \frac{|E|}{2}\rho^*_c(S,T)$.
+
+For any vertex sets $S \subseteq V, T \subseteq V$, consider the feasible solution to RLP:
+
+$x_u = \alpha$ for $u \in S$, $x_u = 0$ for $u \notin S$
+
+$x_{n+v} = \beta$ for $v \in T$, $x_{n+v} = 0$ for $v \notin T$
+
+The constraint gives us:
+
+$$
+\frac{1}{\sqrt{c}}|S| \cdot \alpha + \sqrt{c}|T| \cdot \beta = |E|
+$$
+
+The objective value is:
+
+$$
+\sum_{(u,v) \in E} \min(x_u, x_{n+v}) = |E(S,T)| \cdot \min(\alpha, \beta)
+$$
+
+To maximize this, we want to maximize $\min(\alpha, \beta)$ subject to the constraint.
+
+If $\alpha = \beta$, then: $\alpha = \frac{|E|}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}$
+
+Objective = $|E(S,T)| \cdot \frac{|E|}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}$
+
+This can be rewritten as:
+$$
+\frac{2|E(S,T)|}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|} \cdot \frac{|E|}{2} = \rho_c(S,T) \cdot \frac{|E|}{2}
+$$
+
+Therefore: $\text{OPT}({\mathsf{RLP}(c)}) \geq \frac{|E|}{2} \max_{S,T} \rho_c(S,T)$
+
+Now we show that $\text{OPT}({\mathsf{RLP}(c)}) \leq \frac{|E|}{2} \max_{S,T} \rho_c(S,T)$.
+
+The LP objective can be rewritten as:
+$$
+\sum_{(u,v) \in E} \min(x^*_u, y^*_v) = \sum_{(u,v) \in E} \int_0^{\infty} \mathbf{1}[x^*_u \geq t \text{ and } y^*_v \geq t] \, dt
+$$
+
+For each threshold $t \geq 0$, define:
+
+- $S_t = \{u \in V : x^*_u \geq t\}$ (vertices in first part with value ≥ t)
+- $T_t = \{v \in V : y^*_v \geq t\}$ (vertices in second part with value ≥ t)
+
+Then the number of edges between $S_t$ and $T_t$ is given by:
+$$\sum_{(u,v) \in E} \mathbf{1}[x^*_u \geq t \text{ and } y^*_v \geq t] = |E(S_t, T_t)|$$
+
+Consider the constraint:
+$$
+\begin{align*}
+\frac{1}{\sqrt{c}}\sum_{u} x^*_u + \sqrt{c}\sum_{v} y^*_v &= \frac{1}{\sqrt{c}}\sum_{u} \int_0^{\infty} \mathbf{1}[x^*_u \geq t] \, dt + \sqrt{c}\sum_{v} \int_0^{\infty} \mathbf{1}[y^*_v \geq t] \, dt\\
+&= \int_0^{\infty} \left( \frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t| \right) dt
+\end{align*}
+$$
+
+So 
+$$
+\frac{\text{LP objective}}{|E|} = \frac{\int_0^{\infty} |E(S_t, T_t)| \, dt}{\int_0^{\infty} \left( \frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t| \right) dt}
+$$
+
+By averaging principle:
+
+$$
+\frac{\int g(t) dt}{\int h(t) dt} \leq \max_t \frac{g(t)}{h(t)}
+$$
+
+We get:
+$$
+\frac{\text{LP objective}}{|E|} \leq \max_{t \geq 0} \frac{|E(S_t, T_t)|}{\frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t|}
+$$
+
+Thus:
+$$
+\text{OPT}({\mathsf{RLP}(c)}) \leq \frac{|E|}{2} \max_{S,T} \rho_c(S,T)
+$$
+
+This completes the proof of Theorem 1.
+
+And $\text{DQP}$ can be considered as a proximal version of $\text{RLP}$.
