@@ -284,7 +284,7 @@ $$
 \end{align*}
 $$
 
-## Another Derivation 
+### Another Derivation 
 
 Just ignore the quadratic term, we can rewrite the dual quadratic program as a ratio linear program (RLP):
 $$
@@ -305,11 +305,11 @@ $$
 And the c-biased DDS is defined as the subgraph G(S,T) such that $\rho_c(S,T)$ is maximized.
 
 We have the following theorem: 
-### Theorem 1
+#### Theorem 1
 
 The optimal value of $\mathsf{RLP}(c)$, $\text{OPT}({\mathsf{RLP}(c)})=\frac{|E|}{2}\rho^*_c(S,T)$ and the optimal solution can be recovered by thresholding.
 
-#### Proof
+##### Proof
 
 First, we show that $\text{OPT}({\mathsf{RLP}(c)})\geq \frac{|E|}{2}\rho^*_c(S,T)$.
 
