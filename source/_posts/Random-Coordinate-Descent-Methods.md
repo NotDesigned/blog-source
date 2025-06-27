@@ -432,7 +432,7 @@ $$
 E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\max\{c^{1/2}, c^{-1/2}\}}{r}\|h\|^2
 $$
 
-#### Proof:
+**Proof:**
 We have:
 $$E[g(x + h_R)] = E[r\|S(x + h_R)\|^2]$$
 $$= E[r\|Sx\|^2 + r\|Sh_R\|^2 + 2r\langle Sx, Sh_R\rangle]$$
@@ -459,7 +459,7 @@ Then we have:
 $$
 E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)
 $$
-#### Proof:
+**Proof:**
 This follows directly from applying Fercoq-Richtárik's Theorem 3 with:
 
 - $\tau = 1$ (sampling parameter)
