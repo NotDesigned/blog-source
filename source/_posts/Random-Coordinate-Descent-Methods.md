@@ -563,3 +563,10 @@ $$T = 16nr^{3/2} \max\{c^{1/2}, c^{-1/2}\} + 1$$
 
 This gives us:
 $$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2} (g(y_\ell) - g(y^*))$$
+
+### Conclusion
+
+After $\ell$ epochs of the ACDM algorithm (equivalently, $(16nr^{3/2} \max\{c^{1/2}, c^{-1/2}\} + 1)\ell$ iterations), we have:
+$E[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2^{\ell+1}}(g(y_0) - g(y^*))$
+
+where $y^* = \arg\min_{y \in E} \|y - y_{\ell+1}\|$ is the optimal solution in $E$ that is closest to $y_{\ell+1}$.
