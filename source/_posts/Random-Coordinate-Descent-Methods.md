@@ -409,6 +409,7 @@ c^{1/4}I_n & 0 \\
 S=\frac{1}{\sqrt r}[W,W,...,W]\in{\R^{2n\times{2nr}}}\\
 %f=\sum_{(u,v)\in E}f_{u,v}(x)\\
 g=r||Sy||^2\\
+\nabla g(y)=2rS^T Sy\\
 ||\nabla_ig(x)-\nabla_ig(y)||\leq L_i||x^{(i)}-y^{(i)}||,\text{for all vectors }x,y\in \R^{2nr} \text{that differ only in block } i\\
 L_i=2\max\{\sqrt c,\frac{1}{\sqrt c}\}=2\kappa\\
 S^T S = \frac{1}{r} \begin{bmatrix}
@@ -419,6 +420,28 @@ W^T W & W^T W & \cdots & W^T W
 \end{bmatrix}
 \end{gather*}
 $$
+
+### Key Sets and Definitions
+
+**Feasible Set:**
+$Y = \prod_{i=1}^r B(F_i) = B(F_1) \times B(F_2) \times \cdots \times B(F_r)$
+
+**Null Space:**
+$Q = \{y \in \mathbb{R}^{2nr} : Sy = 0\} = \left\{y \in \mathbb{R}^{2nr} : \sum_{i=1}^r W y^{(i)} = 0\right\}$
+
+**Optimal Solution Set:**
+$E = \{y \in Y : g(y) = \min_{z \in Y} g(z)\}$
+
+**Alternative Characterization of $E$:**
+$E = \{y \in Y : d(y, Q) = d(Y, Q)\}$
+
+where $d(y, Q) = \min_{z \in Q} \|y - z\|$ and $d(Y, Q) = \min_{y \in Y} d(y, Q)$.
+
+**Geometric Interpretation:**
+
+- $E$ represents the set of points in the feasible region $Y$ that are closest to satisfying the constraint $Sy = 0$
+- Points in $E$ are optimal solutions to our proximal optimization problem
+- The set $E$ connects to optimal solutions of the original discrete problem via thresholding
 
 #### Analogue of theorem 2:
 
@@ -433,6 +456,7 @@ E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\max\
 $$
 
 **Proof:**
+
 We have:
 $$E[g(x + h_R)] = E[r\|S(x + h_R)\|^2]$$
 $$= E[r\|Sx\|^2 + r\|Sh_R\|^2 + 2r\langle Sx, Sh_R\rangle]$$
@@ -460,6 +484,7 @@ $$
 E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)
 $$
 **Proof:**
+
 This follows directly from applying Fercoq-Richtárik's Theorem 3 with:
 
 - $\tau = 1$ (sampling parameter)
@@ -484,7 +509,7 @@ $$\int_0^1 \langle\nabla g(y^* + t(y_\ell - y^*)) - \nabla g(y^*), y_\ell - y^*\
 Since $y^*$ is optimal, $\langle\nabla g(y^*), y_\ell - y^*\rangle \leq 0$ (first-order optimality condition).
 
 Thus:
-$$g(y_\ell) - g(y^*) = r\|S(y_\ell - y^*)\|^2$$
+$$g(y_\ell) - g(y^*) \geq r\|S(y_\ell - y^*)\|^2$$
 
 #### Applying Theorem 2 Analog
 
@@ -492,7 +517,7 @@ From our Theorem 2 analog:
 $$\|S(y_\ell - y^*)\| \geq \frac{1}{2nr \cdot \max\{c^{1/2}, c^{-1/2}\}} \|y_\ell - y^*\|$$
 
 Therefore:
-$$g(y_\ell) - g(y^*) = r\|S(y_\ell - y^*)\|^2 \geq \frac{r}{(2nr \cdot \max\{c^{1/2}, c^{-1/2}\})^2} \|y_\ell - y^*\|^2$$
+$$g(y_\ell) - g(y^*) \geq r\|S(y_\ell - y^*)\|^2 \geq \frac{r}{(2nr \cdot \max\{c^{1/2}, c^{-1/2}\})^2} \|y_\ell - y^*\|^2$$
 $$= \frac{1}{4n^2r \max\{c^{1/2}, c^{-1/2}\}} \|y_\ell - y^*\|^2$$
 
 **Geometric Bound:**
