@@ -24,8 +24,10 @@ Regarding $w\in \mathbb{R}^n$ as a modular function $w(A) = \sum_{i\in A} w_i$.
 
 Let $F: 2^V \to \mathbb{R}$ be a submodular function of the form:
 $$
-F = \sum_{i=1}^r F_i\\
-F(\emptyset) = 0
+\begin{align*}
+F &= \sum_{i=1}^r F_i\\
+F(\emptyset) &= 0
+\end{align*}
 $$
 where each $f_i$ is a simple submodular function.
 
@@ -298,8 +300,10 @@ $$
 
 Let's introduce the definition of c-biased density:
 $$
+\begin{gather*}
 \rho_c(S,T) = \frac{2 \sqrt c \sqrt {c'}}{c+c'}  \frac{|E(S,T)|}{\sqrt{|S||T|}}=\frac{2|E(S,T)|}{\frac{1}{\sqrt c} |S|+ \sqrt c |T|}\\
 \text{where } c' = \frac{|S|}{|T|}
+\end{gather*}
 $$
 
 And the c-biased DDS is defined as the subgraph G(S,T) such that $\rho_c(S,T)$ is maximized.
@@ -391,3 +395,146 @@ $$
 This completes the proof of Theorem 1.
 
 And $\text{DQP}$ can be considered as a proximal version of $\text{RLP}$.
+
+### Complexity Analysis
+
+$$
+\begin{gather*}
+r=m\\
+y\in \R^{2n*r}=(y^{(1)},...,y^{(r)})\\
+W=\begin{bmatrix}
+c^{1/4}I_n & 0 \\
+0 & c^{-1/4}I_n
+\end{bmatrix},
+S=\frac{1}{\sqrt r}[W,W,...,W]\in{\R^{2n\times{2nr}}}\\
+%f=\sum_{(u,v)\in E}f_{u,v}(x)\\
+g=r||Sy||^2\\
+||\nabla_ig(x)-\nabla_ig(y)||\leq L_i||x^{(i)}-y^{(i)}||,\text{for all vectors }x,y\in \R^{2nr} \text{that differ only in block } i\\
+L_i=2\max\{\sqrt c,\frac{1}{\sqrt c}\}=2\kappa\\
+S^T S = \frac{1}{r} \begin{bmatrix}
+W^T W & W^T W & \cdots & W^T W \\
+W^T W & W^T W & \cdots & W^T W \\
+\vdots & \vdots & \ddots & \vdots \\
+W^T W & W^T W & \cdots & W^T W
+\end{bmatrix}
+\end{gather*}
+$$
+
+#### Analogue of theorem 2:
+
+$$
+||S(y-y^*)|| \geq \frac{1}{2nr\kappa}||y-y^*||
+$$
+
+#### Analogue of lemma 7:
+Let $R \subseteq \{1, 2, \ldots, r\}$ be a random subset where each $i \in \{1, 2, \ldots, r\}$ is included independently with probability $1/r$. For vectors $x, h \in \mathbb{R}^{2nr}$, let $h_R$ be defined by $(h_R)^{(i)} = h^{(i)}$ if $i \in R$ and $(h_R)^{(i)} = 0$ otherwise. Then:
+$$
+E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\max\{c^{1/2}, c^{-1/2}\}}{r}\|h\|^2
+$$
+
+#### Proof:
+We have:
+$$E[g(x + h_R)] = E[r\|S(x + h_R)\|^2]$$
+$$= E[r\|Sx\|^2 + r\|Sh_R\|^2 + 2r\langle Sx, Sh_R\rangle]$$
+$$= g(x) + rE[\|Sh_R\|^2] + \frac{1}{r}\langle\nabla g(x), h\rangle$$
+
+The key term to bound is:
+$$E[\|Sh_R\|^2] = E\left[\left\|\frac{1}{\sqrt{r}} \sum_{i \in R} W h^{(i)}\right\|^2\right] = \frac{1}{r} E\left[\left\|W \sum_{i \in R} h^{(i)}\right\|^2\right]$$
+
+Using the matrix norm bound:
+$$E\left[\left\|W \sum_{i \in R} h^{(i)}\right\|^2\right] \leq \|W\|^2 E\left[\left\|\sum_{i \in R} h^{(i)}\right\|^2\right]$$
+
+From standard coordinate descent analysis:
+$$E\left[\left\|\sum_{i \in R} h^{(i)}\right\|^2\right] \leq \frac{2}{r} \sum_{i=1}^r \|h^{(i)}\|^2 = \frac{2}{r} \|h\|^2$$
+
+Since $\|W\|^2 = \max\{c^{1/2}, c^{-1/2}\}$:
+$$E[\|Sh_R\|^2] \leq \frac{1}{r} \cdot \max\{c^{1/2}, c^{-1/2}\} \cdot \frac{2}{r} \|h\|^2 = \frac{2\max\{c^{1/2}, c^{-1/2}\}}{r^2} \|h\|^2$$
+
+Therefore:
+$$E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\max\{c^{1/2}, c^{-1/2}\}}{r}\|h\|^2$$
+
+#### Analogue of theorem 8:
+Consider iteration $k$ of the APPROX algorithm. Let $y_k=\theta_k^2u_{k+1}+z_{k+1}$, Let $y^*=\arg \min_{y\in E} ||y-y_k||$ is the optimal solution that is closest to $y_k$.
+Then we have: 
+$$
+E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)
+$$
+#### Proof:
+This follows directly from applying Fercoq-Richtárik's Theorem 3 with:
+
+- $\tau = 1$ (sampling parameter)
+- $\nu_i = 4\max\{c^{1/2}, c^{-1/2}\}$ for each $i \in \{1, 2, \ldots, r\}$
+
+#### Geometric Bound from Theorem 2 Analogue
+
+We need the relationship between function values and distances. 
+
+**Key Geometric Relationship:** For our specific objective function $g(y) = r\|Sy\|^2$, we have:
+$$g(y_\ell) = g(y^*) + \langle\nabla g(y^*), y_\ell - y^*\rangle + \int_0^1 \langle\nabla g(y^* + t(y_\ell - y^*)) - \nabla g(y^*), y_\ell - y^*\rangle dt$$
+
+This uses the fundamental theorem of calculus. For $\phi(t) = g(y^* + t(y_\ell - y^*))$:
+$$g(y_\ell) - g(y^*) = \int_0^1 \phi'(t) dt = \int_0^1 \langle\nabla g(y^* + t(y_\ell - y^*)), y_\ell - y^*\rangle dt$$
+
+Since $\nabla g(z) = 2rS^T Sz$:
+$$\nabla g(y^* + t(y_\ell - y^*)) - \nabla g(y^*) = 2rS^T S \cdot t(y_\ell - y^*)$$
+
+Therefore:
+$$\int_0^1 \langle\nabla g(y^* + t(y_\ell - y^*)) - \nabla g(y^*), y_\ell - y^*\rangle dt = \int_0^1 2rt\|S(y_\ell - y^*)\|^2 dt = r\|S(y_\ell - y^*)\|^2$$
+
+Since $y^*$ is optimal, $\langle\nabla g(y^*), y_\ell - y^*\rangle \leq 0$ (first-order optimality condition).
+
+Thus:
+$$g(y_\ell) - g(y^*) = r\|S(y_\ell - y^*)\|^2$$
+
+#### Applying Theorem 2 Analog
+
+From our Theorem 2 analog:
+$$\|S(y_\ell - y^*)\| \geq \frac{1}{2nr \cdot \max\{c^{1/2}, c^{-1/2}\}} \|y_\ell - y^*\|$$
+
+Therefore:
+$$g(y_\ell) - g(y^*) = r\|S(y_\ell - y^*)\|^2 \geq \frac{r}{(2nr \cdot \max\{c^{1/2}, c^{-1/2}\})^2} \|y_\ell - y^*\|^2$$
+$$= \frac{1}{4n^2r \max\{c^{1/2}, c^{-1/2}\}} \|y_\ell - y^*\|^2$$
+
+**Geometric Bound:**
+$$\|y_\ell - y^*\|^2 \leq 4n^2r \max\{c^{1/2}, c^{-1/2}\} (g(y_\ell) - g(y^*))$$
+
+#### Single Epoch Analysis
+
+Consider epoch $\ell$. Let $y_{\ell+1}$ be the solution constructed by the APPROX algorithm after running for $T$ iterations starting with $y_\ell$ (so $z_0 = y_\ell$).
+
+Let $y^* = \arg\min_{y \in E} \|y - y_{\ell+1}\|$ be the optimal solution closest to $y_{\ell+1}$.
+
+By Theorem 8 Analog with $k = T$:
+$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)$$
+
+From Step 3:
+$$\|y_\ell - y^*\|^2 \leq 4n^2r \max\{c^{1/2}, c^{-1/2}\} (g(y_\ell) - g(y^*))$$
+
+Therefore:
+$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*))] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right) + 2 \cdot 4n^2r \max\{c^{1/2}, c^{-1/2}\}\right) (g(y_\ell) - g(y^*))$$
+
+$$= \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(1 - \frac{1}{r} + 8n^2r \max\{c^{1/2}, c^{-1/2}\}\right) (g(y_\ell) - g(y^*))$$
+
+For large $n, r$, the dominant term is $8n^2r \max\{c^{1/2}, c^{-1/2}\}$, so:
+$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\} \cdot 8n^2r \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} (g(y_\ell) - g(y^*))$$
+
+$$= \frac{64n^2r^3 \max\{c^{1/2}, c^{-1/2}\}^2}{(T - 1 + 2r)^2} (g(y_\ell) - g(y^*))$$
+
+#### Epoch Length Calculation
+
+To achieve a factor of $\frac{1}{2}$ improvement per epoch, we need:
+$$\frac{64n^2r^3 \max\{c^{1/2}, c^{-1/2}\}^2}{(T - 1 + 2r)^2} \leq \frac{1}{2}$$
+
+This gives us:
+$$(T - 1 + 2r)^2 \geq 128n^2r^3 \max\{c^{1/2}, c^{-1/2}\}^2$$
+
+$$T - 1 + 2r \geq 8\sqrt{2} nr^{3/2} \max\{c^{1/2}, c^{-1/2}\}$$
+
+For large $r$, we can approximate:
+$$T \geq 8\sqrt{2} nr^{3/2} \max\{c^{1/2}, c^{-1/2}\} + 1 \approx 11.31 nr^{3/2} \max\{c^{1/2}, c^{-1/2}\}$$
+
+To ensure the bound holds robustly, we choose:
+$$T = 16nr^{3/2} \max\{c^{1/2}, c^{-1/2}\} + 1$$
+
+This gives us:
+$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2} (g(y_\ell) - g(y^*))$$
