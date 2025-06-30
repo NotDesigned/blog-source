@@ -481,7 +481,7 @@ $$E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\ma
 Consider iteration $k$ of the APPROX algorithm. Let $y_k=\theta_k^2u_{k+1}+z_{k+1}$, Let $y^*=\arg \min_{y\in E} ||y-y_k||$ is the optimal solution that is closest to $y_k$.
 Then we have: 
 $$
-E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)
+E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(k - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)
 $$
 **Proof:**
 
