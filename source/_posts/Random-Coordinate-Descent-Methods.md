@@ -277,7 +277,7 @@ Thus, the dual quadratic program can be rewritten as:
 $$
 \begin{align*}
 \mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{2}x^TWx + \sum_{(u,v)\in E} f_{u,v}(x)\\
-&\text{s.t. } a^Tx = |E| \\
+&\text{s.t. } a^Tx = 2 \\
 &\quad\quad\quad x_u, y_v \geq 0, \quad \forall u \in V, v \in V \\
 &\text{where } W=\begin{bmatrix}
 \frac{1}{\sqrt c}I_n & 0 \\
@@ -292,7 +292,7 @@ Just ignore the quadratic term, we can rewrite the dual quadratic program as a r
 $$
 \begin{align*}
 \mathsf{RLP}(c):&\max_{x\in \mathbb R^{2n}}  \sum_{(u,v)\in E}\min(x_u,x_{n+v})\\
-&\text{s.t. } a^Tx = |E| \\
+&\text{s.t. } a^Tx = 2 \\
 &\quad\quad\quad x_u, y_v \geq 0, \quad \forall u \in V, v \in V \\
 &\text{where } \vec{a} = [\frac{1}{\sqrt{c}}, \frac{1}{\sqrt{c}}, \ldots, \frac{1}{\sqrt{c}},\sqrt{c}, \sqrt{c}, \ldots, \sqrt{c}]^T
 \end{align*}
@@ -311,11 +311,11 @@ And the c-biased DDS is defined as the subgraph G(S,T) such that $\rho_c(S,T)$ i
 We have the following theorem: 
 #### Theorem 1
 
-The optimal value of $\mathsf{RLP}(c)$, $\text{OPT}({\mathsf{RLP}(c)})=\frac{|E|}{2}\rho^*_c(S,T)$ and the optimal solution can be recovered by thresholding.
+The optimal value of $\mathsf{RLP}(c)$, $\text{OPT}({\mathsf{RLP}(c)})=\rho^*_c(S,T)$ and the optimal solution can be recovered by thresholding.
 
 ##### Proof
 
-First, we show that $\text{OPT}({\mathsf{RLP}(c)})\geq \frac{|E|}{2}\rho^*_c(S,T)$.
+First, we show that $\text{OPT}({\mathsf{RLP}(c)})\geq \rho^*_c(S,T)$.
 
 For any vertex sets $S \subseteq V, T \subseteq V$, consider the feasible solution to RLP:
 
@@ -326,7 +326,7 @@ $x_{n+v} = \beta$ for $v \in T$, $x_{n+v} = 0$ for $v \notin T$
 The constraint gives us:
 
 $$
-\frac{1}{\sqrt{c}}|S| \cdot \alpha + \sqrt{c}|T| \cdot \beta = |E|
+\frac{1}{\sqrt{c}}|S| \cdot \alpha + \sqrt{c}|T| \cdot \beta = 2
 $$
 
 The objective value is:
@@ -337,18 +337,18 @@ $$
 
 To maximize this, we want to maximize $\min(\alpha, \beta)$ subject to the constraint.
 
-If $\alpha = \beta$, then: $\alpha = \frac{|E|}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}$
+If $\alpha = \beta$, then: $\alpha = \frac{2}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}$
 
-Objective = $|E(S,T)| \cdot \frac{|E|}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}$
+Objective = $|E(S,T)| \cdot \frac{2}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}$
 
 This can be rewritten as:
 $$
-\frac{2|E(S,T)|}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|} \cdot \frac{|E|}{2} = \rho_c(S,T) \cdot \frac{|E|}{2}
+\frac{2|E(S,T)|}{\frac{1}{\sqrt{c}}|S| + \sqrt{c}|T|}  = \rho_c(S,T) 
 $$
 
-Therefore: $\text{OPT}({\mathsf{RLP}(c)}) \geq \frac{|E|}{2} \max_{S,T} \rho_c(S,T)$
+Therefore: $\text{OPT}({\mathsf{RLP}(c)}) \geq \max_{S,T} \rho_c(S,T)$
 
-Now we show that $\text{OPT}({\mathsf{RLP}(c)}) \leq \frac{|E|}{2} \max_{S,T} \rho_c(S,T)$.
+Now we show that $\text{OPT}({\mathsf{RLP}(c)}) \leq \max_{S,T} \rho_c(S,T)$.
 
 The LP objective can be rewritten as:
 $$
@@ -373,7 +373,7 @@ $$
 
 So 
 $$
-\frac{\text{LP objective}}{|E|} = \frac{\int_0^{\infty} |E(S_t, T_t)| \, dt}{\int_0^{\infty} \left( \frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t| \right) dt}
+\frac{\text{LP objective}}{2} = \frac{\int_0^{\infty} |E(S_t, T_t)| \, dt}{\int_0^{\infty} \left( \frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t| \right) dt}
 $$
 
 By averaging principle:
@@ -384,12 +384,12 @@ $$
 
 We get:
 $$
-\frac{\text{LP objective}}{|E|} \leq \max_{t \geq 0} \frac{|E(S_t, T_t)|}{\frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t|}
+\frac{\text{LP objective}}{2} \leq \max_{t \geq 0} \frac{|E(S_t, T_t)|}{\frac{1}{\sqrt{c}}|S_t| + \sqrt{c}|T_t|}
 $$
 
 Thus:
 $$
-\text{OPT}({\mathsf{RLP}(c)}) \leq \frac{|E|}{2} \max_{S,T} \rho_c(S,T)
+\text{OPT}({\mathsf{RLP}(c)}) \leq \max_{S,T} \rho_c(S,T)
 $$
 
 This completes the proof of Theorem 1.
@@ -570,3 +570,45 @@ After $\ell$ epochs of the ACDM algorithm (equivalently, $(16nr^{3/2} \max\{c^{1
 $E[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2^{\ell+1}}(g(y_0) - g(y^*))$
 
 where $y^* = \arg\min_{y \in E} \|y - y_{\ell+1}\|$ is the optimal solution in $E$ that is closest to $y_{\ell+1}$.
+
+#### Theorem 5.6
+
+Suppose $\|g(y)-g(y^*)\| \leq \epsilon$, then $\|y\|_{\infty}-\|y^*\|_{\infty} \leq 2 \sqrt {\kappa \epsilon}$
+
+Now we can use the above result to give a guarantee for the $\epsilon$-approximation c-DDS subproblem.
+
+To solve the $\epsilon$-approximation c-DDS subproblem, we need 
+$$
+\|y\|_{\infty}-\|y^*\|_{\infty} \leq \epsilon
+$$
+
+which requires:
+$$
+\|g(y)-g(y^*)\| \leq \frac{\epsilon^2}{4\kappa}
+$$
+Thus, in expectation, we need to run the algorithm for $\ell$ epochs, where:
+$$
+\ell = \log_2\left(\frac{g(y_0) - g(y^*)}{\epsilon^2/(4\kappa)}\right) 
+$$
+
+We upper bound the $$\|(y_0) - g(y^*)\|$$ by the maximum value of the objective function $g$.
+
+Denote $\psi(G) = \max\{ \Delta^+(G),  \Delta^-(G)\}$, where $\Delta^+(G)$ and $\Delta^-(G)$ denote the maximum outdegree and indegree of directed graph $G$, respectively
+
+We can show that $g(y) = \sqrt c \sum_{u\in V}\left(\sum_{(u,v) \in E}\alpha_{u,v}\right)^2 + \frac{1}{\sqrt{c}} \sum_{v\in V}\left(\sum_{(u,v) \in E}\beta_{v,u}\right)^2$ is upper bounded by $\psi(G)\cdot |E| \cdot \kappa$
+
+Thus, we have:
+$$\ell = \log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)$$
+
+So we need to run the algorithm in iterations of 
+$$
+T \cdot \ell = 16|V||E|^{3/2} \kappa \log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)
+$$
+
+In terms of asymptotic complexity, this gives us:
+$$
+\mathcal{O}\left(|V||E|^{1/2} \kappa \log\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)\right)
+$$
+to solve a c-DDS subproblem, here an iteration is defined as one pass through the entire set of edges $E$ for the convenience of comparison.
+
+For all c-DDS subproblems,
