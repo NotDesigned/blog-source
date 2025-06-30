@@ -569,7 +569,7 @@ For large $r$, we can approximate:
 $$T \geq 8\sqrt{2} nr^{3/2} \kappa^{1/2} \approx 11.31 nr^{3/2} \kappa^{1/2}$$
 
 To ensure the bound holds robustly, we choose:
-$$T = 16nr^{3/2} \kappa^{1/2} + 1$$
+$$T = 12nr^{3/2} \kappa^{1/2}$$
 
 This gives us:
 $$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2} (g(y_\ell) - g(y^*))$$
@@ -578,7 +578,7 @@ $$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2} (g(y_\ell) - g(y^*))$$
 
 From now on, here an iteration is defined as one pass through the entire set of edges $|E| = r = m$ for the convenience of comparison.
 
-After $\ell$ epochs of the ACDM algorithm (equivalently, $16n\sqrt{r\kappa}\ell$ iterations), we have:
+After $\ell$ epochs of the ACDM algorithm (equivalently, $12n\sqrt{r\kappa}\ell$ iterations), we have:
 $E[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2^{\ell+1}}(g(y_0) - g(y^*))$
 
 where $y^* = \arg\min_{y \in E} \|y - y_{\ell+1}\|$ is the optimal solution in $E$ that is closest to $y_{\ell+1}$.
@@ -614,7 +614,7 @@ $$\ell = \log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)$$
 
 So we need to run the algorithm in iterations of 
 $$
-T \cdot \ell = 16n\sqrt{m\kappa} \log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)
+T \cdot \ell = 12n\sqrt{m\kappa} \log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)
 $$
 
 In terms of asymptotic complexity, this gives us:
