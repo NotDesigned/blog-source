@@ -400,6 +400,8 @@ And $\text{DQP}$ can be considered as a proximal version of $\text{RLP}$.
 
 ### Complexity Analysis
 
+Let $\kappa = \max\{\sqrt c, \frac{1}{\sqrt c}\}$,
+
 $$
 \begin{gather*}
 r=m\\
@@ -448,13 +450,13 @@ where $d(y, Q) = \min_{z \in Q} \|y - z\|$ and $d(Y, Q) = \min_{y \in Y} d(y, Q)
 #### Analogue of theorem 2:
 
 $$
-||S(y-y^*)|| \geq \frac{1}{2nr\kappa}||y-y^*||
+||S(y-y^*)|| \geq \frac{1}{2nr}||y-y^*||
 $$
 
 #### Analogue of lemma 7:
 Let $R \subseteq \{1, 2, \ldots, r\}$ be a random subset where each $i \in \{1, 2, \ldots, r\}$ is included independently with probability $1/r$. For vectors $x, h \in \mathbb{R}^{2nr}$, let $h_R$ be defined by $(h_R)^{(i)} = h^{(i)}$ if $i \in R$ and $(h_R)^{(i)} = 0$ otherwise. Then:
 $$
-E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\max\{c^{1/2}, c^{-1/2}\}}{r}\|h\|^2
+E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\kappa}{r}\|h\|^2
 $$
 
 **Proof:**
@@ -473,24 +475,24 @@ $$E\left[\left\|W \sum_{i \in R} h^{(i)}\right\|^2\right] \leq \|W\|^2 E\left[\l
 From standard coordinate descent analysis:
 $$E\left[\left\|\sum_{i \in R} h^{(i)}\right\|^2\right] \leq \frac{2}{r} \sum_{i=1}^r \|h^{(i)}\|^2 = \frac{2}{r} \|h\|^2$$
 
-Since $\|W\|^2 = \max\{c^{1/2}, c^{-1/2}\}$:
-$$E[\|Sh_R\|^2] \leq \frac{1}{r} \cdot \max\{c^{1/2}, c^{-1/2}\} \cdot \frac{2}{r} \|h\|^2 = \frac{2\max\{c^{1/2}, c^{-1/2}\}}{r^2} \|h\|^2$$
+Since $\|W\|^2 = \kappa$:
+$$E[\|Sh_R\|^2] \leq \frac{1}{r} \cdot \kappa \cdot \frac{2}{r} \|h\|^2 = \frac{2\kappa}{r^2} \|h\|^2$$
 
 Therefore:
-$$E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\max\{c^{1/2}, c^{-1/2}\}}{r}\|h\|^2$$
+$$E[g(x + h_R)] \leq g(x) + \frac{1}{r}\langle\nabla g(x), h\rangle + \frac{2\kappa}{r}\|h\|^2$$
 
 #### Analogue of theorem 8:
 Consider iteration $k$ of the APPROX algorithm. Let $y_k=\theta_k^2u_{k+1}+z_{k+1}$, Let $y^*=\arg \min_{y\in E} ||y-y_k||$ is the optimal solution that is closest to $y_k$.
 Then we have: 
 $$
-E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(k - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)
+E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \kappa}{(k - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)
 $$
 **Proof:**
 
 This follows directly from applying Fercoq-Richtárik's Theorem 3 with:
 
 - $\tau = 1$ (sampling parameter)
-- $\nu_i = 4\max\{c^{1/2}, c^{-1/2}\}$ for each $i \in \{1, 2, \ldots, r\}$
+- $\nu_i = 4\kappa$ for each $i \in \{1, 2, \ldots, r\}$
 
 #### Geometric Bound from Theorem 2 Analogue
 
@@ -516,14 +518,14 @@ $$g(y_\ell) - g(y^*) \geq r\|S(y_\ell - y^*)\|^2$$
 #### Applying Theorem 2 Analog
 
 From our Theorem 2 analog:
-$$\|S(y_\ell - y^*)\| \geq \frac{1}{2nr \cdot \max\{c^{1/2}, c^{-1/2}\}} \|y_\ell - y^*\|$$
+$$\|S(y_\ell - y^*)\| \geq \frac{1}{2nr} \|y_\ell - y^*\|$$
 
 Therefore:
-$$g(y_\ell) - g(y^*) \geq r\|S(y_\ell - y^*)\|^2 \geq \frac{r}{(2nr \cdot \max\{c^{1/2}, c^{-1/2}\})^2} \|y_\ell - y^*\|^2$$
-$$= \frac{1}{4n^2r \max\{c^{1/2}, c^{-1/2}\}} \|y_\ell - y^*\|^2$$
+$$g(y_\ell) - g(y^*) \geq r\|S(y_\ell - y^*)\|^2 \geq \frac{r}{(2nr)^2} \|y_\ell - y^*\|^2$$
+$$= \frac{1}{4n^2r} \|y_\ell - y^*\|^2$$
 
 **Geometric Bound:**
-$$\|y_\ell - y^*\|^2 \leq 4n^2r \max\{c^{1/2}, c^{-1/2}\} (g(y_\ell) - g(y^*))$$
+$$\|y_\ell - y^*\|^2 \leq 4n^2r (g(y_\ell) - g(y^*))$$
 
 #### Single Epoch Analysis
 
@@ -532,43 +534,45 @@ Consider epoch $\ell$. Let $y_{\ell+1}$ be the solution constructed by the APPRO
 Let $y^* = \arg\min_{y \in E} \|y - y_{\ell+1}\|$ be the optimal solution closest to $y_{\ell+1}$.
 
 By Theorem 8 Analog with $k = T$:
-$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)$$
+$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \kappa}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right)(g(y_\ell) - g(y^*)) + 2\|y_\ell - y^*\|^2\right)$$
 
 From Step 3:
-$$\|y_\ell - y^*\|^2 \leq 4n^2r \max\{c^{1/2}, c^{-1/2}\} (g(y_\ell) - g(y^*))$$
+$$\|y_\ell - y^*\|^2 \leq 4n^2r (g(y_\ell) - g(y^*))$$
 
 Therefore:
-$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*))] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right) + 2 \cdot 4n^2r \max\{c^{1/2}, c^{-1/2}\}\right) (g(y_\ell) - g(y^*))$$
+$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \kappa}{(T - 1 + 2r)^2} \left(\left(1 - \frac{1}{r}\right) + 2 \cdot 4n^2r\right) (g(y_\ell) - g(y^*))$$
 
-$$= \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} \left(1 - \frac{1}{r} + 8n^2r \max\{c^{1/2}, c^{-1/2}\}\right) (g(y_\ell) - g(y^*))$$
+$$= \frac{8r^2 \kappa}{(T - 1 + 2r)^2} \left(1 - \frac{1}{r} + 8n^2r\right) (g(y_\ell) - g(y^*))$$
 
-For large $n, r$, the dominant term is $8n^2r \max\{c^{1/2}, c^{-1/2}\}$, so:
-$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \max\{c^{1/2}, c^{-1/2}\} \cdot 8n^2r \max\{c^{1/2}, c^{-1/2}\}}{(T - 1 + 2r)^2} (g(y_\ell) - g(y^*))$$
+For large $n, r$, the dominant term is $8n^2r$, so:
+$$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{8r^2 \kappa \cdot 8n^2r}{(T - 1 + 2r)^2} (g(y_\ell) - g(y^*))$$
 
-$$= \frac{64n^2r^3 \max\{c^{1/2}, c^{-1/2}\}^2}{(T - 1 + 2r)^2} (g(y_\ell) - g(y^*))$$
+$$= \frac{64n^2r^3 \kappa}{(T - 1 + 2r)^2} (g(y_\ell) - g(y^*))$$
 
 #### Epoch Length Calculation
 
 To achieve a factor of $\frac{1}{2}$ improvement per epoch, we need:
-$$\frac{64n^2r^3 \max\{c^{1/2}, c^{-1/2}\}^2}{(T - 1 + 2r)^2} \leq \frac{1}{2}$$
+$$\frac{64n^2r^3 \kappa}{(T - 1 + 2r)^2} \leq \frac{1}{2}$$
 
 This gives us:
-$$(T - 1 + 2r)^2 \geq 128n^2r^3 \max\{c^{1/2}, c^{-1/2}\}^2$$
+$$(T - 1 + 2r)^2 \geq 128n^2r^3 \kappa$$
 
-$$T - 1 + 2r \geq 8\sqrt{2} nr^{3/2} \max\{c^{1/2}, c^{-1/2}\}$$
+$$T - 1 + 2r \geq 8\sqrt{2} nr^{3/2} \kappa^{1/2}$$
 
 For large $r$, we can approximate:
-$$T \geq 8\sqrt{2} nr^{3/2} \max\{c^{1/2}, c^{-1/2}\} + 1 \approx 11.31 nr^{3/2} \max\{c^{1/2}, c^{-1/2}\}$$
+$$T \geq 8\sqrt{2} nr^{3/2} \kappa^{1/2} \approx 11.31 nr^{3/2} \kappa^{1/2}$$
 
 To ensure the bound holds robustly, we choose:
-$$T = 16nr^{3/2} \max\{c^{1/2}, c^{-1/2}\} + 1$$
+$$T = 16nr^{3/2} \kappa^{1/2} + 1$$
 
 This gives us:
 $$E_{\xi_\ell}[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2} (g(y_\ell) - g(y^*))$$
 
 ### Conclusion
 
-After $\ell$ epochs of the ACDM algorithm (equivalently, $(16nr^{3/2} \max\{c^{1/2}, c^{-1/2}\} + 1)\ell$ iterations), we have:
+From now on, here an iteration is defined as one pass through the entire set of edges $|E| = r = m$ for the convenience of comparison.
+
+After $\ell$ epochs of the ACDM algorithm (equivalently, $16n\sqrt{r\kappa}\ell$ iterations), we have:
 $E[g(y_{\ell+1}) - g(y^*)] \leq \frac{1}{2^{\ell+1}}(g(y_0) - g(y^*))$
 
 where $y^* = \arg\min_{y \in E} \|y - y_{\ell+1}\|$ is the optimal solution in $E$ that is closest to $y_{\ell+1}$.
@@ -604,13 +608,23 @@ $$\ell = \log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)$$
 
 So we need to run the algorithm in iterations of 
 $$
-T \cdot \ell = 16|V||E|^{3/2} \kappa \log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)
+T \cdot \ell = 16n\sqrt{m\kappa} \log_2\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)
 $$
 
 In terms of asymptotic complexity, this gives us:
 $$
-\mathcal{O}\left(|V||E|^{1/2} \kappa \log\left(\frac{\psi(G)\cdot |E|}{\epsilon^2}\right)\right)
+\mathcal{O}\left(n\sqrt {m\kappa} \log\left(\frac{\psi(G)\cdot m}{\epsilon^2}\right)\right)
 $$
-to solve a c-DDS subproblem, here an iteration is defined as one pass through the entire set of edges $E$ for the convenience of comparison.
+to solve a c-DDS subproblem.
 
-For all c-DDS subproblems,
+The set of C is defined as 
+$$
+C=\{\frac ab | 1\leq a,b \leq n, a,b \in \mathbb{Z}^+\}
+$$
+
+For the DDS problem, define $\Phi = \sum_{c\in C} \max\{c^{\frac 14},c^{-\frac 14}\}$
+
+Then the total complexity of solving all c-DDS subproblems is:
+$$
+\mathcal{O}\left(\Phi n\sqrt {m} \log\left(\frac{\psi(G)\cdot m}{\epsilon^2}\right)\right)
+$$
