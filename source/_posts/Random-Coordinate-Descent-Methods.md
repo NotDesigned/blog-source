@@ -453,6 +453,12 @@ $$
 ||S(y-y^*)|| \geq \frac{1}{2nr}||y-y^*||
 $$
 
+Proof:
+
+The result is identical to the one in the original paper.
+
+[Proof of gemini](https://g.co/gemini/share/7a4f1299ca26)
+
 #### Analogue of lemma 7:
 Let $R \subseteq \{1, 2, \ldots, r\}$ be a random subset where each $i \in \{1, 2, \ldots, r\}$ is included independently with probability $1/r$. For vectors $x, h \in \mathbb{R}^{2nr}$, let $h_R$ be defined by $(h_R)^{(i)} = h^{(i)}$ if $i \in R$ and $(h_R)^{(i)} = 0$ otherwise. Then:
 $$
