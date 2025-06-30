@@ -227,7 +227,7 @@ $$
 \begin{align*}
 \mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{2}x^TWx - \sum_{(u,v)\in E}\min(x_u,x_{n+v})\\
 &\text{s.t. } a^Tx = |E| \\
-&\quad\quad\quad x_u, y_v \geq 0, \quad \forall u \in V, v \in V \\
+&\quad\quad\quad x_u \geq 0, \quad \forall u \in V\\
 &\text{where } W=\begin{bmatrix}
 \frac{1}{\sqrt c}I_n & 0 \\
 0 & \sqrt{c}I_n
