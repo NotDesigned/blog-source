@@ -273,7 +273,9 @@ $$
 
 which just equals to $-\min(x_u, x_{n+v})$.
 
-Thus, the dual quadratic program can be rewritten as:
+Thus, with $a^Tx$ normalized from $|E|$ to $2$,
+
+the dual quadratic program can be rewritten as:
 $$
 \begin{align*}
 \mathsf{DQP}(c):&\min_{x\in \mathbb R^{2n}}  \frac{1}{2}x^TWx + \sum_{(u,v)\in E} f_{u,v}(x)\\
@@ -591,7 +593,7 @@ $$
 \ell = \log_2\left(\frac{g(y_0) - g(y^*)}{\epsilon^2/(4\kappa)}\right) 
 $$
 
-We upper bound the $$\|(y_0) - g(y^*)\|$$ by the maximum value of the objective function $g$.
+We upper bound the $$\|g(y_0) - g(y^*)\|$$ by the maximum value of the objective function $g$.
 
 Denote $\psi(G) = \max\{ \Delta^+(G),  \Delta^-(G)\}$, where $\Delta^+(G)$ and $\Delta^-(G)$ denote the maximum outdegree and indegree of directed graph $G$, respectively
 
