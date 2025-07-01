@@ -603,7 +603,7 @@ $$
 \ell = \log_2\left(\frac{g(y_0) - g(y^*)}{\epsilon^2/(4\kappa)}\right) 
 $$
 
-We upper bound the $$\|g(y_0) - g(y^*)\|$$ by the maximum value of the objective function $g$.
+We upper bound $\|g(y_0) - g(y^*)\|$ by the maximum value of the objective function $g$.
 
 Denote $\psi(G) = \max\{ \Delta^+(G),  \Delta^-(G)\}$, where $\Delta^+(G)$ and $\Delta^-(G)$ denote the maximum outdegree and indegree of directed graph $G$, respectively
 
