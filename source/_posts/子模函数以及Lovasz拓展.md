@@ -16,6 +16,8 @@ categories:
 
 [Lecture 7: Submodular Functions, Lovász Extension and Minimization](https://www.cs.princeton.edu/~hy2/teaching/fall22-cos521/notes/SFM.pdf)
 
+[Learning with Submodular Functions: A Convex Optimization Perspective](https://arxiv.org/pdf/1111.6453)
+
 ## 子模函数 (Submodular Function)
 
 一个函数 $f: 2^N \to \mathbb{R}$ 被称为子模函数，如果对于任意的 $A \subseteq B \subseteq N$ 和 $x \in N \setminus B$，都有以下不等式成立：

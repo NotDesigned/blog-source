@@ -16,8 +16,6 @@ Knowledge prerequisite on submodular function (in Chinese):
 
 [子模函数以及Lovasz拓展](https://notdesigned.github.io/2025/06/11/%E5%AD%90%E6%A8%A1%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ALovasz%E6%8B%93%E5%B1%95/)
 
-[Learning with Submodular Functions: A Convex Optimization Perspective](https://arxiv.org/pdf/1111.6453)
-
 ## Preliminaries
 
 Let $V = \{1,2,\ldots, n\}$. 
