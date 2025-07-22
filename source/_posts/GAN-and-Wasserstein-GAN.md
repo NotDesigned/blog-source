@@ -102,7 +102,9 @@ See this article for more about Wasserstein distance: [Wasserstein Distance and 
 The important properties of Wasserstein distance are:
 1. **Continuity**: The Wasserstein distance is continuous with respect to the distributions.
 2. **Metric**: The Wasserstein distance satisfies the triangle inequality and is a true metric.
-3. **Sensitivity to Support**: The Wasserstein distance is sensitive to the support of the distributions, meaning it can capture differences in the distribution even when they do not overlap.
+3. **Independence of Support**: When the supports of two distributions have no overlap, Wasserstein distance still provides a suitable gradient for the generator to update.
+
+
 
 ## Formulation
 
