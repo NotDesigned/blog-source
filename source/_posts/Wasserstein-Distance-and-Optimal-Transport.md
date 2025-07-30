@@ -4,9 +4,9 @@ date: 2025-07-16 20:47:31
 tags: 
 - Wasserstein Distance
 - Optimal Transport
-category:
+categories:
 - Mathematics
-- Machine Learning
+- Study Notes
 ---
 
 # Optimal Transport Problem 

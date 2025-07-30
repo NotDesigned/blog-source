@@ -3,9 +3,10 @@ title: Random Coordinate Descent Methods
 date: 2025-06-14 13:18:06
 tags:
 - Coordinate Descent
+- Optimization
 categories:
 - Mathematics
-- Optimization
+- Study Notes
 ---
 
 This is a reading note on the paper "Random Coordinate Descent Methods for Minimizing Decomposable Submodular Functions" by A. ENE, Huy L. NGUYEN
