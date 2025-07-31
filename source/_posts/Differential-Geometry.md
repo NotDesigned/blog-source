@@ -257,7 +257,11 @@ or equivalently,
 $$(f \wedge g)(v_1, v_2, \ldots, v_{k+l}) = \frac{1}{k!l!} \sum_{\sigma \in S_{k+l}} \text{sgn}(\sigma) f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots, v_{\sigma(k)}) g(v_{\sigma(k+1)}, v_{\sigma(k+2)}, \ldots, v_{\sigma(k+l)}) $$
 
 To avoid division by factorials, we can define the wedge product as sum over sorted permutations:
-$$ (f \wedge g)(v_1, v_2, \ldots, v_{k+l}) =  \sum_{\substack{\sigma \in S_{k+l} \\ \sigma(1) < \sigma(2) < \ldots < \sigma(k) \\ \sigma(k+1) < \sigma(k+2) < \ldots < \sigma(k+l)}} \text{sgn}(\sigma) f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots, v_{\sigma(k)}) g(v_{\sigma(k+1)}, v_{\sigma(k+2)}, \ldots, v_{\sigma(k+l)}) $$
+$$
+\begin{equation*} 
+(f \wedge g)(v_1, v_2, \ldots, v_{k+l}) =  \sum_{\substack{\sigma \in S_{k+l} \\ \sigma(1) < \sigma(2) < \ldots < \sigma(k) \\ \sigma(k+1) < \sigma(k+2) < \ldots < \sigma(k+l)}} \text{sgn}(\sigma) f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots, v_{\sigma(k)}) g(v_{\sigma(k+1)}, v_{\sigma(k+2)}, \ldots, v_{\sigma(k+l)})
+\end{equation*}
+$$
 
 Let $f \in A_k(V)$ and $g \in A_l(V)$ be alternating multilinear functions. The wedge product satisfies the following properties:
 1. **Bilinearity**: It is bilinear on $f$ and $g$.
