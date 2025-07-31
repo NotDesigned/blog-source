@@ -18,7 +18,7 @@ We denote $(U,\phi)$ as a coordinate chart, $\phi$ as a coordinate map, and $\ph
 
 ### Atlas and $C^{k}$-structure
 
-An **atlas** on a topological manifold $M$ is a collection of coordinate charts $\mathcal{A} = {(U_\alpha, \phi_\alpha)}_{\alpha \in I}$ where $\bigcup_{\alpha \in I} U_\alpha = M$.
+An **atlas** on a topological manifold $M$ is a collection of coordinate charts $\mathcal{A} = \{(U_\alpha, \phi_\alpha)\}_{\alpha \in I}$ where $\bigcup_{\alpha \in I} U_\alpha = M$.
 
 Let $(U,\phi)$ and $(V, \psi)$ be two coordinate charts in the atlas $\mathcal{A}$. The **transition map** from $(U, \phi)$ to $(V, \psi)$ is defined as $\psi \circ \phi^{-1}: \phi(U \cap V) \to \psi(U \cap V)$.
 
@@ -77,11 +77,15 @@ The tangent space is equipped with a natural $\mathbb{R}$-vector space structure
 
 Let $(U,x)=(U,x^1,\ldots,x^n)$ be a coordinate chart containing $p$. 
 
-Consider $\frac{\partial}{\partial x^i}|_p: C^{\infty}_p(M)\to \mathbb{R}$ act on $f:U\to R$ defined as $\left.\frac{\partial}{\partial x^i}\right|_p([f])=\frac{\partial(f\circ x^{-1})}{\partial x^i}$
+Consider $\left.\frac{\partial}{\partial x^i}\right|_p: C^{\infty}_p(M)\to \mathbb{R}$ act on $f:U\to \mathbb R$ defined as $$\left.\frac{\partial}{\partial x^i}\right|_p([f])=\left.\frac{\partial(f\circ x^{-1})}{\partial x^i}\right |_{x(p)}$$
 
 We know that $\left \{\left.\frac{\partial}{\partial x^{1}}\right|_p,\ldots,\left.\frac{\partial}{\partial x^n}\right|_p\right \}$ forms a basis of $T_p M$, $\dim T_pM = \dim M=n $.
 
-So every $X_p \in T_pM$ can be expressed as a linear combination of the basis vectors: $X_p = \sum_{i=1}^n a_i \left.\frac{\partial}{\partial x^i}\right|_p$, where $a_i \in \mathbb{R}$.
+By definition, we can prove the Kronecker delta property:
+$$ \left.\frac{\partial}{\partial x^i}\right|_p(x^j) = \frac{\partial x^j\circ x^{-1}}{\partial x^i} \bigg|_{x(p)} = \delta^j_i $$
+where $\delta^i_j$ is the Kronecker delta, which is $1$ if $i=j$ and $0$ otherwise.
+
+So every $X_p \in T_pM$ can be expressed as a linear combination of the basis vectors: $X_p = \sum_{i=1}^n X_p^i \left.\frac{\partial}{\partial x^i}\right|_p$, where $X_p^i =X_p(x^i)\in \mathbb{R}$.
 
 The coordinate expression of a tangent vector $X_p$ at $p$ in the chart $(U,x)$ is given by the tuple $(a_1, a_2, \ldots, a_n)$, where $a_i$ are the coefficients in the linear combination.
 
@@ -94,18 +98,41 @@ The tangent bundle $TM$ is a manifold of dimension $2n$, where $n$ is the dimens
 
 Proof Sketch: The tangent bundle $TM$ can be covered by coordinate charts of the form $(U, \phi) \times \mathbb{R}^n$, where $U$ is an open subset of $M$ and $\phi: U \to \mathbb{R}^n$ is a coordinate chart. The transition maps between these charts are smooth, making $TM$ a smooth manifold.
 
+### Differential 
+
+Let $F: M^m \to N^n $ be a smooth map between manifolds $M$ and $N$. The **differential** of $F$ at a point $p \in M$, denoted as $dF_p: T_pM \to T_{F(p)}N$, is a linear map of tangent spaces induced by the pushforward of $F$.
+It is defined as follows: for any tangent vector $X_p \in T_pM$,
+$$ dF_p(X_p)f = X_p(f \circ F) $$
+where $f \in C^{\infty}_{F(p)}(N)$ is a smooth function on $N$.
+
+Let $\tilde F: U \to V$ be a local representation of $F$ 
+$$ \tilde F = \psi \circ F \circ \phi^{-1} $$
+where $(U, \phi)$ is a coordinate chart on $M$ and $(V, \psi)$ is a coordinate chart on $N$. Then the differential can be expressed in local coordinates as:
+$$
+\begin{align*}
+dF_p(X_p) &= \sum_{j=1}^n X_p(y^j\circ F) \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
+&= \sum_{j=1}^n X_p(\tilde F^j\circ \phi) \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
+&= \sum_{j=1}^n \sum_{i=1}^m X_p^i \frac{\partial \tilde F^j}{\partial x^i} \bigg|_{\phi(p)} \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
+&= \sum_{j=1}^n \left(\sum_{i=1}^m X_p^i \frac{\partial \tilde F^j}{\partial x^i} \bigg|_{\phi(p)}\right) \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
+\end{align*}
+$$
+In a matrix form, if we denote the Jacobian matrix of $F$ at $p$ as $J_F(p) = \left(\frac{\partial \tilde F^j}{\partial x^i} \bigg|_{\phi(p)}\right)$, then the differential can be expressed as:
+$$ dF_p(X_p) = J_F(p) X_p $$
+
+where $X_p$ is considered as a column vector in the local coordinates.
+
 ### Vector Fields
 
 A **vector field** on a manifold $M$ is a smooth section of the tangent bundle $TM$. It assigns to each point $p \in M$ a tangent vector $X_p \in T_pM$ in a smooth manner.
 
 Formally, a vector field $X$ is a smooth map $X: M \to TM$ such that for each $p \in M$, the projection $\pi: TM \to M$ satisfies $\pi(X(p)) = p$.
 
-We know that $X_p$ can be expressed in local coordinates as $X_p = \sum_{i=1}^n a^i(p) \left.\frac{\partial}{\partial x^i}\right|_p$, where $a^i(p)\in \mathbb{R}$
+We know that $X_p$ can be expressed in local coordinates as $X_p = \sum_{i=1}^n X^i(p) \left.\frac{\partial}{\partial x^i}\right|_p$, where $X^i(p)\in \mathbb{R}$
 
 So we can write a vector field $X$ in local coordinates as:
-$$ X = \sum_{i=1}^n a^i \frac{\partial}{\partial x^i} $$
+$$ X = \sum_{i=1}^n X^i \frac{\partial}{\partial x^i} $$
 
-where $a^i: M \to \mathbb{R}$ are smooth functions on $M$.
+where $X^i: M \to \mathbb{R}$ are smooth functions on $M$.
 
 
 ## Exterior Algebra, Differential Forms
@@ -235,7 +262,7 @@ $$ (f \wedge g)(v_1, v_2, \ldots, v_{k+l}) =  \sum_{\substack{\sigma \in S_{k+l}
 Let $f \in A_k(V)$ and $g \in A_l(V)$ be alternating multilinear functions. The wedge product satisfies the following properties:
 1. **Bilinearity**: It is bilinear on $f$ and $g$.
 2. **Associativity**: It is associative, i.e., $(f \wedge g) \wedge h = f \wedge (g \wedge h)$ for any alternating multilinear function $h$.
-3. **Anticommutativity**: It is anticommutative, i.e., $f \wedge g = (-1)^{kl} g \wedge f$.
+3. **Anticommutativity**: It is anticommutative, i.e., $f \wedge g = (-1)^{kl} g \wedge f$. Particularly, $f \wedge f = 0$ when $k$ is odd.
 4. $c\wedge f=cf$, $\forall c\in \mathbb R$.
 
 Let $r\in N$, $f_i\in A_{k_i}(V)$ for $i=1,2,\ldots,r$, the wedge product $f_1 \wedge f_2 \wedge \ldots \wedge f_r$ is $\binom{k_1+\ldots+k_r}{k_1,\ldots,k_r} A(f_1\otimes f_2\otimes \ldots \otimes f_r)$, where $\binom{k_1+\ldots+k_r}{k_1,\ldots,k_r}$ is the multinomial coefficient. 
