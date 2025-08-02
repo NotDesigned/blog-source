@@ -89,50 +89,119 @@ So every $X_p \in T_pM$ can be expressed as a linear combination of the basis ve
 
 The coordinate expression of a tangent vector $X_p$ at $p$ in the chart $(U,x)$ is given by the tuple $(a_1, a_2, \ldots, a_n)$, where $a_i$ are the coefficients in the linear combination.
 
+### Fiber Bundles
+
+#### Definition of Fiber Bundle
+
+A **fiber bundle** is a structure $(E, M, \pi, F)$ consisting of:
+
+- **Total space**: $E$ (a manifold)
+- **Base space**: $M$ (a manifold) 
+- **Bundle projection**: $\pi: E \to M$ (a smooth surjective map)
+- **Typical fiber**: $F$ (a manifold)
+
+such that the **local triviality condition** holds: for each point $p \in M$, there exists an open neighborhood $U$ of $p$ and a diffeomorphism $\phi: \pi^{-1}(U) \to U \times F$ satisfying:
+$$ \text{pr}_1 \circ \phi = \pi|_{\pi^{-1}(U)} $$
+where $\text{pr}_1: U \times F \to U$ is the projection onto the first factor.
+
+The pair $(U, \phi)$ is called a **local trivialization** or **bundle chart**.
+
+For each $p \in M$, the **fiber** over $p$ is defined as $F_p = \pi^{-1}(p)$. The local triviality ensures that each fiber $F_p$ is diffeomorphic to the typical fiber $F$.
+
+Intuitively, a fiber bundle describes a space that 'locally looks like a product' but may have global twisting, like the Möbius strip over a circle.
+
+#### Vector Bundles
+
+A **vector bundle** is a fiber bundle $(E, M, \pi, \mathbb{R}^k)$ where:
+
+1. Each fiber $F_p = \pi^{-1}(p)$ has the structure of a $k$-dimensional real vector space.
+2. The local trivializations $\phi: \pi^{-1}(U) \to U \times \mathbb{R}^k$ are **linear** on each fiber, meaning that for each $p \in U$, the restriction $\phi|_{F_p}: F_p \to \{p\} \times \mathbb{R}^k \cong \mathbb{R}^k$ is a vector space isomorphism.
+
+The integer $k$ is called the **rank** of the vector bundle.
+
 ### Tangent Bundle
 
-The **tangent bundle** of a manifold $M$, denoted as $TM$, is the disjoint union of all tangent spaces at each point in $M$:
+The **tangent bundle** of a manifold $M$, denoted as $TM$, is the vector bundle whose total space is the disjoint union of all tangent spaces:
 $$ TM = \bigcup_{p \in M} T_pM = \{(p, X_p) : p \in M, X_p \in T_pM\}$$
 
-The tangent bundle $TM$ is a manifold of dimension $2n$, where $n$ is the dimension of the manifold $M$.
+The **bundle projection** $\pi: TM \to M$ is defined by $\pi(p, X_p) = p$.
 
-Proof Sketch: The tangent bundle $TM$ can be covered by coordinate charts of the form $(U, \phi) \times \mathbb{R}^n$, where $U$ is an open subset of $M$ and $\phi: U \to \mathbb{R}^n$ is a coordinate chart. The transition maps between these charts are smooth, making $TM$ a smooth manifold.
+**Local Trivialization**: Let $(U, x = (x^1, \ldots, x^n))$ be a coordinate chart on $M$. The tangent bundle can be locally trivialized over $U$ by the map:
+$$ \Phi: \pi^{-1}(U) \to U \times \mathbb{R}^n $$
+$$ \Phi(p, X_p) = \left(p, (X_p^1, \ldots, X_p^n)\right) $$
+where $X_p = \sum_{i=1}^n X_p^i \left.\frac{\partial}{\partial x^i}\right|_p$ is the coordinate representation of the tangent vector $X_p$.
 
-### Differential 
+**Manifold Structure**: The tangent bundle $TM$ is a smooth manifold of dimension $2n$, where $n$ is the dimension of $M$. The coordinate charts on $TM$ are given by $(U \times \mathbb{R}^n, \Phi^{-1})$ where $(U, x)$ ranges over all coordinate charts on $M$.
 
-Let $F: M^m \to N^n $ be a smooth map between manifolds $M$ and $N$. The **differential** of $F$ at a point $p \in M$, denoted as $dF_p: T_pM \to T_{F(p)}N$, is a linear map of tangent spaces induced by the pushforward of $F$.
-It is defined as follows: for any tangent vector $X_p \in T_pM$,
+**Transition Maps**: If $(U, x)$ and $(V, y)$ are two overlapping coordinate charts on $M$, the transition map between the corresponding bundle charts is:
+$$ \Phi_V \circ \Phi_U^{-1}: (U \cap V) \times \mathbb{R}^n \to (U \cap V) \times \mathbb{R}^n $$
+$$ (p, (v^1, \ldots, v^n)) \mapsto \left(p, \left(\sum_{i=1}^n v^i \frac{\partial y^j}{\partial x^i}\bigg|_p\right)_{j=1}^n\right) $$
+
+This map is smooth, confirming that $TM$ has a smooth manifold structure.
+
+### Sections of Fiber Bundles
+
+#### Definition of Sections
+
+Let $\pi: E \to M$ be a fiber bundle projection. A **section** of $E$ is a map $s: M \to E$ such that $\pi \circ s = \text{id}_M$. In other words, for each point $p \in M$, we have $s(p) \in E_p$ (the fiber over $p$).
+
+A section $s$ is called **smooth** if $s: M \to E$ is a smooth map between manifolds.
+
+#### Local Expression of Smoothness
+
+Let $(U, \phi)$ be a local trivialization of $E$ over an open set $U \subseteq M$, where $\phi: \pi^{-1}(U) \to U \times F$ for some typical fiber $F$. Any section $s$ over $U$ can be written as:
+$$ \phi \circ s|_U: U \to U \times F $$
+which has the form $p \mapsto (p, f(p))$ for some function $f: U \to F$.
+
+#### Space of Sections
+
+We denote by $\Gamma(E)$ or $\Gamma(M, E)$ the space of all smooth sections of the fiber bundle $E \to M$.
+
+**For General Fiber Bundles**: The space $\Gamma(E)$ has the structure of a set with pointwise operations (when they make sense on the typical fiber).
+
+**For Vector Bundles**: When $E \to M$ is a vector bundle with typical fiber $\mathbb{R}^k$, the space $\Gamma(E)$ has additional algebraic structures:
+
+1. **Vector space structure**: For sections $s_1, s_2 \in \Gamma(E)$ and scalars $a, b \in \mathbb{R}$:
+   $ (as_1 + bs_2)(p) = as_1(p) + bs_2(p) \in E_p $
+
+2. **$C^\infty(M)$-module structure**: For a smooth function $f \in C^\infty(M)$ and a section $s \in \Gamma(E)$:
+   $ (fs)(p) = f(p) \cdot s(p) \in E_p $
+
+These structures exist because each fiber $E_p$ is a vector space, allowing us to perform linear operations.
+
+### Differential
+
+Let $F: M^m \to N^n$ be a smooth map between manifolds $M$ and $N$. The **differential** of $F$ at a point $p \in M$, denoted as $dF_p: T_pM \to T_{F(p)}N$, is a linear map between tangent spaces induced by the pushforward of $F$.
+
+It is defined as follows: for any tangent vector $X_p \in T_pM$ and any smooth function $f \in C^{\infty}_{F(p)}(N)$,
 $$ dF_p(X_p)f = X_p(f \circ F) $$
-where $f \in C^{\infty}_{F(p)}(N)$ is a smooth function on $N$.
 
-Let $\tilde F: U \to V$ be a local representation of $F$ 
-$$ \tilde F = \psi \circ F \circ \phi^{-1} $$
-where $(U, \phi)$ is a coordinate chart on $M$ and $(V, \psi)$ is a coordinate chart on $N$. Then the differential can be expressed in local coordinates as:
+**Local Coordinate Expression**: Let $(U, x)$ and $(V, y)$ be coordinate charts around $p$ and $F(p)$ respectively, and let $\tilde F = y \circ F \circ x^{-1}$ be the local representation of $F$. Then:
 $$
 \begin{align*}
 dF_p(X_p) &= \sum_{j=1}^n X_p(y^j\circ F) \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
-&= \sum_{j=1}^n X_p(\tilde F^j\circ \phi) \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
-&= \sum_{j=1}^n \sum_{i=1}^m X_p^i \frac{\partial \tilde F^j}{\partial x^i} \bigg|_{\phi(p)} \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
-&= \sum_{j=1}^n \left(\sum_{i=1}^m X_p^i \frac{\partial \tilde F^j}{\partial x^i} \bigg|_{\phi(p)}\right) \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
+&= \sum_{j=1}^n \sum_{i=1}^m X_p^i \frac{\partial \tilde F^j}{\partial x^i} \bigg|_{x(p)} \frac{\partial}{\partial y^j} \bigg|_{F(p)}\\
+&= \sum_{j=1}^n \left(\sum_{i=1}^m X_p^i \frac{\partial \tilde F^j}{\partial x^i} \bigg|_{x(p)}\right) \frac{\partial}{\partial y^j} \bigg|_{F(p)}
 \end{align*}
 $$
-In a matrix form, if we denote the Jacobian matrix of $F$ at $p$ as $J_F(p) = \left(\frac{\partial \tilde F^j}{\partial x^i} \bigg|_{\phi(p)}\right)$, then the differential can be expressed as:
-$$ dF_p(X_p) = J_F(p) X_p $$
 
-where $X_p$ is considered as a column vector in the local coordinates.
+In matrix form, if $J_F(p) = \left(\frac{\partial \tilde F^j}{\partial x^i} \bigg|_{x(p)}\right)$ is the Jacobian matrix of $F$ at $p$, then:
+$$ dF_p(X_p) = J_F(p) X_p $$
+where $X_p$ is considered as a column vector in local coordinates.
 
 ### Vector Fields
 
-A **vector field** on a manifold $M$ is a smooth section of the tangent bundle $TM$. It assigns to each point $p \in M$ a tangent vector $X_p \in T_pM$ in a smooth manner.
+A **vector field** on a manifold $M$ is a smooth section of the tangent bundle $TM$. That is, a vector field $X$ is a smooth map $X: M \to TM$ such that $\pi \circ X = \text{id}_M$, where $\pi: TM \to M$ is the bundle projection.
 
-Formally, a vector field $X$ is a smooth map $X: M \to TM$ such that for each $p \in M$, the projection $\pi: TM \to M$ satisfies $\pi(X(p)) = p$.
+Equivalently, a vector field assigns to each point $p \in M$ a tangent vector $X_p \in T_pM$ in a smooth manner.
 
-We know that $X_p$ can be expressed in local coordinates as $X_p = \sum_{i=1}^n X^i(p) \left.\frac{\partial}{\partial x^i}\right|_p$, where $X^i(p)\in \mathbb{R}$
-
-So we can write a vector field $X$ in local coordinates as:
+**Local Coordinate Expression**: In a coordinate chart $(U, x = (x^1, \ldots, x^n))$, a vector field $X$ can be expressed as:
 $$ X = \sum_{i=1}^n X^i \frac{\partial}{\partial x^i} $$
+where $X^i: U \to \mathbb{R}$ are smooth functions called the **components** of the vector field $X$ with respect to the coordinate chart $(U, x)$.
 
-where $X^i: M \to \mathbb{R}$ are smooth functions on $M$.
+The smoothness of the vector field $X$ is equivalent to the smoothness of all its component functions $X^i$.
+
+**Space of Vector Fields**: We denote by $\mathfrak{X}(M)$ or $\Gamma(TM)$ the space of all smooth vector fields on $M$. This space is both a vector space over $\mathbb{R}$ and a module over the ring $C^\infty(M)$ of smooth functions on $M$.
 
 
 ## Exterior Algebra, Differential Forms
@@ -296,9 +365,11 @@ A homomorphism of graded algebra is an algebra homomorphism that preserves the d
 
 #### Exterior Algebra
 
-The **exterior algebra** or **Grassmann algebra** $(\bigwedge V, \wedge)$ is a **anticommutative graded algebra** defined on a vector space $V$ with the wedge product $\wedge$, where $\bigwedge V = \bigoplus_{k=0}^{\infty} A_k(V)$. When $V$ is finite-dimensional, we can write $\bigwedge V = \bigoplus_{k=0}^{\dim V} A_k(V)$. 
+The **exterior algebra** or **Grassmann algebra** $(\bigwedge V, \wedge)$ is a **anticommutative graded algebra** defined on a vector space $V$ with the wedge product $\wedge$, where $\bigwedge V = \bigoplus_{k=0}^{\infty} A_k(V)$. When $V$ is finite-dimensional, we can write $\bigwedge V = \bigoplus_{k=0}^{\dim V} A_k(V)$ or $\bigwedge V = \bigoplus_{k=0}^{n} \bigwedge ^k V$, where $n = \dim V$. 
 
 This is because $A_k(V) = 0$ for $k > \dim V$, which we shall prove later.
+
+$\bigwedge^k V$ is called the **$k$-th exterior power** of $V$.
 
 #### Basis of $L_k$
 
@@ -310,9 +381,53 @@ The proof is similar to the proof in the dual space section.
 
 Corollary 1: The dimension of $A_k(V)$ is $\binom{n}{k}$, where $n = \dim V$.
 
-Corollary 2: The dimension of $\bigwedge V$ is $\sum_{k=0}^{\dim V} \binom{n}{k} = 2^n$, where $n = \dim V$.
+Corollary 2: The dimension of $\bigwedge V$ is $\sum_{k=0}^{n} \binom{n}{k} = 2^n$, where $n = \dim V$.
 
 Corollary 3: The dimension of $A_k(V)$ is $0$ for $k > \dim V$.
 
 Proof: For $k > \dim V$, the set of indices $I=(i_1,i_2,\ldots,i_k)$ cannot be chosen such that $1 \leq i_1 < i_2 < \ldots < i_k \leq n$, hence $A_k(V) = 0$.
+
+### Differential Forms 
+
+We have defined the exterior algebra $\bigwedge V$ and the wedge product $\wedge$ on an abstract vector space $V$. Now we can define **differential forms** on a manifold $M$, where $V$ is the tangent space $T_pM$ at a point $p \in M$.
+
+#### Cotangent Space and Cotangent Bundle
+
+The **cotangent space** $T^*_pM$ at a point $p \in M$ is the dual space of the tangent space $T_pM$. It consists of all linear functionals on $T_pM$. Elements of the cotangent space are called **covectors** or **differential 1-forms**.
+
+The cotangent space $T^*_pM$ is a vector space of dimension $n$, where $n$ is the dimension of the manifold $M$.
+
+The **cotangent bundle** $T^*M$ is the disjoint union of all cotangent spaces at each point in $M$:
+$$ T^*M = \bigcup_{p \in M} T^*_pM = \{(p, \omega_p) : p \in M, \omega_p \in T^*_pM\} $$
+
+The cotangent bundle $T^*M$ is a manifold of dimension $2n$.
+
+Local coordinates on the cotangent bundle can be defined as $(x^1, x^2, \ldots, x^n, \omega_1, \omega_2, \ldots, \omega_n)$, where $(x^1, x^2, \ldots, x^n)$ are local coordinates on $M$ and $(\omega_1, \omega_2, \ldots, \omega_n)$ are the components of a covector in the cotangent space with respect to the dual basis $\{dx^1, dx^2, \ldots, dx^n\}$.
+
+#### Differential $k$-Forms
+
+Let $M$ be a smooth manifold of dimension $n$. A **differential $k$-form** on $M$ is a smooth section of the $k$-th exterior power of the cotangent bundle, denoted as $\bigwedge^k T^*M$.
+
+In other words, a differential $k$-form on a open subset $U \subseteq M$ is a mapping $$ \omega: U \to \bigwedge^k T^*M $$ that assigns to each point $p \in U$ an alternating multilinear function $\omega(p): T_pM^k \to \mathbb{R}$ and $\omega \in A_k(T_pM)$ for all $p \in U$.
+
+Let $\{e_1 = \left.\frac{\partial}{\partial x^1}\right|_p, e_2 = \left.\frac{\partial}{\partial x^2}\right|_p, \ldots, e_n = \left.\frac{\partial}{\partial x^n}\right|_p\}$ be a basis of $T_pM$. The corresponding dual basis of $T^*_pM$ is $\{dx^1, dx^2, \ldots, dx^n\}$, where $dx^i(e_j) = \delta^i_j$. 
+
+A basis of $A_k(T_pM)$ is then given by $\{dx^I\}_{I}$, where $I = (i_1, i_2, \ldots, i_k)$ is a $k$-tuple of indices with $1 \leq i_1 < i_2 < \ldots < i_k \leq n$, and $dx^I$ denotes the wedge product $dx^{i_1} \wedge dx^{i_2} \wedge \ldots \wedge dx^{i_k}$. 
+
+Therefore, a differential $k$-form $\omega$ can be expressed in local coordinates as:
+$$ \omega = \sum_{I} f_I dx^I $$
+where $f_I: U \to \mathbb{R}$ are functions on $U$.
+
+A differential $k$-form $\omega$ is called **smooth** if all the functions $f_I$ are smooth functions on $U$.
+
+Let $\Omega^k(M)$ be the space of all smooth differential $k$-forms on a manifold $M$. It is a vector space over $\mathbb{R}$.
+
+The wedge product of two differential forms $\omega_1 \in \Omega^k(M)$ and $\omega_2 \in \Omega^l(M)$ is pointwise defined as:
+$$ (\omega_1 \wedge \omega_2)(p) = \omega_1(p) \wedge \omega_2(p) = \sum_{I,J} f_I(p) g_J(p) dx^I \wedge dx^J $$
+where $f_I$ and $g_J$ are the coefficients of $\omega_1$ and $\omega_2$ in local coordinates, respectively. Note that if $I$ and $J$ are such that $I \cap J \neq \emptyset$, then $dx^I \wedge dx^J = 0$ due to the anticommutativity of the wedge product.
+The wedge product of differential forms is bilinear and associative, and it satisfies the anticommutativity property:
+$$ \omega_1 \wedge \omega_2 = (-1)^{kl} \omega_2 \wedge \omega_1 $$
+
+Let $\Omega^*(M) = \bigoplus_{k=0}^n \Omega^k(M)$ be the space of all smooth differential forms on $M$. It is a graded algebra with respect to the wedge product $\wedge$.
+
 
