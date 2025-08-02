@@ -153,6 +153,8 @@ Let $(U, \phi)$ be a local trivialization of $E$ over an open set $U \subseteq M
 $$ \phi \circ s|_U: U \to U \times F $$
 which has the form $p \mapsto (p, f(p))$ for some function $f: U \to F$.
 
+Sometimes we just say $f$ is a section of $E$ over $U$.
+
 #### Space of Sections
 
 We denote by $\Gamma(E)$ or $\Gamma(M, E)$ the space of all smooth sections of the fiber bundle $E \to M$.
@@ -195,7 +197,14 @@ A **vector field** on a manifold $M$ is a smooth section of the tangent bundle $
 
 Equivalently, a vector field assigns to each point $p \in M$ a tangent vector $X_p \in T_pM$ in a smooth manner.
 
-**Local Coordinate Expression**: In a coordinate chart $(U, x = (x^1, \ldots, x^n))$, a vector field $X$ can be expressed as:
+**Local Coordinate Expression**: 
+
+The partial derivative operator $\frac{\partial}{\partial x^i}$ can be viewed as a vector field on $M$ in the coordinate chart $(U, x)$, where it acts on smooth functions $f \in C^\infty(U)$ by:
+$$ \frac{\partial f}{\partial x^i} = d(x^i \circ f) = d(f \circ x^{-1}) \bigg|_{x(p)} $$
+
+where $x^i$ is the $i$-th coordinate function in the chart $(U, x)$.
+
+In a coordinate chart $(U, x = (x^1, \ldots, x^n))$, a vector field $X$ can be expressed as:
 $$ X = \sum_{i=1}^n X^i \frac{\partial}{\partial x^i} $$
 where $X^i: U \to \mathbb{R}$ are smooth functions called the **components** of the vector field $X$ with respect to the coordinate chart $(U, x)$.
 
@@ -430,4 +439,58 @@ $$ \omega_1 \wedge \omega_2 = (-1)^{kl} \omega_2 \wedge \omega_1 $$
 
 Let $\Omega^*(M) = \bigoplus_{k=0}^n \Omega^k(M)$ be the space of all smooth differential forms on $M$. It is a graded algebra with respect to the wedge product $\wedge$.
 
+#### Coordinate Functions and Their Differentials
 
+Let $(U, x) = (U, x^1, \ldots, x^n)$ be a coordinate chart on a smooth manifold $M$ of dimension $n$. The coordinate functions $x^i: U \to \mathbb{R}$ are smooth functions that assign to each point $p \in U$ its $i$-th coordinate $x^i(p)$. 
+
+The **coordinate 1-forms** $dx^i$ are smooth sections of the cotangent bundle, each $dx^i: U \to T^*M$ satisfies $$\pi \circ dx^i = \text{id}_U$$
+where $\pi: T^*M \to M$ is the bundle projection. 
+
+We have $dx^i|_p: T_pM \to \mathbb{R}$ defined by $dx^i|_p(v) = v(x^i(p))$ for any tangent vector $v \in T_pM$. The coordinate 1-forms satisfy the dual basis property: $$\left.dx^i\right|_p\left(\left.\frac{\partial}{\partial x^j}\right|_p\right) = \delta^i_j$$
+making $\{dx^1|_p, \ldots, dx^n|_p\}$ the dual basis of $T_p^*M$ corresponding to the coordinate basis $\{\frac{\partial}{\partial x^1}|_p, \ldots, \frac{\partial}{\partial x^n}|_p\}$ of $T_pM$. 
+
+Any differential $k$-form on $U$ can be uniquely expressed as $\omega = \sum_{|I|=k} f_I \, dx^I$, where $I = (i_1, \ldots, i_k)$ with $1 \leq i_1 < \cdots < i_k \leq n$, $dx^I = dx^{i_1} \wedge \cdots \wedge dx^{i_k}$, and $f_I: U \to \mathbb{R}$ are smooth functions.
+
+### Pullback of Differential Forms
+
+Let $F: M \to N$ be a smooth map between manifolds, and let $\omega \in \Omega^k(N)$ be a differential $k$-form on $N$. The **pullback** of $\omega$ by $F$, denoted as $F^*\omega$, is a differential $k$-form on $M$ defined by:
+$$ (F^*\omega)(p)(v_1, v_2, \ldots, v_k) = \omega(F(p))(dF_p(v_1), dF_p(v_2), \ldots, dF_p(v_k)) $$
+where $dF_p: T_pM \to T_{F(p)}N$ is the differential of $F$ at the point $p$.
+
+#### Local Coordinate Expression
+
+Let $(U, x^1, \ldots, x^m)$ and $(V, y^1, \ldots, y^n)$ be coordinate charts on $M$ and $N$ respectively, with $F(U) \subseteq V$. 
+
+Let $F: M \to N$ have local coordinate representation $F^i = y^i \circ F \circ x^{-1}$, where $(x^1, \ldots, x^m)$ are coordinates on $M$ and $(y^1, \ldots, y^n)$ are coordinates on $N$.
+
+If $\omega$ has the local expression:
+$$ \omega = \sum_{|I|=k} f_I \, dy^I $$
+where $f_I: V \to \mathbb{R}$ are smooth functions.
+
+Then the pullback $F^*\omega$ has the expression:
+$$ 
+\begin{align*}
+F^*\omega &= \sum_{|I|=k} (f_I \circ F) \, F^*(dy^I) \\
+&= \sum_{|I|=k} (f_I \circ F) \, d(y^{i_1} \circ F) \wedge \cdots \wedge d(y^{i_k} \circ F) 
+\end{align*}
+$$
+
+Note:
+$$ d(y^{i_j} \circ F) = d(F^{i_j} \circ x) = \sum_{l=1}^m \frac{\partial F^{i_j}}{\partial x^l} dx^l $$
+
+Therefore:
+$$ F^*\omega = \sum_{|I|=k} (f_I \circ F) \, \left(\sum_{l_1=1}^m \frac{\partial F^{i_1}}{\partial x^{l_1}} dx^{l_1}\right) \wedge \cdots \wedge \left(\sum_{l_k=1}^m \frac{\partial F^{i_k}}{\partial x^{l_k}} dx^{l_k}\right) $$
+
+#### Properties of Pullback
+
+The pullback operation satisfies the following important properties:
+
+1. **Linearity**: $F^*(a\omega_1 + b\omega_2) = aF^*\omega_1 + bF^*\omega_2$ for $a,b \in \mathbb{R}$
+
+2. **Preservation of wedge product**: 
+   $$ F^*(\omega_1 \wedge \omega_2) = F^*\omega_1 \wedge F^*\omega_2 $$
+
+3. **Functoriality**: If $G: L \to M$ and $F: M \to N$ are smooth maps, then:
+   $$ (F \circ G)^* = G^* \circ F^* $$
+
+4. **Identity**: $(\text{id}_M)^* = \text{id}_{\Omega^*(M)}$
