@@ -8,6 +8,14 @@ categories:
 - Study Notes
 ---
 
+## References
+
+- John Lee, Introduction to Smooth Manifolds
+
+- Loring Tu, An Introduction to Manifolds
+
+- Victor Guillemin and Alan Pollack, Differential Topology
+
 ## Manifolds and its Structures
 
 ### Topological Manifolds
@@ -210,7 +218,7 @@ where $X^i: U \to \mathbb{R}$ are smooth functions called the **components** of 
 
 The smoothness of the vector field $X$ is equivalent to the smoothness of all its component functions $X^i$.
 
-**Space of Vector Fields**: We denote by $\mathfrak{X}(M)$ or $\Gamma(TM)$ the space of all smooth vector fields on $M$. This space is both a vector space over $\mathbb{R}$ and a module over the ring $C^\infty(M)$ of smooth functions on $M$.
+**Space of Vector Fields**: We denote by $\mathfrak{X}(M)$ or $\Gamma^{\infty}(TM)$ the space of all smooth vector fields on $M$. This space is both a vector space over $\mathbb{R}$ and a module over the ring $C^\infty(M)$ of smooth functions on $M$.
 
 
 ## Exterior Algebra, Differential Forms
@@ -396,6 +404,30 @@ Corollary 3: The dimension of $A_k(V)$ is $0$ for $k > \dim V$.
 
 Proof: For $k > \dim V$, the set of indices $I=(i_1,i_2,\ldots,i_k)$ cannot be chosen such that $1 \leq i_1 < i_2 < \ldots < i_k \leq n$, hence $A_k(V) = 0$.
 
+### Inner Product
+
+Let $V$ be a vector space, $v\in V$, and $\omega \in \bigwedge^k V$. The **inner product** of $v$ and $\omega$, denoted as $\iota_v \omega$, is a linear map $\iota_v: \bigwedge^k V \to \bigwedge^{k-1} V$ defined by:
+$$ \iota_v(\omega) = \sum_{i=1}^k (-1)^{i-1} \alpha^i(v) \alpha^{1} \wedge \ldots \wedge \widehat{\alpha^i} \wedge \ldots \wedge \alpha^{k} $$
+
+where $\widehat{\alpha^i}$ means that the $i$-th term is omitted from the wedge product.
+
+The inner product $\iota_v$ is called the **interior product** or **contraction** with respect to the vector $v$. It reduces the degree of the form by 1.
+
+Let $\alpha \in \bigwedge^k V, \beta \in \bigwedge^l V$, the inner product satisfies the following properties:
+1. **Nilpotency**: $\iota_v \iota_v \alpha = 0$ for any $v \in V.
+2.  $\iota_v(\alpha \wedge \beta) = \iota_v(\alpha) \wedge \beta + (-1)^k \alpha \wedge \iota_v(\beta)$.
+3. **Linearity**: $\iota_{av + bw}(\alpha) = a \iota_v(\alpha) + b \iota_w(\alpha)$ for any $a,b \in \mathbb{R}$ and $v,w \in V$.
+
+### Pullback 
+
+Let $L: W \to V$ be a linear map between vector spaces $W$ and $V$. The **pullback** of exterior forms under $L$, denoted as $L^*: \bigwedge^k V \to \bigwedge^k W$, is defined by:
+$$ L^*(\omega)(w_1, w_2, \ldots, w_k) = \omega(L(w_1), L(w_2), \ldots, L(w_k)) $$
+for all $w_1, w_2, \ldots, w_k \in W^*$.
+
+The pullback satisfies the following properties:
+1. $L^*(\alpha \wedge \beta) = L^*(\alpha) \wedge L^*(\beta)$ 
+2. $\iota_w(L^*(\alpha)) = L^*(\iota_{L(w)}(\alpha))$.
+
 ### Differential Forms 
 
 We have defined the exterior algebra $\bigwedge V$ and the wedge product $\wedge$ on an abstract vector space $V$. Now we can define **differential forms** on a manifold $M$, where $V$ is the tangent space $T_pM$ at a point $p \in M$.
@@ -429,7 +461,7 @@ where $f_I: U \to \mathbb{R}$ are functions on $U$.
 
 A differential $k$-form $\omega$ is called **smooth** if all the functions $f_I$ are smooth functions on $U$.
 
-Let $\Omega^k(M)$ be the space of all smooth differential $k$-forms on a manifold $M$. It is a vector space over $\mathbb{R}$.
+Let $\Omega^k(M)=\Gamma^{\infty}(\bigwedge^k T^*M)$ be the space of all smooth differential $k$-forms on a manifold $M$. It is a vector space over $\mathbb{R}$.
 
 The wedge product of two differential forms $\omega_1 \in \Omega^k(M)$ and $\omega_2 \in \Omega^l(M)$ is pointwise defined as:
 $$ (\omega_1 \wedge \omega_2)(p) = \omega_1(p) \wedge \omega_2(p) = \sum_{I,J} f_I(p) g_J(p) dx^I \wedge dx^J $$
@@ -494,3 +526,40 @@ The pullback operation satisfies the following important properties:
    $$ (F \circ G)^* = G^* \circ F^* $$
 
 4. **Identity**: $(\text{id}_M)^* = \text{id}_{\Omega^*(M)}$
+
+### Exterior Derivative
+
+The **Exterior Derivative** is an operator $d: \Omega^k(M) \to \Omega^{k+1}(M)$ that generalizes the concept of differentiation to differential forms. It is defined as follows:
+$$
+d\omega = \sum_{|I|=k} \left( \sum_{j=1}^n \frac{\partial f_I}{\partial x^j} \right) dx^j \wedge dx^I
+$$
+where $\omega = \sum_{|I|=k} f_I \, dx^I$ is a differential $k$-form on $M$, and $dx^I = dx^{i_1} \wedge \cdots \wedge dx^{i_k}$ for $I = (i_1, \ldots, i_k)$.
+
+It can be naturally extended to the exterior algebra $\bigwedge^*(M)$ as follows:
+$$ d(\omega) = \sum_{k=0}^{n} d\omega_k $$
+
+where $\omega = \sum_{k=0}^{n} \omega_k$ and $\omega_k \in \Omega^k(M)$.
+
+The exterior derivative satisfies the following properties:
+1. **Linearity**: $d(a\omega_1 + b\omega_2) = a d\omega_1 + b d\omega_2$ for $a,b \in \mathbb{R}$.
+2. **Nilpotency**: $d^2 = 0$, i.e., $d(d\omega) = 0$ for any differential form $\omega$.
+3. **Antiderivation Property**: $d(\omega_1 \wedge \omega_2) = d\omega_1 \wedge \omega_2 + (-1)^k \omega_1 \wedge d\omega_2$ for $\omega_1 \in \Omega^k(M)$ and $\omega_2 \in \Omega^l(M)$.
+4. **Pullback Compatibility**: For any smooth map $F: M \to N$, we have:
+   $$ F^*(d\omega) = d(F^*\omega) $$
+5. **Vanishing of Top Forms**: $d\omega = 0$ if $\omega\in \Omega^n(M)$, where $n = \dim M$.
+
+### de Rham Theory
+
+TODO.
+
+### Poincaré Lemma
+
+TODO.
+
+### Integration of Differential Forms
+
+TODO.
+
+### Stokes' Theorem
+
+TODO.
