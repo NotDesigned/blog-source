@@ -85,7 +85,8 @@ The tangent space is equipped with a natural $\mathbb{R}$-vector space structure
 
 Let $(U,x)=(U,x^1,\ldots,x^n)$ be a coordinate chart containing $p$. 
 
-Consider $\left.\frac{\partial}{\partial x^i}\right|_p: C^{\infty}_p(M)\to \mathbb{R}$ act on $f:U\to \mathbb R$ defined as $$\left.\frac{\partial}{\partial x^i}\right|_p([f])=\left.\frac{\partial(f\circ x^{-1})}{\partial x^i}\right |_{x(p)}$$
+Consider $\left.\frac{\partial}{\partial x^i}\right|_p: C^{\infty}_p(M)\to \mathbb{R}$ act on $f:U\to \mathbb R$ defined as 
+$$\left.\frac{\partial}{\partial x^i}\right|_p([f])=\left.\frac{\partial(f\circ x^{-1})}{\partial x^i}\right |_{x(p)}$$
 
 We know that $\left \{\left.\frac{\partial}{\partial x^{1}}\right|_p,\ldots,\left.\frac{\partial}{\partial x^n}\right|_p\right \}$ forms a basis of $T_p M$, $\dim T_pM = \dim M=n $.
 
@@ -172,10 +173,10 @@ We denote by $\Gamma(E)$ or $\Gamma(M, E)$ the space of all smooth sections of t
 **For Vector Bundles**: When $E \to M$ is a vector bundle with typical fiber $\mathbb{R}^k$, the space $\Gamma(E)$ has additional algebraic structures:
 
 1. **Vector space structure**: For sections $s_1, s_2 \in \Gamma(E)$ and scalars $a, b \in \mathbb{R}$:
-   $ (as_1 + bs_2)(p) = as_1(p) + bs_2(p) \in E_p $
+   $$ (as_1 + bs_2)(p) = as_1(p) + bs_2(p) \in E_p $$
 
 2. **$C^\infty(M)$-module structure**: For a smooth function $f \in C^\infty(M)$ and a section $s \in \Gamma(E)$:
-   $ (fs)(p) = f(p) \cdot s(p) \in E_p $
+   $$ (fs)(p) = f(p) \cdot s(p) \in E_p $$
 
 These structures exist because each fiber $E_p$ is a vector space, allowing us to perform linear operations.
 
@@ -269,7 +270,7 @@ $$ \sigma f(v_1, v_2, \ldots, v_k) = f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots, v_{
 
 A **symmetric multilinear function** is a multilinear function that is invariant under any permutation of its arguments. 
 
-Formally, $\sigma f = f $ for any permutation $\sigma\in S_k$.
+Formally, $\sigma f = f$ for any permutation $\sigma\in S_k$.
 
 An **alternating multilinear function** is a multilinear function that changes sign when two of its arguments are swapped, or equivalently, changes by a factor of $sgn(\sigma)$ when permuted by $\sigma$.
 
@@ -414,7 +415,7 @@ where $\widehat{\alpha^i}$ means that the $i$-th term is omitted from the wedge 
 The inner product $\iota_v$ is called the **interior product** or **contraction** with respect to the vector $v$. It reduces the degree of the form by 1.
 
 Let $\alpha \in \bigwedge^k V, \beta \in \bigwedge^l V$, the inner product satisfies the following properties:
-1. **Nilpotency**: $\iota_v \iota_v \alpha = 0$ for any $v \in V.
+1. **Nilpotency**: $\iota_v \iota_v \alpha = 0$ for any $v \in V$.
 2.  $\iota_v(\alpha \wedge \beta) = \iota_v(\alpha) \wedge \beta + (-1)^k \alpha \wedge \iota_v(\beta)$.
 3. **Linearity**: $\iota_{av + bw}(\alpha) = a \iota_v(\alpha) + b \iota_w(\alpha)$ for any $a,b \in \mathbb{R}$ and $v,w \in V$.
 
