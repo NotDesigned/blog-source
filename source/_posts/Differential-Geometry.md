@@ -358,8 +358,7 @@ The exterior derivative satisfies the following properties:
 1. **Linearity**: $d(a\omega_1 + b\omega_2) = a d\omega_1 + b d\omega_2$ for $a,b \in \mathbb{R}$.
 2. **Nilpotency**: $d^2 = 0$, i.e., $d(d\omega) = 0$ for any differential form $\omega$.
 3. **Antiderivation Property**: $d(\omega_1 \wedge \omega_2) = d\omega_1 \wedge \omega_2 + (-1)^k \omega_1 \wedge d\omega_2$ for $\omega_1 \in \Omega^k(M)$ and $\omega_2 \in \Omega^l(M)$.
-4. **Pullback Compatibility**: For any smooth map $F: M \to N$, we have:
-   $$ F^*(d\omega) = d(F^*\omega) $$
+4. **Pullback Compatibility**: For any smooth map $F: M \to N$, we have $F^*(d\omega) = d(F^*\omega) $. One can verify this property using local coordinates and chain rules.
 5. **Vanishing of Top Forms**: $d\omega = 0$ if $\omega\in \Omega^n(M)$, where $n = \dim M$.
 
 We only prove the nilpotency here:
@@ -404,7 +403,7 @@ $$
 Z^k(M) = \ker (d: \Omega^k(M) \to \Omega^{k+1}(M))
 $$
 $$
-B^k(M) = \text{Im} (d: \Omega^{k-1}(M) \to \Omega^k(M))
+B^k(M) = \text{im} (d: \Omega^{k-1}(M) \to \Omega^k(M))
 $$
 
 Since $d^2 = 0$, we have the following property:
@@ -416,9 +415,27 @@ We define the **de Rham cohomology** of $M$ as:
 $$ H^k_{dR}(M) = Z^k(M) / B^k(M) $$
 and $[\omega]$ is the equivalence class of $\omega \in Z^k(M)$ in $H^k_{dR}(M)$, called the **de Rham cohomology class** of $\omega$.
 
+$H^k_{dR}(M)$ is a vector space over $\mathbb{R}$ and we shall see that it is linear with respect to the cup product.
+
 Example:
 
 For $M = \mathbb{R}$, $Z^0(\mathbb{R}) = \Omega^0(\mathbb{R}) = \mathbb R$, $B^0(\mathbb{R}) = \{0\}$, hence $H^0_{dR}(\mathbb{R}) \simeq \mathbb{R}$, and $H^k_{dR}(\mathbb{R}) \simeq \{0\}$ for $k > 0$.
+
+For $M = \mathbb{S^1}$, we know $H^0_{dR}(\mathbb{S^1}) \simeq \mathbb{R}$ and $H^k_{dR}(\mathbb{S^1}) \simeq \{0\}$ for $k > 1$. So we only need to compute $H^1_{dR}(\mathbb{S^1})$.
+
+$$
+\begin{align*}
+Z^1(\mathbb{S^1}) = \Omega^1(\mathbb{S^1}) &= \{fd\theta|f\in C^{\infty}(\mathbb{S^1})\}\\
+& = \{fd\theta | f\in C^{\infty}(\mathbb R), f \text{ periodic with period } 2\pi\}\\
+\end{align*}
+$$
+
+Now, consider $\omega \in B^1(\mathbb{S^1})$, we have $\omega = d\eta$ for some $\eta \in \Omega^0(\mathbb{S^1})$. Since $\eta$ is a smooth function on $\mathbb{S^1}$, it can be expressed as $f(\theta)$ for some periodic function $f$ with period $2\pi$. Thus, we have:
+$$
+\omega = d\eta = df(\theta) = g(\theta)d\theta
+$$
+where $g$ is a periodic function with period $2\pi$ and $\int_0^{2\pi} g(\theta) d\theta = 0$.
+Thus, $H^1_{dR}(\mathbb{S^1}) \simeq \mathbb{R}$, which is the first de Rham cohomology group of the circle since the cohomology class is represented by the integral value of the 1-form over the circle.
 
 Let $\dim M = n$, we have the following results:
 - $H^k_{dR}(M) = \{0\}$ for $k > n$.
@@ -426,10 +443,81 @@ Let $\dim M = n$, we have the following results:
 
 #### Betti Numbers and Euler Characteristic
 
-If $\dim H^k_{dR}(M) < \infty$ for any $k$, we define the **Betti number** $b_k(M) = \dim H^k_{dR}(M)$, which is called the $k$-th Betti number of the manifold $M$.
+If $\dim H^k_{dR}(M) < \infty$ for any $k$, we define the **Betti number** 
+$$b_k(M) = \dim H^k_{dR}(M)$$
+which is called the $k$-th Betti number of the manifold $M$.
 
-Euler characteristic of $M$ is defined as:
+The **Euler characteristic** of $M$ is defined as:
 $$ \chi(M) = \sum_{k=0}^{\dim M} (-1)^k b_k(M) $$
+
+From the above result, we know $\chi(\mathbb R) = 1 - 0 = 1$, and $\chi(\mathbb{S^1}) = 1 - 1 = 0$.
+
+#### Pullback 
+
+Let $F: M \to N$ be a smooth map between manifolds, the pullback of the de Rham cohomology is defined as:
+$$ F^*: H^k_{dR}(N) \to H^k_{dR}(M) $$
+by $F^*([\omega]) = [F^*\omega]$ for $\omega \in Z^k(N)$.
+
+Since $dF^*= F^*d$, $F^*$ maps closed forms to closed forms and exact forms to exact forms. 
+$$ F^*(B^k(N)) \subseteq B^k(M) \quad \text{and} \quad F^*(Z^k(N)) \subseteq Z^k(M) $$
+
+Hence $F^*$ induces a well-defined map on cohomology.
+
+Note that the pullback of de Rham cohomology satisfies the contravariant functoriality:
+1. $(F \circ G)^* = G^* \circ F^*$ for smooth maps $G: L \to M$ and $F: M \to N$.
+2. $(\text{id}_M)^* = \text{id}_{H^*_{dR}(M)}$.
+
+Thus, the de Rham cohomology is a contravariant functor from the category of smooth manifolds to the category of graded algebras over a field. So a diffeomorphism $F: M \to N$ induces an isomorphism $F^*: H^*_{dR}(N) \to H^*_{dR}(M)$.
+
+Particularly, $b_k(M)$ and $\chi(M)$ are diffeomorphism invariants.
+
+#### Cup Product
+
+Note that the wedge product $\wedge$ on differential forms induces a operation on de Rham cohomology, called the **cup product**.
+$$ \cup: H^k_{dR}(M) \times H^l_{dR}(M) \to H^{k+l}_{dR}(M) $$
+defined by
+$$ [\omega_1] \cup [\omega_2] = [\omega_1 \wedge \omega_2] $$
+for $\omega_1 \in Z^k(M)$ and $\omega_2 \in Z^l(M)$.
+
+
+Assume $\omega_1 = d\eta_1$ and $\omega_2 = d\eta_2$, $\omega,\zeta$ are closed forms, to prove cup product is well-defined, we calculate 
+$$
+\begin{align*}
+(\omega + d\eta_1) \wedge (\zeta + d\eta_2) &= \omega \wedge \zeta + \omega \wedge d\eta_2 + d\eta_1 \wedge \zeta + d\eta_1 \wedge d\eta_2\\
+&= \omega \wedge \zeta + \omega \wedge d\eta_2 + (-1)^{k} d\omega \wedge \eta_2 - (-1)^{k} d\omega \wedge d\eta_2 \\
+&+ d\eta_1 \wedge \zeta + d\eta_1 \wedge d\eta_2\\
+&= \omega \wedge \zeta + d((-1)^{k} \omega \wedge \eta_2) + d\eta_1 \wedge \zeta + d\eta_1 \wedge d\eta_2 \\ 
+&= \omega \wedge \zeta + d((-1)^{k} \omega \wedge \eta_2) + d(\eta_1 \wedge \zeta) + d(\eta_1 \wedge d\eta_2)\\
+&= \omega \wedge \zeta + d\left ((-1)^{k} \omega \wedge \eta_2 + \eta_1 \wedge \zeta + \eta_1 \wedge d\eta_2\right)
+\end{align*}
+$$
+Therefore, we have
+$$ 
+[\omega + d\eta_1] \cup [\zeta + d\eta_2]  = [\omega \wedge \zeta]
+$$
+so the cup product is well-defined.
+
+The cup product is bilinear, associative, and commutative up to a sign:
+$$ [\omega_1] \cup [\omega_2] = [\omega_1 \wedge \omega_2] = [(-1)^{kl} \omega_2 \wedge \omega_1] = (-1)^{kl} [\omega_2] \cup [\omega_1] $$
+
+The cup product induces a graded algebra structure on the de Rham cohomology:
+$$ H^*_{dR}(M) = \bigoplus_{k=0}^{\dim M} H^k_{dR}(M) $$
+with the cup product $\cup$ as the multiplication operation.
+
+And $(H^*_{dR}(M), +, \cup)$ becomes a graded commutative ring with identity, called the **de Rham cohomology ring** of $M$.
+
+#### Homotopy Invariance
+
+We say $M$ and $N$ are homotopy equivalent if there exist continuous maps $f: M \to N$ and $g: N \to M$ such that $g \circ f$ is homotopic to the identity map on $M$ and $f \circ g$ is homotopic to the identity map on $N$.
+
+If $M$ and $N$ are homotopy equivalent, then $H^k_{dR}(M) \simeq H^k_{dR}(N)$ for all $k$. This is stronger than the fact that $H^k_{dR}(M)$ is a diffeomorphism invariant, as homotopy equivalence does not even require the manifolds to have the same dimension, e.g. $\mathbb R^n\setminus \{0\}$ and $\mathbb S^{n-1}$.
+
+Note: This shows that the de Rham cohomology is determined by the topological structure of the manifold, not relevant to the smooth structure.
+
+The famous **de Rham theorem** states that the de Rham cohomology is isomorphic to the singular cohomology with real coefficients, i.e., for any smooth manifold $M$,
+$$ H^k_{dR}(M) \simeq H^k_{sing}(M; \mathbb{R}) $$
+
+We shall postpone the proof of this theorem to the section on singular cohomology.
 
 #### Chain Complex
 
@@ -439,16 +527,15 @@ $$ \cdots \xleftarrow{d_0} A_0 \xleftarrow{d_1} A_1 \xleftarrow{d_2} A_2 \xlefta
 The **cochain complex** is the dual notion to the chain complex.
 
 $$ \cdots \xrightarrow{d^0} A^0 \xrightarrow{d^1} A^1 \xrightarrow{d^2} A^2 \xrightarrow{d^3} \cdots$$
-where $d^{n}\circ d^{n+1} = 0 $.
+where $d^{n}\circ d^{n+1} = 0$.
 
 The elements in the kernel of $d$ are called **(co)cycles** (or **closed** elements), and the elements in the image of $d$ are called **(co)boundaries** (or **exact** elements). Right from the definition of the differential, all boundaries are cycles. The $n$-th **(co)homology** group $H_n(H^n)$ is the group of (co)cycles modulo (co)boundaries in degree $n$, that is,
 
-$$ H_n = \ker d_n/\text{im} d_{n+1} \left ( H^n = \ker d^n/\text{im} d^{n-1}\right)$$
+$$ H_n = \ker d_n/\text{im } d_{n+1} \left ( H^n = \ker d^n/\text{im } d^{n-1}\right)$$
 
 A **exact sequence** is a (co)chain complex whose (co)homology groups are all zero, which means all closed elements are exact. A short exact sequence is a bounded exact sequence in which only the groups $A_k$, $A_{k+1}$, $A_{k+2}$ may be nonzero. For example, the following chain complex is a short exact sequence.
 
 $$ \cdots \rightarrow 0 \rightarrow Z \xrightarrow {\times p} Z \twoheadrightarrow Z/p \rightarrow 0 \rightarrow \cdots $$
-
 
 #### de Rham Complex
 
