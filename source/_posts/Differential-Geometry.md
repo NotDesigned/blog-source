@@ -18,11 +18,11 @@ categories:
 
 For Chinese reader, you can refer to the website http://staff.ustc.edu.cn/~wangzuoq/Courses/23F-Manifolds/#notes for Chinese course note in USTC.
 
-## Review on Manifolds and its Structures
+## Review on Manifolds
 
 Please refer to the "Differential Manifold" article.
 
-For the sake of this articles, you at least need to understand the following concept in that article.
+For the sake of this articles, one at least need to understand the following concept in that article.
 
 - Topological Manifold
 - Smooth Manifold
@@ -33,7 +33,169 @@ For the sake of this articles, you at least need to understand the following con
 
 ## Lie Algebra and Lie Groups
 
-TODO
+### Smooth Differential Operators 
+
+A **smooth differential operator** of order $n$ on $M$ is a linear map $P: C^{\infty}(M) \to C^{\infty}(M)$ that can be expressed locally as a finite sum of the form on each coordinate chart $(U,x)$:
+$$
+P=\sum_{|j|\leq n} a_j(p) \left(\frac{\partial}{\partial x^1}\right)^{j_1}\left(\frac{\partial}{\partial x^2}\right)^{j_2} \cdots \left(\frac{\partial}{\partial x^m}\right)^{j_m}
+$$
+where $a_j(p)$ are smooth functions on $M$, $m=\dim M$, and $j=(j_1,j_2,\ldots,j_m)$ is a multi-index with $|j|=j_1+j_2+\ldots+j_m$.
+
+And by definition, a smooth vector field $X$ on $M$ is a smooth differential operator of order $1$.
+
+Using partition of unity, we can prove that any smooth differential operator can be expressed as composition of at most $n$ smooth vector fields.
+
+And $\operatorname{supp}(Pf) \subseteq \operatorname{supp}(f)$ for any smooth function $f\in C^{\infty}(M)$.
+
+Peetre proves that any linear differential operator that satisfies the above condition is a smooth differential operator.
+
+### Lie Bracket
+
+Given two smooth vector fields $X,Y$ on a smooth manifold $M$, the **Lie bracket** of $X$ and $Y$, denoted as $[X,Y]$, on a local coordinate $(U,\phi)$ it is defined as:
+$$
+[X,Y]= X \circ Y - Y \circ X = \sum_{i=1}^m \left( X^i \frac{\partial Y^j}{\partial \phi^i} - Y^i \frac{\partial X^j}{\partial \phi^i} \right) \frac{\partial}{\partial \phi^j}
+$$
+note the second order derivative is diminished, it is a the smooth vector field on $M$.
+
+Generally speaking, if $X$ is a differential operator of order $p$, $Y$ is of order $q$. $X\circ Y-Y\circ X$ shall be a differential operator of order $p+q-1$.
+
+The Lie bracket $[\cdot,\cdot]: \mathfrak{X}(M) \times \mathfrak{X}(M) \to \mathfrak{X}(M)$ satisfy the following property for any $X,Y,Z\in\mathfrak{X}(M)$
+
+1. Antisymmetry: $[X,Y]=-[Y,X]$
+2. Jacobi Identity: $[X,[Y,Z]] + [Y,[Z,X]] + [Z,[X,Y]] = 0$.
+3. $\mathbb R$-Linearity: $[aX+bY,Z]=a[X,Z]+b[Y,Z],\forall a,b\in \mathbb R$
+
+Note that it is not linear with respect to the second argument.
+
+The Lie bracket gives a **Lie Algebra** structure on $\mathfrak{X}(M)(\Gamma^{\infty}(TM))$.
+
+### Integral Curves
+
+Let $X\in \mathfrak{X}(M)$, if a smooth curve $\gamma: I \to M$ is such that 
+
+$$
+\dot \gamma(t) = X_{\gamma(t)}
+$$
+for all $t \in I$, then $\gamma$ is called an **integral curve** of the vector field $X$.
+
+if $0\in I$, then $\gamma(0)$ is called the **initial point** of the integral curve.
+
+Example
+---
+For the vector field $\widetilde{X} = \sum_{i=1}^n a^i \frac{\partial}{\partial x^i}$, the integral curve is:
+$$
+\widetilde{\gamma}(t)=(c_1 + a^1 t, c_2 + a^2 t, \ldots, c_n + a^n t)
+$$
+where $c_i = \gamma(0)^i$ are the initial point of the integral curve.
+
+---
+
+Assume $\gamma$ is in a coordinate chart $(U,x)$, we write $\phi(\gamma(t))=(x^1(\gamma(t)),\cdots,x^n(\gamma(t)))$.
+
+We denote $\gamma^i:I\to \mathbb{R}=x^i\circ \gamma$ as the $i$-th coordinate of $\gamma$ on $U$.
+
+$$
+\dot \gamma(t)=(d\gamma)_t(\frac{d}{dt})|_{t}=\sum_{i=1}^n (d\gamma)_t(\frac{d}{dt})|_{t}(x^i)\left.\frac{\partial}{\partial x^i}\right|_{\gamma(t)}=\sum_{i=1}^n\frac{d (x^i\circ \gamma)}{dt}\left.\frac{\partial}{\partial x^i}\right|_{\gamma(t)}=\sum_{i=1}^n \dot{\gamma}^i \left.\frac{\partial}{\partial x^i}\right|_{\gamma(t)}
+$$
+
+So the equation $\dot \gamma(t) = X_{\gamma(t)}$ can be written as:
+
+$$
+\sum_{i=1}^n \dot{\gamma}^i(t) \left.\frac{\partial}{\partial x^i}\right|_{\gamma(t)} = \sum_{i=1}^n X^i(\gamma(t)) \left.\frac{\partial}{\partial x^i}\right|_{\gamma(t)}
+$$
+
+So we have the system of ordinary differential equations:
+$$\dot{\gamma}^i(t) = X^i\circ x^{-1}(\gamma^1(t),\ldots,\gamma^n(t))$$
+for $i=1,2,\ldots,n$.
+
+Conversely, every system of ordinary differential equations of the form above defines a unique integral curve $\gamma$ on $U$ of the vector field $X$.
+
+By the existence and uniqueness theorem of ordinary differential equations on $\mathbb R^n$, we have the following theorem:
+
+Assume $X\in \mathfrak{X}(M)$ is a smooth vector field on a smooth manifold $M$, then for every $p\in M$, there exists a neighborhood $U$ of $p$, $\epsilon>0$ and a smooth mapping $\Gamma: (-\epsilon,\epsilon) \times U \to M$ such that:
+1. $\Gamma(0,p)=p$ for all $p\in U$.
+2. For fixed $q\in U$, $\gamma_q(t)=\Gamma(t,q)$ is the integral curve of $X$ with initial point $\gamma_q(0)=q$ for all $t\in (-\epsilon,\epsilon)$.
+3. The integral curve in $[2]$ is unique in the sense that if $\sigma: I \to U$ is another smooth curve with $\sigma(0)=q$, then $\gamma_q(t)=\sigma(t)$ for all $t\in (-\epsilon,\epsilon)\cap I$.
+
+### Reparametrization
+
+Generally, the reparametrization of an integral curve $\gamma$ is not an integral curve of the vector field $X$. But if the reparametrization is linear, the reparametrization is still an integral curve of the vector field $X$.
+
+If $\gamma:I\to M$ is an integral curve of $X$, then:
+1. Let $I_{a}={t|t+a\in I}$, $\gamma_a:I_a\to M$ be the curve defined by $\gamma_a(t)=\gamma(t+a)$ for all $t\in I_a$. Then $\gamma_a$ is also an integral curve of $X$.
+2. Let $I^{a}={t|at\in I} (a\neq 0)$, then $\gamma^a:I^a\to M, \gamma^a(t)=\gamma(at)$ is an integral curve of $X^a=aX$
+
+For any $p\in M$, the integral curve starting at $p$ has a maximal interval of existence $J_p$. It is easy to prove that $J_p$ must be open.
+
+Denote the maximal curve as 
+$$
+\gamma_p:J_p\to M
+$$
+
+We have the following property:
+
+> For $X\in \mathfrak{X}(M)$, $\gamma_{\gamma_p(s)}(t)=\gamma_p(t+s)$ if $t,s,t+s\in J_p$.
+
+And $X\in \mathfrak{X}(M)$ is called a **complete vector field** if $J_p=\mathbb R,\forall p\in M$
+
+### Flow
+
+The **flow** is a mapping on set $X$
+$$ 
+\Phi: X\times \mathbb{R} \to X
+$$
+such that $\Phi(x,0)=x,\Phi(\Phi(x,s),t) = \Phi(x,s+t)$.
+
+In certain situations one might also consider local flows, which are defined only in some subset $\operatorname{dom}\Phi=\mathcal{X}$ is an open subset of $X\times\mathbb R$.
+
+We can see that a vector field $X$ on $M$ induced a flow on $M$.
+
+We have the following theorem stating the smoothness of such flow:
+> For any $X\in \Gamma^{\infty}(TM)$, the flow $\Phi:M\times R\to M$ is smooth on its domain $\operatorname{dom}\Phi=\{(p,t)|p\in M, t\in J_p\}$.
+
+**Proof**
+
+---
+
+By the property of flow, it suffices to prove that $\Phi$ is smooth around any point $(p,0)$. And then we can transfer the smoothness to any point $(q,t)$ by the property of flow.
+
+By the fundamental theorem above, there exists a neighborhood $U$ of $p$ and $\epsilon>0$ such that $\Phi(q,t): U \times (-\epsilon,\epsilon)$ is smooth.
+So $\Phi$ is smooth around $(p,0)$.
+
+---
+
+If the vector field $X$ is complete, then the flow $\Phi$ is defined on the whole $M\times \mathbb R$.
+
+### Completeness and the induced diffeomorphism
+
+We shall naturally ask, when is a vector field complete?
+
+A sufficient condition is that the vector field has compact support.
+
+We define the support of a vector field $X\in \mathfrak{X}(M)$ as:
+$$
+\operatorname{supp}(X) = \overline{\{p\in M|X_p\neq 0\}}
+$$
+
+We state the proof idea here:
+
+- For $X_p = 0$, the integral curve is constant, so it is defined on $\mathbb R$.
+- For $X_p \neq 0$, then the integral curve $\gamma_p(t)$ shall be always in $C=\operatorname{supp}(X)$. And there exists a $\epsilon_p$ such that $\Gamma(q,t)$ is defined on $U_p\times (-\epsilon_p,\epsilon_p)$. Now since $C$ is compact, we can cover $C$ with finite many $U_{p_i}$, and let $\epsilon = \min \epsilon_{p_i}$. Then for any $q\in C$, $\gamma_q(t)$ is defined on $(-\epsilon,\epsilon)$. And by proper reparametrization, we can extend the integral curve to the whole $\mathbb R$.
+
+As a corollary, a vector field on a compact manifold is always complete.
+
+#### Induced Diffeomorphism
+
+Let $X\in \mathfrak{X}(M)$ be a complete vector field on $M$, then the flow $\Phi:M\times \mathbb R\to M$ induces a one-parameter group of diffeomorphisms $\{\phi_t:M\to M|t\in \mathbb R\}$ defined as:
+$$
+\phi_t(p) = \Phi(p,t)
+$$
+And $\phi_t$ satisfies the following properties:
+- $\phi_0 = \text{id}_M$
+- $\phi_{s+t} = \phi_s \circ \phi_t$ for all $s,t\in \mathbb R$.
+- Each $\phi_t$ is a diffeomorphism and $\phi_t^{-1} = \phi_{-t}$.
+
+That is to say, a complete vector field on $M$ induces a family of diffeomorphisms from $M$ to itself.
 
 ## Exterior Algebra, Differential Forms
 
@@ -386,7 +548,7 @@ TODO.
 
 TODO.
 
-### de Rham Theory
+## de Rham Theory
 
 Let $M$ be a smooth manifold, $\omega \in \Omega^k(M)$ be a smooth differential $k$-form. We call $\omega$ a **closed form** if $d\omega = 0$, and we call $\omega$ an **exact form** if there exists a differential $(k-1)$-form $\eta \in \Omega^{k-1}(M)$ such that $\omega = d\eta$.
 
@@ -441,7 +603,7 @@ Let $\dim M = n$, we have the following results:
 - $H^k_{dR}(M) = \{0\}$ for $k > n$.
 - $H^0_{dR}(M) \simeq \mathbb{R}^{K}$, where $K$ is the number of connected components of $M$.
 
-#### Betti Numbers and Euler Characteristic
+### Betti Numbers and Euler Characteristic
 
 If $\dim H^k_{dR}(M) < \infty$ for any $k$, we define the **Betti number** 
 $$b_k(M) = \dim H^k_{dR}(M)$$
@@ -452,7 +614,7 @@ $$ \chi(M) = \sum_{k=0}^{\dim M} (-1)^k b_k(M) $$
 
 From the above result, we know $\chi(\mathbb R) = 1 - 0 = 1$, and $\chi(\mathbb{S^1}) = 1 - 1 = 0$.
 
-#### Pullback 
+### Pullback 
 
 Let $F: M \to N$ be a smooth map between manifolds, the pullback of the de Rham cohomology is defined as:
 $$ F^*: H^k_{dR}(N) \to H^k_{dR}(M) $$
@@ -471,7 +633,7 @@ Thus, the de Rham cohomology is a contravariant functor from the category of smo
 
 Particularly, $b_k(M)$ and $\chi(M)$ are diffeomorphism invariants.
 
-#### Cup Product
+### Cup Product
 
 Note that the wedge product $\wedge$ on differential forms induces a operation on de Rham cohomology, called the **cup product**.
 $$ \cup: H^k_{dR}(M) \times H^l_{dR}(M) \to H^{k+l}_{dR}(M) $$
@@ -506,7 +668,7 @@ with the cup product $\cup$ as the multiplication operation.
 
 And $(H^*_{dR}(M), +, \cup)$ becomes a graded commutative ring with identity, called the **de Rham cohomology ring** of $M$.
 
-#### Homotopy Invariance
+### Homotopy Invariance
 
 We say $M$ and $N$ are homotopy equivalent if there exist continuous maps $f: M \to N$ and $g: N \to M$ such that $g \circ f$ is homotopic to the identity map on $M$ and $f \circ g$ is homotopic to the identity map on $N$.
 
@@ -514,12 +676,70 @@ If $M$ and $N$ are homotopy equivalent, then $H^k_{dR}(M) \simeq H^k_{dR}(N)$ fo
 
 Note: This shows that the de Rham cohomology is determined by the topological structure of the manifold, not relevant to the smooth structure.
 
+#### Poincaré Lemma
+
+The **Poincaré Lemma** states that if $U$ is a star-shape area in $\mathbb R^n$, then $H^k_{dR}(U)=0$ for $k>1$. Particularly, $H^k_{DR}(\mathbb R^n) = 0$.
+
+This is trivial since the star shape area can always contract to a point.
+
+Moreover, since for any point in a manifold has a neighborhood that is diffeomorphic to a star shape area in $\mathbb R^n$, we have the following collary:
+
+For any $k$-th closed form $\omega \in Z^k(M)$ and any $p\in M$, there is a neighborhood $U\ni p$ and $(k-1)$-form $\eta\in \Omega^k(U)$ such that $\omega = d \eta$ on $U$.
+
+#### Proof of Homotopy Invariance
+
+It suffices to prove that functor $f\rightsquigarrow  f^*$ is homotopic invariant:
+
+> If two smooth maps $f,g: M \to N$ are homotopic, then $f^* = g^*: H^k_{dR}(N) \to H^k_{dR}(M)$. 
+
+Because assume this holds, if $M$ and $N$ are homotopy equivalent, we can use smooth approximations of the continuous maps to get smooth maps $f: M \to N$ and $g: N \to M$ such that $g \circ f$ and $f \circ g$ are homotopic to the identity maps on $M$ and $N$, respectively. Then we have
+$$ (g \circ f)^* = f^* \circ g^* = \text{id}_{H^*_{dR}(M)} $$
+$$ (f \circ g)^* = g^* \circ f^* = \text{id}_{H^*_{dR}(N)} $$
+which implies that $f^*$ and $g^*$ are isomorphisms.
+
+Now we prove the claim that if $f,g: M \to N$ are homotopic, then $f^* = g^*$.
+
+We define the **cochain homotopy** as follows:
+> if $f,g\in C^{\infty}(M,N)$ are homotopic. If there is a sequence of mapping $h_k:\Omega^k(M) \to \Omega^{k-1}(M)$ satisfying:
+$$ g^*-f^* = d_{M}h_k+h_{k+1}d_{N}.$$
+we say the sequence $h=(h_k)$ is a cochain homotopy between $f^*$ and $g^*$.
+
+If there exists such a cochain homotopy $h$, for any $\omega \in Z^k_{dR}(N)$
+
+$$
+g^*\omega - f^* \omega = (dh_{k}+h_{k+1}d)\omega = d(h_k\omega) +h_{k+1}(d\omega) = d(h_k\omega) \in B^k(M)
+$$
+
+So $f^*([\omega])=[f^*\omega] = [g^* \omega] = g^*([\omega])$.
+
+Now we prove the existence of the cochain homotopy:
+
+First, we prove a lemma
+Let $X$ be a complete vector field on $M$, $\phi_t$ be the flow generated by $X$. Then there exists a linear operator $Q_k:\Omega^k(M)\to\Omega^{k-1}(M)$ s.t. :
+$$
+\phi_1^*\omega-\omega= d Q_k(\omega)+ Q_{k+1}(d\omega)
+$$
+**Proof**
+---
+$$
+\frac{d}{dt}\phi^*_t\omega=\left.\frac{d}{ds}\right|_{s=0}\phi^*_{s+t}=\left.\frac{d}{ds}\right|_{s=0}\phi^*_{s}\phi^*_{t}\omega=\mathcal{L}_X(\phi_t^*\omega)=d\iota_X(\phi^*_t\omega)+\iota_X d(\phi^*_t\omega)
+$$
+Therefore, denote $Q_k(\omega)=\int_{0}^{1}\iota_X(\phi_t^*\omega)dt$
+$$
+\phi_1^*\omega-\omega = \int_{0}^{1}\left (\frac{d}{dt}\phi^*_t\omega\right ) = dQ_k(\omega) + Q_{k+1}(d\omega)
+$$
+---
+
+### de Rham Theorem
+
 The famous **de Rham theorem** states that the de Rham cohomology is isomorphic to the singular cohomology with real coefficients, i.e., for any smooth manifold $M$,
 $$ H^k_{dR}(M) \simeq H^k_{sing}(M; \mathbb{R}) $$
 
-We shall postpone the proof of this theorem to the section on singular cohomology.
+which we shall not prove here. 
 
-#### Chain Complex
+This theorem reveals the duality between the topological structure and the algebraic structure (differential forms) on a manifold.
+
+### Chain Complex
 
 The **chain complex** is a sequence of abelian groups (or modules) $\cdots A_0, A_1, A_2\cdots$ connected by homomorphisms $d_n: A_n\to A_{n-1}$, such that the image of one homomorphism is contained in the kernel of the next. The composition of any two consecutive maps shall be the zero maps, $ d_n \circ d_{n+1} = 0$ or $d^2=0$ for short. 
 $$ \cdots \xleftarrow{d_0} A_0 \xleftarrow{d_1} A_1 \xleftarrow{d_2} A_2 \xleftarrow{d_3} \cdots$$
@@ -537,11 +757,10 @@ A **exact sequence** is a (co)chain complex whose (co)homology groups are all ze
 
 $$ \cdots \rightarrow 0 \rightarrow Z \xrightarrow {\times p} Z \twoheadrightarrow Z/p \rightarrow 0 \rightarrow \cdots $$
 
-#### de Rham Complex
+### de Rham Complex
 
 The **de Rham complex** is the sequence of differential forms:
 $$ 0 \to \Omega^0(M) \xrightarrow{d} \Omega^1(M) \xrightarrow{d} \Omega^2(M) \xrightarrow{d} \ldots \xrightarrow{d} \Omega^n(M) \to 0 $$
 
-### Poincaré Lemma
+#### The Zig-Zag Lemma
 
-TODO.

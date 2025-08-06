@@ -212,7 +212,7 @@ Equivalently, a vector field assigns to each point $p \in M$ a tangent vector $X
 **Local Coordinate Expression**: 
 
 The partial derivative operator $\frac{\partial}{\partial x^i}$ can be viewed as a vector field on $M$ in the coordinate chart $(U, x)$, where it acts on smooth functions $f \in C^\infty(U)$ by:
-$$ \frac{\partial f}{\partial x^i} = d(x^i \circ f) = d(f \circ x^{-1}) \bigg|_{x(p)} $$
+$$ \frac{\partial f}{\partial x^i} = \left.\frac{\partial(f\circ x^{-1})}{\partial x^i}\right|_{x(p)} $$
 
 where $x^i$ is the $i$-th coordinate function in the chart $(U, x)$.
 
