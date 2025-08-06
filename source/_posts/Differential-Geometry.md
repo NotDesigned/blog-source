@@ -814,7 +814,6 @@ $$
 \phi_1^*\omega-\omega= d Q_k(\omega)+ Q_{k+1}(d\omega)
 $$
 **Proof**
----
 $$
 \frac{d}{dt}\phi^*_t\omega=\left.\frac{d}{ds}\right|_{s=0}\phi^*_{s+t}=\left.\frac{d}{ds}\right|_{s=0}\phi^*_{s}\phi^*_{t}\omega=\mathcal{L}_X(\phi_t^*\omega)=d\iota_X(\phi^*_t\omega)+\iota_X d(\phi^*_t\omega)
 $$
@@ -822,7 +821,6 @@ Therefore, denote $Q_k(\omega)=\int_{0}^{1}\iota_X(\phi_t^*\omega)dt$
 $$
 \phi_1^*\omega-\omega = \int_{0}^{1}\left (\frac{d}{dt}\phi^*_t\omega\right ) = dQ_k(\omega) + Q_{k+1}(d\omega)
 $$
----
 
 ### de Rham Theorem
 
