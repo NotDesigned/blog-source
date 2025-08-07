@@ -49,7 +49,7 @@ And $\operatorname{supp}(Pf) \subseteq \operatorname{supp}(f)$ for any smooth fu
 
 Peetre proves that any linear differential operator that satisfies the above condition is a smooth differential operator.
 
-### Lie Bracket
+### Lie Bracket on Smooth Vector Fields
 
 Given two smooth vector fields $X,Y$ on a smooth manifold $M$, the **Lie bracket** of $X$ and $Y$, denoted as $[X,Y]$, on a local coordinate $(U,\phi)$ it is defined as:
 $$
@@ -290,6 +290,227 @@ $$
 
 So we can see the Jacobi identity as the Leibniz rule of the Lie derivative.
 
+### Lie Group
+
+Let $G$ be a group, we say $G$ is a **Lie group** if it is a smooth manifold and the group operation $\mu:G\times G\to G, (g_1,g_2)\mapsto g_1\cdot g_2$ is smooth mappings.
+
+Examples of Lie groups include:
+- $\mathbb{R}^n$ with addition as the group operation.
+- $\mathbb{R}^n\setminus\{0\}$ with multiplication as the group operation.
+- The general linear group $\operatorname{GL}(n,\mathbb{R})$, which consists of all invertible $n \times n$ matrices with real entries, with matrix multiplication as the group operation.
+- The special orthogonal group $\operatorname{SO}(n)$, which consists of all $n \times n$ orthogonal matrices with determinant 1, with matrix multiplication as the group operation.
+- $\mathbb S^1$, the circle group, which can be identified with the unit complex numbers under multiplication.
+- $\mathbb S^3$, the 3-sphere, which can be identified with unit quaternions under multiplication.
+
+A Lie group must satisfy the following properties:
+- The base space $G$ (i.e. the underlying topological space) is orientable.
+- The fundamental group $\pi_1(G)$ is a abelian group for a connected Lie group $G$.
+- Every Lie group is parallelizable, i.e., its tangent bundle is trivial $TM \cong G \times \mathbb{R}^n$, where $n = \dim G$.
+
+
+#### Left and Right Multiplication
+
+Assume $G$ is a Lie group, for any $g\in G$, the left multiplication and right multiplication induce two mappings on $G$:
+$$
+L_g: G \to G, \quad L_g(h) = g\cdot h
+$$
+$$
+R_g : G \to G, \quad R_g(h) = h\cdot g
+$$
+
+Note we can write them as the composition of the group operation and the inclusion map:
+$$
+L_g = \mu \circ l_g=(i_g, \text{id}_G), \quad R_g = \mu \circ r_g=(\text{id}_G, i_g)
+$$
+where $i_g: \{e\} \to G$ is the inclusion map from the identity element $e$ to $g$.
+
+And $L_g^{-1} = L_{g^{-1}}, R_g^{-1} = R_{g^{-1}}$.
+
+Thus, $L_g$ and $R_g$ are diffeomorphisms on $G$.
+
+To show the usefulness of left and right multiplication, we leveraged them to prove that every Lie group is parallelizable.
+
+**Theorem**
+Every Lie group $G$ is parallelizable, i.e., its tangent bundle is trivial $TG \cong G \times \mathbb{R}^n$, where $n = \dim G$.
+
+**Proof** 
+Consider 
+$$
+\begin{align*}
+\Phi: G \times T_eG &\to TG \\
+(g,v) &\mapsto (g, (dL_g)_e(v))
+\end{align*}
+$$
+where $e$ is the identity element of $G$.
+It is easy to see that $\Phi$ is a bijection. And since $L_g$ is a diffeomorphism, $(dL_g)_e$ is a linear isomorphism from $T_eG$ to $T_gG$. So $\Phi$ is a diffeomorphism.
+
+Use the same technique, we can also show that the inverse mapping $g\mapsto g^{-1}$ is a smooth diffeomorphism on $G$.
+
+And the differential of the inverse mapping is given by:
+$$
+(d\iota)_a X_a = -(dL_{a^{-1}})_e (dR_{a^{-1}})_a X_a
+$$
+
+And $(d\mu)_{e,e}(X_e,Y_e) = X_e+Y_e, (d\iota)_e(X_e) = -X_e$.
+
+### Lie Algebra
+
+From the proof above, we see that the tangent space $T_eG$ determines the structure around any point $g\in G$.
+
+So we focus on the structure around the identity element $e$ of the Lie group $G$.
+
+**Definition**
+
+Let $V$ be a vector space over $\mathbb R$ (or any field $\mathbb K$) with a map $[\cdot,\cdot]: V \times V \to V$ satisfying the following properties:
+- Antisymmetry: $[X,Y] = -[Y,X]$ for all $X,Y\in V$.
+- Linearity: $[aX+bY,Z]=a[X,Z]+b[Y,Z],\forall a,b\in \mathbb R$.
+- Jacobi Identity: $[X,[Y,Z]] + [Y,[Z,X]] + [Z,[X,Y]] = 0$ for all $X,Y,Z\in V$.
+
+Then $(V,[\cdot,\cdot])$ is called a **Lie algebra** and the map $[\cdot,\cdot]$ is called the **Lie bracket**.
+
+#### Left Invariant Vector Fields
+
+Assume $G$ is a Lie group, $X_e\in T_eG$ is a vector in the tangent space at the identity element $e$. We can define a vector field $X\in \mathfrak{X}(G)$ as follows:
+$$
+X(g) = (dL_g)_e(X_e)
+$$
+This vector field is called a **left invariant vector field** because it is invariant under left multiplication, i.e., $dL_g X(h) = X(gh)$ for all $g,h\in G$.
+
+It is obvious that any left invariant vector field is uniquely determined by its value at the identity element $e$.
+
+Denote the set of all left invariant vector fields on $G$ as $\mathfrak{g} = \{X\in \mathfrak{X}(G)| X(g) = (dL_g)_e(X_e), \forall g\in G\}$.
+
+The set $\mathfrak{g}$ is a vector space over $\mathbb R$ and $\mathfrak{g} \simeq T_eG$, $\dim \mathfrak{g} = \dim G$.
+
+For any $X,Y\in \mathfrak{g}, g\in G$, we can verify that:
+$$
+\begin{align*}
+( (dL_g)_e([X,Y]_e) )f &= [X,Y]_e (f\circ L_g) \\
+&= (X(Y(f\circ L_g)) - Y(X(f\circ L_g)))(e) \\
+&= (XYf-YXf)(g)\\
+&= [X,Y]_g f
+\end{align*}
+$$
+Thus $[X,Y]$ is also a left invariant vector field.
+
+So $\mathfrak{g}$ is a Lie algebra with the Lie bracket induced by the Lie bracket of $\mathfrak{X}(G)$, which is called **the Lie Algebra on Lie group $G$**.
+
+### Homomorphism of Lie Groups and Lie Algebras
+
+There are two types of homomorphism, one is the **Lie group homomorphism** and the other is the **Lie algebra homomorphism**, which are morphism between Lie group categories and Lie algebra categories respectively.
+
+Let $G,H$ be Lie groups, if smooth mapping $\phi: G\to H$ is a group homomorphism, we call $\phi$ a Lie group homomorphism. If $\phi$ is a diffeomorphism, we call $\phi$ a Lie group isomorphism.
+
+Let $\mathfrak{g,h}$ be Lie algebras, if a linear mapping $L:\mathfrak{g}\to \mathfrak{h}$ satisfies $L([X,Y]) = [L(X),L(Y)]$ for all $X,Y\in \mathfrak{g}$, we call $L$ a Lie algebra homomorphism. If $L$ is invertible, we call $L$ a Lie algebra isomorphism. Note that if $L$ is invertible, then $L^{-1}$ is also a Lie algebra homomorphism.
+
+**Examples**
+
+For any Lie group $G$, the conjugation mapping $C_g: G\to G$ defined as:
+$$
+C_g(h) = g h g^{-1} = L_g \circ R_{g^{-1}}(h)
+$$
+is a Lie group isomorphism for any $g\in G$. The inverse mapping is given by $C_{g^{-1}}$.
+
+For any $X\in GL(n,\mathbb R)$, the adjoint mapping $\operatorname{Ad}_X: \mathfrak{gl}(n,\mathbb R) \to \mathfrak{gl}(n,\mathbb R)$ defined as:
+$$
+\operatorname{Ad}_X(Y) = XYX^{-1}
+$$
+is a Lie group isomorphism. The inverse mapping is given by $\operatorname{Ad}_{X^{-1}}$.
+
+#### Induced Lie Algebra Homomorphism
+
+Let $\phi: G\to H$ be a Lie group homomorphism, then the differential of $\phi$ at the identity element $e\in G$, induced a mapping $d\phi: \mathfrak{g} \simeq T_eG \to T_{\phi(e)}H\simeq \mathfrak{h}$, is a Lie algebra homomorphism from the Lie algebra $\mathfrak{g}$ of $G$ to the Lie algebra $\mathfrak{h}$ of $H$.
+
+To write it more explicitly, for any $X\in \mathfrak{g}$, $X_e\in T_eG$ is the value of $X$ at $e$.
+$$
+\begin{align*}
+d\phi_e: T_eG &\to T_{\phi(e)}H \\
+X_e &\mapsto (d\phi)_e(X_e) 
+\end{align*}
+$$
+$$
+\begin{align*}
+d\phi: \mathfrak{g} &\to \mathfrak{h} \\
+X &\mapsto [h \mapsto dL_h(d\phi_e(X_e))]
+\end{align*}
+$$
+
+To see that $d\phi$ is a Lie algebra homomorphism, we need to show that $d\phi([X,Y]) = [d\phi(X), d\phi(Y)]$ for any $X,Y\in \mathfrak{g}$.
+
+For any $f\in C^{\infty}(H)$, we have:
+$$
+\begin{align*}
+(d\phi([X,Y]))_{e_{h}} f &= dL_{e_{h}}(d\phi_e([X,Y]_e)) f \\
+&= (d\phi_e([X,Y]_e))(f) \\
+&= [X,Y]_e (f\circ \phi) \\
+\end{align*}
+$$
+
+$$
+\begin{align*}
+[d\phi(X), d\phi(Y)]_{e_{h}} f &= (d\phi(X) d\phi(Y) f - d\phi(Y) d\phi(X) f)(e_{h}) \\
+&= (d\phi(X)(d\phi(Y) f))(e_{h}) - (d\phi(Y)(d\phi(X) f))(e_{h}) \\
+&= (d\phi_e(X_e))(d\phi(Y) f) - (d\phi_e(Y_e))(d\phi(X) f) \\
+&= X_e (d\phi(Y) f \circ \phi) - Y_e (d\phi(X) f \circ \phi) \\
+\end{align*}
+$$
+
+To move on, we need:
+
+**Lemma**: 
+
+$$
+(d\phi(X)f) \phi = X(f\circ \phi)
+$$
+
+**Proof**:
+For any $g\in G$, we have:
+$$
+\begin{align*}
+(d\phi(X)f) \phi(g) &= d\phi(X)|_{\phi(g)} f \\
+&= (dL_{\phi(g)})_{e_H}(d\phi_e(X_e)) f \\
+&= d\phi_g (dL_g)_e (X_e) f \\
+&= d\phi_g X_g f \\
+&= X_g (f \circ \phi) \\
+&= X(f \circ \phi) (g)
+\end{align*}
+$$
+
+> For the third step, $\phi$ is a group homomorphism, we know that $\phi(g h) = \phi(g)\phi(h)$, so $L_{\phi(g)} \circ \phi = \phi \circ L_g$, differentiating both sides at $e$ gives us $d(L_{\phi(g)})_{e_H} \circ d\phi_e = d\phi_g \circ (dL_g)_e$.
+
+That is to say, the definition of the push forward $d\phi(X)$ by the differential of the diffeomorphism $\phi$ is equivalent to the corresponding vector field induced by the left action $dL_{\phi(\cdot)}$ on $d\phi_e(X_e)$.
+
+So we have:
+$$
+\begin{align*}
+[d\phi(X), d\phi(Y)]_{e_{h}} f &= X_e (d\phi(Y) f \circ \phi) - Y_e (d\phi(X) f \circ \phi) \\
+&= X_e (Y (f\circ \phi)) - Y_e (X (f\circ \phi)) \\
+&= [X,Y]_e (f\circ \phi) \\
+&= (d\phi([X,Y]))_{e_{h}} f
+\end{align*}
+$$
+
+The above proof can be summerized as the following:
+
+Step 1: $d\phi(X)$ is $\phi$-related to $X$.
+
+For $X \in \mathfrak{g}$, $d\phi(X) \in \mathfrak{h}$ is left-invariant, and for $f \in C^\infty(H)$, since $\phi(g h) = \phi(g) \phi(h)$, we have $L_{\phi(g)} \circ \phi = \phi \circ L_g$. 
+
+Differentiating at $e$: $ d(L_{\phi(g)}){e_H} \circ d\phi_e = d\phi_g \circ (dL_g)e. $ Thus: $ d\phi(X)|_{\phi(g)} f = (dL{\phi(g)})_{e_H} (d\phi_e(X_e)) f = d\phi_g ((dL_g)_e X_e) f = X_g (f \circ \phi). $ 
+
+So, $d\phi(X) f \circ \phi = X (f \circ \phi)$, meaning $X$ is $\phi$-related to $d\phi(X)$.
+
+Step 2: Lie Bracket Preservation
+
+If $X, Y \in \mathfrak{g}$ are $\phi$-related to $d\phi(X), d\phi(Y) \in \mathfrak{h}$, then $[X, Y]$ is $\phi$-related to $[d\phi(X), d\phi(Y)]$. 
+
+At $g = e$: $ [d\phi(X), d\phi(Y)]_{e_H} = d\phi_e ([X, Y]_e). $ Since both are left-invariant, $[d\phi(X), d\phi(Y)] = d\phi([X, Y])$. Linearity of $d\phi$ follows from $d\phi_e$. 
+
+Thus, $d\phi$ is a Lie algebra homomorphism.
+
+### Exponential Map
+
+TODO.
 
 ## Exterior Algebra, Differential Forms
 
