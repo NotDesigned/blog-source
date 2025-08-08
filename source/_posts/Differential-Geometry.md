@@ -1007,13 +1007,13 @@ $$
 If $\omega$ is compactly support in coordinate chart $(U,x)$
 
 $$
-\omega = \sum_{i}(-1)^{i-1}f_i dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^m\\
+\omega = \sum_{i}(-1)^{i-1}f_i dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^n\\
 $$
 If $U\simeq \mathbb R^{n}$, $\omega$ is $0$ on $\partial M$, then:
 $$
 \begin{align*}
-\int_U d\omega &= \int_{\mathbb R^n}\sum_i \frac{\partial f_i}{\partial x^i} dx^1\wedge \cdots \wedge dx^m\\
-&= \sum_{i=1}^n \int_{\mathbb R^{n-1}}\left(\int_{-\infty}^{\infty}\frac{\partial f_i}{\partial x^i}dx^i\right) dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^m\\
+\int_U d\omega &= \int_{\mathbb R^n}\sum_i \frac{\partial f_i}{\partial x^i} dx^1\wedge \cdots \wedge dx^n\\
+&= \sum_{i=1}^n \int_{\mathbb R^{n-1}}\left(\int_{-\infty}^{\infty}\frac{\partial f_i}{\partial x^i}dx^i\right) dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^n\\
 &=0=\int_M \iota_{\partial M}^*\omega 
 \end{align*}
 $$
@@ -1021,8 +1021,8 @@ $$
 If $U\simeq \mathbb R^n_+$, then:
 $$
 \begin{align*}
-\int_U d\omega &= \int_{\mathbb R^n_+}\sum_i \frac{\partial f_i}{\partial x^i} dx^1\wedge \cdots \wedge dx^m\\
-&= \sum_{i=1}^{n-1} \int_{\mathbb R^{n-1}}\left(\int_{-\infty}^{\infty}\frac{\partial f_i}{\partial x^i}dx^i\right) dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^m + \int_{\mathbb R^{n-1}}\left(\int_{0}^{\infty}\frac{\partial f_n}{\partial x^n}dx^n\right) dx^1\wedge\cdots\wedge dx^{n-1}\\
+\int_U d\omega &= \int_{\mathbb R^n_+}\sum_i \frac{\partial f_i}{\partial x^i} dx^1\wedge \cdots \wedge dx^n\\
+&= \sum_{i=1}^{n-1} \int_{\mathbb R^{n-1}}\left(\int_{-\infty}^{\infty}\frac{\partial f_i}{\partial x^i}dx^i\right) dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^n + \int_{\mathbb R^{n-1}}\left(\int_{0}^{\infty}\frac{\partial f_n}{\partial x^n}dx^n\right) dx^1\wedge\cdots\wedge dx^{n-1}\\
 &= \int_{\mathbb R^{n-1}} f_n( x^1,\cdots,x^{n-1},0) dx^1\wedge\cdots\wedge dx^{n-1}\\
 &=\int_{\partial M} \iota_{\partial M}^*\omega 
 \end{align*}
