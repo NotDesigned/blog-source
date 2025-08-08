@@ -917,6 +917,57 @@ where $f: M \to \mathbb{R}$ is a smooth function and $\{dx^1, dx^2, \ldots, dx^n
 If we change the local coordinates to $(y^1, y^2, \ldots, y^n)$ by the pullback map $\phi: V \to U$, $y=\phi^*x = x\circ \phi$, then the highest degree form transforms as:
 $$ \phi^*(dx^1 \wedge dx^2 \wedge \ldots \wedge dx^n) = \det\left(\frac{\partial y^i}{\partial x^j}\right) dy^1 \wedge dy^2 \wedge \ldots \wedge dy^n $$
 
+We can define the integral of a highest degree form over $U$ as:
+$$ \int_U \omega = \int_U f \, dx^1 \wedge dx^2 \wedge \ldots \wedge dx^n= \int_U f dx^1 dx^2 \cdots dx^n $$
+where the integral is taken over the open set $U \subseteq M$.
+
+To make integral is well-defined and does not depend on the choice of local coordinates, we need to ensure that the integral is invariant under coordinate changes. 
+
+But according to the change of variables formula on integral over $\mathbb{R}^n$, we only have:
+$$
+\int_U f dx^1dx^2 \cdots dx^n = \int_V f \left|\det\left(\frac{\partial y^i}{\partial x^j}\right)\right| dy^1 dy^2 \cdots dy^n
+$$
+
+So to make the integral well-defined, we need to restrict the transformation to be orientation-preserving, i.e., $\det\left(\frac{\partial y^i}{\partial x^j}\right) > 0$. 
+
+We call the two charts $(U,x)$ and $(V,y)$ **orientation-compactible** if the Jacobian determinant $\det\left(\frac{\partial y^i}{\partial x^j}\right)$ is positive for all points in $U \cap V$.
+
+For a manifold, if all of the transition maps between charts are orientation-preserving, we say that the manifold is **oriented**. And if such a choice of orientation can be made, we call the manifold **orientable**. And we call such atlas $\mathcal{A}$ an **oriented atlas** or **orientation** of the manifold $M$.
+
+#### Integration on Manifolds
+
+Let $M$ be a smooth oriented manifold of dimension $n$. And let $(\rho, U)$ be a smooth partition of unity subordinate to an open cover $\{U_i\}_{i \in I}$ of $M$, where $\rho_i: M \to [0,1]$ are smooth functions such that $\sum_{i \in I} \rho_i = 1$ on $M$ and $\text{supp}(\rho_i) \subseteq U_i$.
+The integral of a differential $n$-form $\omega \in \Omega^n(M)$ over the manifold $M$ is defined as:
+$$
+\int_M \omega = \sum_{i \in I} \int_{U_i} \rho_i \omega
+$$
+where $\rho_i \omega$ is a highest degree form on $U_i$ and the integral is taken over the open set $U_i$. 
+
+Note $\rho_i \omega$ is compactly supported in $U_i$ and is a smooth differential $n$-form on $U_i$. So the integral $\int_{U_i} \rho_i \omega$ is well-defined and finite.
+The integral $\int_M \omega$ is independent of the choice of partition of unity and the open cover $\{U_i\}_{i \in I}$.
+
+#### Change of Variables
+
+Let $\phi: M \to N$ be a smooth map between oriented manifolds $M$ and $N$ of dimension $n$, with orientation $\mathcal{A,B}$ respectively. We say that $\phi$ is **orientation-preserving** if for every chart $(\psi, V)\in \mathcal{B}$, the chart $(\psi \circ \phi, \phi^{-1}(V))$ is orientation-compactible with $\mathcal{A}$. We say that $\phi$ is **orientation-reversing** if for every chart $(\psi, V)\in \mathcal{B}$, the chart $(\psi \circ \phi, \phi^{-1}(V))$ is not orientation-compactible with $\mathcal{A}$.
+
+Actually, mapping $\phi$ is either orientation-preserving or orientation-reversing if $M$ and $N$ are connected. Otherwise, it either preserves or reverses the orientation on each connected component of $M$ and $N$.
+
+The **change of variables formula** for the integral of a differential $n$-form $\omega \in \Omega^n(M)$ under the map $\phi$ is given by:
+
+if $\phi$ is an orientation-preserving map, then:
+$$
+\int_N \phi^* \omega = \int_M \omega
+$$
+if $\phi$ is an orientation-reversing map, then:
+$$
+\int_N \phi^* \omega = -\int_M \omega
+$$
+
+The relation of the orientability and the differential forms is given by the following theorem:
+
+**Theorem**: A smooth manifold $M$ is orientable if and only if there exists a nowhere vanishing differential $n$-form $\omega \in \Omega^n(M)$.
+
+And we call such $n$-form $\omega$ a **volume form** on $M$.
 
 ### Stokes' Theorem
 
