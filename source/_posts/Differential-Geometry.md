@@ -969,9 +969,67 @@ The relation of the orientability and the differential forms is given by the fol
 
 And we call such $n$-form $\omega$ a **volume form** on $M$.
 
-### Stokes' Theorem
+### Stokes Theorem
 
-TODO.
+#### Induced Orientation on the Boundary
+
+Let $M^n$ be an oriented smooth manifold with boundary $\partial M$. The boundary $\partial M$ is a smooth manifold of dimension $n-1$. And $\mu$ is a volume form on $M$ that defines the orientation of $M$.
+
+We can define an orientation on $\partial M$ induced by the orientation of $M$ as follows:
+At each point $p \in \partial M$, we can choose a local chart $(U_{\alpha}, x^1, x^2, \ldots, x^n)$ around $p$ such that $x^n \geq 0$ on $U_{\alpha}$ and $x^n = 0$ on $U \cap \partial M$. The orientation on $\partial M$ is defined by the volume form:
+$$ \eta_{\alpha}=\iota_{e_n} \mu = \iota_{-\frac{\partial}{\partial x^n}} \mu $$
+where $e_n = -\frac{\partial}{\partial x^n}$ is the outward-pointing normal vector field on $\partial M$.
+
+Or explicitly, 
+$$
+\eta_{\alpha} = (-1)^{n} f_{\alpha} dx^1 \wedge dx^2 \wedge \ldots \wedge dx^{n-1}
+$$
+if $\mu = f_{\alpha} dx^1 \wedge dx^2 \wedge \ldots \wedge dx^n$ on $U_{\alpha}$.
+
+And $\eta$ gives a nowhere vanishing $n-1$ form on $\partial M$.
+
+To integrate a $n-1$-form $\omega$ on $\partial M$, we locally write
+$$
+\omega =  (-1)^n f\ dx^1\wedge \cdots \wedge dx^{n-1}
+$$
+Then 
+$$
+\int_U \omega=\int_V f\ dx^1\cdots dx^{n-1}
+$$
+
+The **Stokes Theorem** state that, for any $\omega \in \Omega^{n-1}(M)$
+$$
+\int_{\partial M} \iota_{\partial M}^* \omega = \int_{M} d\omega
+$$
+
+**Proof**
+
+If $\omega$ is compactly support in coordinate chart $(U,x)$
+
+$$
+\omega = \sum_{i}(-1)^{i-1}f_i dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^m\\
+$$
+If $U\simeq \mathbb R^{n}$, $\omega$ is $0$ on $\partial M$, then:
+$$
+\begin{align*}
+\int_U d\omega &= \int_{\mathbb R^n}\sum_i \frac{\partial f_i}{\partial x^i} dx^1\wedge \cdots \wedge dx^m\\
+&= \sum_{i=1}^n \int_{\mathbb R^{n-1}}\left(\int_{-\infty}^{\infty}\frac{\partial f_i}{\partial x^i}\right) dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^m\\
+&=0=\int_M \iota_{\partial M}^*\omega 
+\end{align*}
+$$
+
+If $U\simeq \mathbb R^n_+$, then:
+$$
+\begin{align*}
+\int_U d\omega &= \int_{\mathbb R^n_+}\sum_i \frac{\partial f_i}{\partial x^i} dx^1\wedge \cdots \wedge dx^m\\
+&= \sum_{i=1}^{n-1} \int_{\mathbb R^{n-1}}\left(\int_{0}^{\infty}\frac{\partial f_i}{\partial x^i}\right) dx^1\wedge\cdots\wedge\widehat{dx^i}\wedge\cdots\wedge dx^m + \int_{\mathbb R^{n-1}}\left(\int_{0}^{\infty}\frac{\partial f_n}{\partial x^n}\right) dx^1\wedge\cdots\wedge dx^{n-1}\\
+&= \int_{\mathbb R^{n-1}} f_n( x^1,\cdots,x^{n-1},0) dx^1\wedge\cdots\wedge dx^{n-1}\\
+&=\int_{\partial M} \iota_{\partial M}^*\omega 
+\end{align*}
+$$
+The last step is because $\iota_{\partial M}^*(dx^i)=dx^i$ for $i=1,\cdots,n-1$ and $\iota_{\partial M}^*(dx^n)=0$.
+
+For general $\omega$, we can use partition of unity to prove it.
 
 ## de Rham Theory
 
