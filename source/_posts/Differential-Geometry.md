@@ -882,10 +882,30 @@ $$
 
 1. $d\mathcal L_X \omega = d\left(\frac{d}{dt} \bigg|_{t=0} \phi_t^* \omega \right)= \frac{d}{dt} \bigg|_{t=0} d(\phi_t^* \omega) = \frac{d}{dt} \bigg|_{t=0} \phi_t^* (d\omega) = \mathcal L_X d\omega$
 2. $\mathcal L_X(\omega \wedge \eta) = \frac{d}{dt} \bigg|_{t=0} \phi_t^* (\omega \wedge \eta) = \frac{d}{dt} \bigg|_{t=0} (\phi_t^* \omega \wedge \phi_t^* \eta) = \frac{d}{dt}\bigg|_{t=0} (\phi_t^*\omega)\wedge \eta+\omega\wedge\frac{d}{dt}\bigg|_{t=0}(\phi_t^*\eta) = \mathcal L_X \omega \wedge \eta + \omega \wedge \mathcal L_X\eta$
-3. Omitted
-4. Omitted
-5. For the $0$-form function $f$, it is trivially true. Then inductively prove by decomposing it on local coordinates.
+3. Use (5).
+4. Do induction as (5).
+5. For the $0$-form and $1$-form, it is trivial proved to be true. Then inductively prove by decomposing it on local coordinates.
+Let $\omega$ be a $k$-form. Locally, we have:
+$$
+\omega=f dx^1\wedge \cdots \wedge dx^n=dx^1\wedge \omega_1
+$$
 
+$$
+\begin{align*}
+\mathcal L_X \omega &= \mathcal L_X (dx^1) \wedge \omega_1 + dx^1 \wedge \mathcal L_X\omega_1\\
+&=[\iota_X d(dx^1)+d(\iota_X dx^1)]\wedge \omega_1+dx^1\wedge [\iota_X d\omega_1+ d(\iota_X \omega_1)]
+\end{align*}
+$$
+$$
+\begin{align*}
+d\iota_X \omega + \iota_X d\omega &= d\iota_X(dx^1\wedge \omega_1) + \iota_X (-dx^1\wedge d\omega_1)\\
+&=d((\iota_Xdx^1)\wedge \omega_1-dx^1\wedge \iota_X \omega_1) -(\iota_X dx^1)\wedge d\omega_1 + dx^1\wedge\iota_X d\omega_1\\
+&=d(\iota_X dx^1)\wedge \omega_1+(\iota_Xdx^1)\wedge d\omega_1+dx^1\wedge d(\iota_X\omega_1) -(\iota_X dx^1)\wedge d\omega_1 + dx^1\wedge\iota_X d\omega_1\\
+&=d(\iota_X dx^1)\wedge \omega_1+dx^1\wedge d(\iota_X\omega_1) + dx^1\wedge\iota_X d\omega_1\\
+&=d(\iota_X dx^1)\wedge \omega_1+dx^1\wedge [\iota_X d\omega_1+d(\iota_X \omega_1)]\\
+&=\mathcal L_X \omega
+\end{align*}
+$$
 
 ### Integration of Differential Forms
 
@@ -897,9 +917,6 @@ where $f: M \to \mathbb{R}$ is a smooth function and $\{dx^1, dx^2, \ldots, dx^n
 If we change the local coordinates to $(y^1, y^2, \ldots, y^n)$ by the pullback map $\phi: V \to U$, $y=\phi^*x = x\circ \phi$, then the highest degree form transforms as:
 $$ \phi^*(dx^1 \wedge dx^2 \wedge \ldots \wedge dx^n) = \det\left(\frac{\partial y^i}{\partial x^j}\right) dy^1 \wedge dy^2 \wedge \ldots \wedge dy^n $$
 
-
-
-**Proof**:
 
 ### Stokes' Theorem
 
