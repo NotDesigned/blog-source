@@ -82,12 +82,15 @@ if $0\in I$, then $\gamma(0)$ is called the **initial point** of the integral cu
 
 Example:
 
+---
+
 For the vector field $\widetilde{X} = \sum_{i=1}^n a^i \frac{\partial}{\partial x^i}$, the integral curve is:
 $$
 \widetilde{\gamma}(t)=(c_1 + a^1 t, c_2 + a^2 t, \ldots, c_n + a^n t)
 $$
 where $c_i = \gamma(0)^i$ are the initial point of the integral curve.
 
+---
 
 Assume $\gamma$ is in a coordinate chart $(U,x)$, we write $\phi(\gamma(t))=(x^1(\gamma(t)),\cdots,x^n(\gamma(t)))$.
 
@@ -702,12 +705,16 @@ $$ \iota_v(\omega) = \sum_{i=1}^k (-1)^{i-1} \alpha^i(v) \alpha^{1} \wedge \ldot
 
 where $\widehat{\alpha^i}$ means that the $i$-th term is omitted from the wedge product.
 
-The inner product $\iota_v$ is called the **interior product** or **contraction** with respect to the vector $v$. It reduces the degree of the form by 1.
-
 Let $\alpha \in \bigwedge^k V, \beta \in \bigwedge^l V$, the inner product satisfies the following properties:
 1. **Nilpotency**: $\iota_v \iota_v \alpha = 0$ for any $v \in V$.
 2.  $\iota_v(\alpha \wedge \beta) = \iota_v(\alpha) \wedge \beta + (-1)^k \alpha \wedge \iota_v(\beta)$.
 3. **Linearity**: $\iota_{av + bw}(\alpha) = a \iota_v(\alpha) + b \iota_w(\alpha)$ for any $a,b \in \mathbb{R}$ and $v,w \in V$.
+
+The inner product $\iota_v$ is called the **interior product** or **contraction** with respect to the vector $v$. It reduces the degree of the form by 1.
+
+Observe the definition, we see that it just the evaluation of the first argument of the alternating multilinear function $\omega$ at the vector $v$, and then take the wedge product of the remaining arguments.
+
+$$ \iota_v(\omega)(v_1, v_2, \ldots, v_{k-1}) = \omega(v, v_1, v_2, \ldots, v_{k-1}) $$
 
 ### Pullback 
 
@@ -855,9 +862,44 @@ d(d\omega) &= \sum_{i,j\in [n]}\sum_{|I|=k} \frac{\partial^2 \alpha^I}{\partial 
 $$
 since mixed partial derivatives commute for smooth functions.
 
+### Lie Derivative on Differential Forms
+The **Lie derivative** of a differential form $\omega \in \Omega^k(M)$ with respect to a vector field $X$ is defined as:
+$$ \mathcal{L}_X \omega = \frac{d}{dt} \bigg|_{t=0} \phi_t^* \omega $$
+where $\phi_t$ is the flow of the vector field $X$ at time $t$.
+
+The Lie derivative satisfy the following property:
+1. $d\mathcal L_X \omega=\mathcal L_X d\omega$
+2. $\mathcal L_X(\omega \wedge \eta)=\mathcal L_X \omega \wedge \eta + \omega \wedge \mathcal L_X\eta $
+3. $\mathcal L_{[X_1,X_2]} \omega = \mathcal L_{X_1}\mathcal L_{X_2}\omega - \mathcal L_{X_2}\mathcal L_{X_1}\omega$
+4. $(\mathcal L_X{\omega})(X_1,\cdots,X_k)=\mathcal L_X(\omega(X_1,\cdots,X_k))-\sum_i\omega(X_1,\cdots,\mathcal L_X X_i,\cdots,X_k)$
+5. **Cartan's Magic Formula**
+$$
+L_{X}\omega=d\iota_X\omega + \iota_Xd\omega
+$$
+
+
+**Proof**
+
+1. $d\mathcal L_X \omega = d\left(\frac{d}{dt} \bigg|_{t=0} \phi_t^* \omega \right)= \frac{d}{dt} \bigg|_{t=0} d(\phi_t^* \omega) = \frac{d}{dt} \bigg|_{t=0} \phi_t^* (d\omega) = \mathcal L_X d\omega$
+2. $\mathcal L_X(\omega \wedge \eta) = \frac{d}{dt} \bigg|_{t=0} \phi_t^* (\omega \wedge \eta) = \frac{d}{dt} \bigg|_{t=0} (\phi_t^* \omega \wedge \phi_t^* \eta) = \frac{d}{dt}\bigg|_{t=0} (\phi_t^*\omega)\wedge \eta+\omega\wedge\frac{d}{dt}\bigg|_{t=0}(\phi_t^*\eta) = \mathcal L_X \omega \wedge \eta + \omega \wedge \mathcal L_X\eta$
+3. Omitted
+4. Omitted
+5. For the $0$-form function $f$, it is trivially true. Then inductively prove by decomposing it on local coordinates.
+
+
 ### Integration of Differential Forms
 
-TODO.
+#### Highest Degree Forms
+Let $M$ be a smooth manifold of dimension $n$. The **highest degree differential form** on $M$ is a differential $n$-form, denoted as $\omega \in \Omega^n(M)$. It can be expressed in local coordinates $(U,x)$ as:
+$$ \omega = f \, dx^1 \wedge dx^2 \wedge \ldots \wedge dx^n $$
+where $f: M \to \mathbb{R}$ is a smooth function and $\{dx^1, dx^2, \ldots, dx^n\}$ is the basis of the cotangent space at each point in $M$.
+
+If we change the local coordinates to $(y^1, y^2, \ldots, y^n)$ by the pullback map $\phi: V \to U$, $y=\phi^*x = x\circ \phi$, then the highest degree form transforms as:
+$$ \phi^*(dx^1 \wedge dx^2 \wedge \ldots \wedge dx^n) = \det\left(\frac{\partial y^i}{\partial x^j}\right) dy^1 \wedge dy^2 \wedge \ldots \wedge dy^n $$
+
+
+
+**Proof**:
 
 ### Stokes' Theorem
 
@@ -1077,3 +1119,4 @@ $$ 0 \to \Omega^0(M) \xrightarrow{d} \Omega^1(M) \xrightarrow{d} \Omega^2(M) \xr
 
 #### The Zig-Zag Lemma
 
+TODO.
