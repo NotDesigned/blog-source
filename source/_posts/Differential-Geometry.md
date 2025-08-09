@@ -747,7 +747,11 @@ Local coordinates on the cotangent bundle can be defined as $(x^1, x^2, \ldots, 
 
 Let $M$ be a smooth manifold of dimension $n$. A **differential $k$-form** on $M$ is a smooth section of the $k$-th exterior power of the cotangent bundle, denoted as $\bigwedge^k T^*M$.
 
-In other words, a differential $k$-form on a open subset $U \subseteq M$ is a mapping $$\omega: U \to \bigwedge^k T^*M$$ that assigns to each point $p \in U$ an alternating multilinear function $\omega(p): T_pM^k \to \mathbb{R}$ and $\omega \in A_k(T_pM)$ for all $p \in U$.
+In other words, a differential $k$-form on a open subset $U \subseteq M$ is a mapping 
+$$
+\omega: U \to \bigwedge^k T^*M
+$$ 
+that assigns to each point $p \in U$ an alternating multilinear function $\omega(p): T_pM^k \to \mathbb{R}$ and $\omega \in A_k(T_pM)$ for all $p \in U$.
 
 Let $\{e_1 = \left.\frac{\partial}{\partial x^1}\right|_p, e_2 = \left.\frac{\partial}{\partial x^2}\right|_p, \ldots, e_n = \left.\frac{\partial}{\partial x^n}\right|_p\}$ be a basis of $T_pM$. The corresponding dual basis of $T^*_pM$ is $\{dx^1, dx^2, \ldots, dx^n\}$, where $dx^i(e_j) = \delta^i_j$. 
 
@@ -773,7 +777,10 @@ Let $\Omega^*(M) = \bigoplus_{k=0}^n \Omega^k(M)$ be the space of all smooth dif
 
 Let $(U, x) = (U, x^1, \ldots, x^n)$ be a coordinate chart on a smooth manifold $M$ of dimension $n$. The coordinate functions $x^i: U \to \mathbb{R}$ are smooth functions that assign to each point $p \in U$ its $i$-th coordinate $x^i(p)$. 
 
-The **coordinate 1-forms** $dx^i$ are smooth sections of the cotangent bundle, each $dx^i: U \to T^*M$ satisfies $$\pi \circ dx^i = \text{id}_U$$
+The **coordinate 1-forms** $dx^i$ are smooth sections of the cotangent bundle, each $dx^i: U \to T^*M$ satisfies 
+$$
+\pi \circ dx^i = \text{id}_U
+$$
 where $\pi: T^*M \to M$ is the bundle projection. 
 
 We have $dx^i|_p: T_pM \to \mathbb{R}$ defined by $dx^i|_p(v) = v(x^i(p))$ for any tangent vector $v \in T_pM$. The coordinate 1-forms satisfy the dual basis property:
@@ -845,7 +852,7 @@ The exterior derivative satisfies the following properties:
 1. **Linearity**: $d(a\omega_1 + b\omega_2) = a d\omega_1 + b d\omega_2$ for $a,b \in \mathbb{R}$.
 2. **Nilpotency**: $d^2 = 0$, i.e., $d(d\omega) = 0$ for any differential form $\omega$.
 3. **Antiderivation Property**: $d(\omega_1 \wedge \omega_2) = d\omega_1 \wedge \omega_2 + (-1)^k \omega_1 \wedge d\omega_2$ for $\omega_1 \in \Omega^k(M)$ and $\omega_2 \in \Omega^l(M)$.
-4. **Pullback Compatibility**: For any smooth map $F: M \to N$, we have $F^*(d\omega) = d(F^*\omega) $. One can verify this property using local coordinates and chain rules.
+4. **Pullback Compatibility**: For any smooth map $F: M \to N$, we have $F^*(d\omega) = d(F^*\omega)$. One can verify this property using local coordinates and chain rules.
 5. **Vanishing of Top Forms**: $d\omega = 0$ if $\omega\in \Omega^n(M)$, where $n = \dim M$.
 
 We only prove the nilpotency here:
