@@ -67,7 +67,7 @@ The Lie bracket $[\cdot,\cdot]: \mathfrak{X}(M) \times \mathfrak{X}(M) \to \math
 
 Note that it is not linear with respect to the second argument.
 
-The Lie bracket gives a **Lie Algebra** structure on $\mathfrak{X}(M)(\Gamma^{\infty}(TM))$.
+The Lie bracket gives a **Lie Algebra** structure on $\mathfrak{X}(M)$ $(\text{or } \Gamma^{\infty}(TM))$.
 
 ### Integral Curves
 
