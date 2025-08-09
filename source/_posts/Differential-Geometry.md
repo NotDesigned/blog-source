@@ -499,7 +499,7 @@ Step 1: $d\phi(X)$ is $\phi$-related to $X$.
 
 For $X \in \mathfrak{g}$, $d\phi(X) \in \mathfrak{h}$ is left-invariant, and for $f \in C^\infty(H)$, since $\phi(g h) = \phi(g) \phi(h)$, we have $L_{\phi(g)} \circ \phi = \phi \circ L_g$. 
 
-Differentiating at $e$: $ d(L_{\phi(g)}){e_H} \circ d\phi_e = d\phi_g \circ (dL_g)e. $ Thus: $ d\phi(X)|_{\phi(g)} f = (dL{\phi(g)})_{e_H} (d\phi_e(X_e)) f = d\phi_g ((dL_g)_e X_e) f = X_g (f \circ \phi). $ 
+Differentiating at $e$: $d(L_{\phi(g)}){e_H} \circ d\phi_e = d\phi_g \circ (dL_g)e.$ Thus: $d\phi(X)|_{\phi(g)} f = (dL{\phi(g)})_{e_H} (d\phi_e(X_e)) f = d\phi_g ((dL_g)_e X_e) f = X_g (f \circ \phi).$ 
 
 So, $d\phi(X) f \circ \phi = X (f \circ \phi)$, meaning $X$ is $\phi$-related to $d\phi(X)$.
 
@@ -507,7 +507,7 @@ Step 2: Lie Bracket Preservation
 
 If $X, Y \in \mathfrak{g}$ are $\phi$-related to $d\phi(X), d\phi(Y) \in \mathfrak{h}$, then $[X, Y]$ is $\phi$-related to $[d\phi(X), d\phi(Y)]$. 
 
-At $g = e$: $ [d\phi(X), d\phi(Y)]_{e_H} = d\phi_e ([X, Y]_e). $ Since both are left-invariant, $[d\phi(X), d\phi(Y)] = d\phi([X, Y])$. Linearity of $d\phi$ follows from $d\phi_e$. 
+At $g = e$: $[d\phi(X), d\phi(Y)]_{e_H} = d\phi_e ([X, Y]_e).$ Since both are left-invariant, $[d\phi(X), d\phi(Y)] = d\phi([X, Y])$. Linearity of $d\phi$ follows from $d\phi_e$. 
 
 Thus, $d\phi$ is a Lie algebra homomorphism.
 
@@ -747,7 +747,7 @@ Local coordinates on the cotangent bundle can be defined as $(x^1, x^2, \ldots, 
 
 Let $M$ be a smooth manifold of dimension $n$. A **differential $k$-form** on $M$ is a smooth section of the $k$-th exterior power of the cotangent bundle, denoted as $\bigwedge^k T^*M$.
 
-In other words, a differential $k$-form on a open subset $U \subseteq M$ is a mapping $$ \omega: U \to \bigwedge^k T^*M $$ that assigns to each point $p \in U$ an alternating multilinear function $\omega(p): T_pM^k \to \mathbb{R}$ and $\omega \in A_k(T_pM)$ for all $p \in U$.
+In other words, a differential $k$-form on a open subset $U \subseteq M$ is a mapping $$\omega: U \to \bigwedge^k T^*M$$ that assigns to each point $p \in U$ an alternating multilinear function $\omega(p): T_pM^k \to \mathbb{R}$ and $\omega \in A_k(T_pM)$ for all $p \in U$.
 
 Let $\{e_1 = \left.\frac{\partial}{\partial x^1}\right|_p, e_2 = \left.\frac{\partial}{\partial x^2}\right|_p, \ldots, e_n = \left.\frac{\partial}{\partial x^n}\right|_p\}$ be a basis of $T_pM$. The corresponding dual basis of $T^*_pM$ is $\{dx^1, dx^2, \ldots, dx^n\}$, where $dx^i(e_j) = \delta^i_j$. 
 
@@ -776,7 +776,10 @@ Let $(U, x) = (U, x^1, \ldots, x^n)$ be a coordinate chart on a smooth manifold 
 The **coordinate 1-forms** $dx^i$ are smooth sections of the cotangent bundle, each $dx^i: U \to T^*M$ satisfies $$\pi \circ dx^i = \text{id}_U$$
 where $\pi: T^*M \to M$ is the bundle projection. 
 
-We have $dx^i|_p: T_pM \to \mathbb{R}$ defined by $dx^i|_p(v) = v(x^i(p))$ for any tangent vector $v \in T_pM$. The coordinate 1-forms satisfy the dual basis property: $$\left.dx^i\right|_p\left(\left.\frac{\partial}{\partial x^j}\right|_p\right) = \delta^i_j$$
+We have $dx^i|_p: T_pM \to \mathbb{R}$ defined by $dx^i|_p(v) = v(x^i(p))$ for any tangent vector $v \in T_pM$. The coordinate 1-forms satisfy the dual basis property:
+$$
+\left.dx^i\right|_p\left(\left.\frac{\partial}{\partial x^j}\right|_p\right) = \delta^i_j
+$$
 making $\{dx^1|_p, \ldots, dx^n|_p\}$ the dual basis of $T_p^*M$ corresponding to the coordinate basis $\{\frac{\partial}{\partial x^1}|_p, \ldots, \frac{\partial}{\partial x^n}|_p\}$ of $T_pM$. 
 
 Any differential $k$-form on $U$ can be uniquely expressed as $\omega = \sum_{|I|=k} f_I \, dx^I$, where $I = (i_1, \ldots, i_k)$ with $1 \leq i_1 < \cdots < i_k \leq n$, $dx^I = dx^{i_1} \wedge \cdots \wedge dx^{i_k}$, and $f_I: U \to \mathbb{R}$ are smooth functions.
@@ -869,7 +872,7 @@ where $\phi_t$ is the flow of the vector field $X$ at time $t$.
 
 The Lie derivative satisfy the following property:
 1. $d\mathcal L_X \omega=\mathcal L_X d\omega$
-2. $\mathcal L_X(\omega \wedge \eta)=\mathcal L_X \omega \wedge \eta + \omega \wedge \mathcal L_X\eta $
+2. $\mathcal L_X(\omega \wedge \eta)=\mathcal L_X \omega \wedge \eta + \omega \wedge \mathcal L_X\eta$
 3. $\mathcal L_{[X_1,X_2]} \omega = \mathcal L_{X_1}\mathcal L_{X_2}\omega - \mathcal L_{X_2}\mathcal L_{X_1}\omega$
 4. $(\mathcal L_X{\omega})(X_1,\cdots,X_k)=\mathcal L_X(\omega(X_1,\cdots,X_k))-\sum_i\omega(X_1,\cdots,\mathcal L_X X_i,\cdots,X_k)$
 5. **Cartan's Magic Formula**
@@ -1247,7 +1250,7 @@ This theorem reveals the duality between the topological structure and the algeb
 
 ### Chain Complex
 
-The **chain complex** is a sequence of abelian groups (or modules) $\cdots A_0, A_1, A_2\cdots$ connected by homomorphisms $d_n: A_n\to A_{n-1}$, such that the image of one homomorphism is contained in the kernel of the next. The composition of any two consecutive maps shall be the zero maps, $ d_n \circ d_{n+1} = 0$ or $d^2=0$ for short. 
+The **chain complex** is a sequence of abelian groups (or modules) $\cdots A_0, A_1, A_2\cdots$ connected by homomorphisms $d_n: A_n\to A_{n-1}$, such that the image of one homomorphism is contained in the kernel of the next. The composition of any two consecutive maps shall be the zero maps, $d_n \circ d_{n+1} = 0$ or $d^2=0$ for short. 
 $$ \cdots \xleftarrow{d_0} A_0 \xleftarrow{d_1} A_1 \xleftarrow{d_2} A_2 \xleftarrow{d_3} \cdots$$
 
 The **cochain complex** is the dual notion to the chain complex.
