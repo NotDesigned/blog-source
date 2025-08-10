@@ -21,7 +21,9 @@ So they design an architecture that has two network where one is responible for 
 GAN is formulated as a min-max problem 
 
 $$
-\min_{G} \max_{D} V(D,G) \\
+\min_{G} \max_{D} V(D,G) 
+$$
+$$
 V(D,G) = \mathbb{E}_{x \sim p_{data}(x)}[\log D(x)] + \mathbb{E}_{x \sim p_{g}(x)}[\log(1 - D(x))]
 $$
 
