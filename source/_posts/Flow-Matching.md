@@ -22,6 +22,74 @@ Let $X$ be a complete and separable metric space such as $\Omega \subseteq \math
 
 Generative models usually aims to learn a mapping from a simple distribution (e.g., Gaussian) to the complex data distribution $p_{data}(x)$ by transforming samples from the simple distribution into samples from the data distribution.
 
+### Topology on $\mathcal P(X)$
+
+#### Weak Topology 
+
+the **weak topology** on $P(X)$ is defined as the coarsest topology making all functionals of the form 
+$$
+\mu \mapsto \int_{X}f\,d\mu
+$$
+continuous, where $f\in C_{b}(X)$ ranges over all the bounded continuous functions on $X$.
+
+**Convergence characterization**: A sequence $(\mu_n)$
+converges to $\mu$ in the weak topology if and only if
+$$
+\int_X f \, d\mu_n \to \int_X f \, d\mu
+$$
+for all bounded continuous functions $f: X \to \mathbb{R}$.
+
+Actually, let $\mathcal M(X)$ be the space of all signed, finite measure on $X$. $C_b(X)$ can be seen as the dual space induced by the pairing:
+$$
+\langle f,\mu \rangle = \int_{X}f\,d\mu
+$$
+
+The relation between a measure on $X$ and a linear functional (dual space) on $C_b(X)$:
+$$
+\begin{align*}
+\Phi:\mathcal{M}(X) &\to C_b(X)^*\\
+\mu&\mapsto [f\mapsto \int_X f\, d\mu] = \langle f, \mu \rangle
+\end{align*}
+$$
+
+$\Phi$ is linear and injective.
+
+When $X$ is compact, $\Phi$ is bijective by the Riesz representation theorem. $\mathcal{M}(X)\cong C_b(X)^*$.
+
+When $X$ is locally compact and separable, $\mathcal{M}(X)\cong C_0(X)^*$, where $C_0(X)$ is the compactly support function on $X$, which vanishing on infinity.
+
+And we have the **weak*** topology on the dual space of $C_b(X)$
+$$
+L_n\overset{w^*}{\to} L \iff L_n(f)\to L(f),\quad \forall f\in C_b(X)
+$$
+
+So $\Phi$ induces the weak* topology on $\mathcal M(X)$ and its subset $P(X)$.
+
+#### Wasserstein Metric Topology
+
+When $X$ is a compact Riemann manifold $(M,g)$, the $p$-Wasserstein distance is a metric on $P(X)$, and induced a topology on $M$.
+
+**Kantorovich-Rubinstein** duality states that for any $p$-Wasserstein distance, we have:
+
+$$
+W_1(\mu, \nu) = \sup_{f \in \text{Lip}_1(M)} \left( \int_M f \, d\mu - \int_M f \, d\nu \right)
+$$
+where $W_1(\mu, \nu)$ is the $1$-Wasserstein distance.
+
+This plays an important role in WGAN.
+
+So $1$-Wasserstein convergence is equivalent to convergence over all Lipschitz functions $f$, which is stronger than weak convergence (all $C_b$ functions).
+
+Generally, we have 
+$$
+W_n(\mu, \nu)\leq W_m(\mu, \nu),\forall n\leq m
+$$
+
+So $2$-Wasserstein topology is weaker than $1$-Wasserstein metric topology, etc.
+
+But if we assume all the probability measure has compact support, the convergence is equivalent.
+
+---
 
 Let $\mu \in \mathcal{P}(X)$ be the simple distribution, e.g. $\mu=\mathcal{N}(0, I)$, and let $\nu \in \mathcal{P}(X)$ be the data distribution. The goal is to learn a mapping $f: X \to X$ such that $f_{*}\mu = \nu$, where $f_{*}\mu$ is the pushforward measure of $\mu$ under the mapping $f$ defined by $f_{*}\mu(A) := \mu(f^{-1}(A))$, where $A\in \mathcal{B}_X$ is a Borel set.
     
