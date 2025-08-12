@@ -148,7 +148,7 @@ We shall see this is the choice of the flow matching.
 
 ### Normalizing Flow
 
-We learn a bijective mapping $f: \mathbb{R}^n \to \mathbb{R}^n$ such that the pushforward measure $f_{*}\mu$ matches the target distribution $\nu$:
+We learn a bijective mapping $f: \mathbb{R}^n \to \mathbb{R}^n$ such that the pushforward measure $f_{*}\mu$ matches the target distribution $\nu$.
 
 The Normalizing Flow method assumes that $f$ can be expressed as a sequence of invertible transformations, typically using neural networks, such that the Jacobian determinant can be efficiently computed. 
 
@@ -187,7 +187,69 @@ $$
 
 ## Continuous Normalizing Flows, Flow Matching
 
-TODO
+Let $n\to \infty$, it is equivalent to construct a vector field (and corresponding ODE) and take the transform process as particle flows.
+
+Given a time dependent transformation
+$$
+\begin{align*}
+g: [0,1] \times \mathbb \Omega &\to \mathbb \Omega\\
+(t,x) &\mapsto g(t,x)
+\end{align*}
+$$
+
+The flow $g$ induces a time-dependent one parameter group of diffeomorphisms:
+$$
+g_t(x) = g(t,x)
+$$
+And the trajectory of a particle $x$ is denoted as $\gamma_x(t)$:
+$$
+\gamma_x(t) = g(t,x) = g_t(x)
+$$
+Note that here particle $x$ means it was initially at position $x$ at time $t=0$.
+
+We want a gradual transformation of the input distribution to the target distribution, i.e.
+$$
+g_0 = \text{id}, g_1 = T
+$$
+And $T$ satisfies $T_* \mu = \nu$.
+
+Fix a position $y$ and describe the speed of the particles at $y$, we can define the velocity field $v_t(y)$ as:
+$$
+v_t(y) = \frac{\partial}{\partial t} g(t, x)\bigg|_{g(t,x)=y} = \frac{\partial g}{\partial t}(t, g_t^{-1}(y))
+$$
+
+And the Eulerian description and Lagrangian description are related as follows:
+Eulerian:
+$$
+\begin{cases}
+\frac{d}{dt}g_t(x) = v_t(g_t(x)),\\
+g_0(x)=x.
+\end{cases}
+$$
+Lagrangian:
+$$
+\begin{cases}
+\frac{d}{dt}\gamma_x(t) = v_t(\gamma_x(t)),\\
+\gamma_x(0)=x.
+\end{cases}
+$$
+
+We shall now consider the conservation of mass, i.e., we want to ensure that the flow preserves the total mass $1$ of the distribution.
+
+We thus introduce a density function $\rho$ induced by the flow
+$$
+\begin{align*}
+\rho(t,x): [0,1] \times \Omega &\to \mathbb{R}\\
+(t,x) &\mapsto \rho(t,x)
+\end{align*}
+$$
+And denote $\rho_t(x) = \rho(t,x)$.
+
+We require
+$$
+\rho_t = (g_t)_*\rho_0
+$$
+Particularly, $\rho_0 = \mu, \rho_1 = \nu$.
 
 ## Rectified Flow Matching
 
