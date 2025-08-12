@@ -14,6 +14,8 @@ math: true
 
 [Flow Matching For Generative Modeling](https://arxiv.org/pdf/2210.02747)
 
+[Continuous Normalizing Flows](https://voletiv.github.io/docs/presentations/20200901_Mila_CNF_Vikram_Voleti.pdf)
+
 ## Preliminaries
 
 The objective of generative modeling is to learn the underlying distribution $p_{data}(x)$ of the training data $x$. This is typically achieved by training a generative model $p_{model}(x)$ to approximate $p_{data}(x)$, allowing for the generation of new samples from the learned distribution.
@@ -146,7 +148,7 @@ where $K_\sigma(x)$ is a Gaussian kernel with bandwidth $\sigma$.
 
 We shall see this is the choice of the flow matching.
 
-### Normalizing Flow
+### (Discrete) Normalizing Flow
 
 We learn a bijective mapping $f: \mathbb{R}^n \to \mathbb{R}^n$ such that the pushforward measure $f_{*}\mu$ matches the target distribution $\nu$.
 
@@ -185,7 +187,7 @@ $$
 \end{align*}
 $$
 
-## Continuous Normalizing Flows, Flow Matching
+## Continuous Normalizing Flows
 
 Let $n\to \infty$, it is equivalent to construct a vector field (and corresponding ODE) and take the transform process as particle flows.
 
@@ -267,8 +269,8 @@ $$
 \begin{align*}
 \int_{\Omega} \partial_t \phi\rho_t\, d\Omega &=\int_{\Omega} \partial_t \phi\, d\rho_t\\
 &= \frac{d}{dt} \int_{\Omega} \phi(x) \, d((g_t)_* \rho_0)  \\
-&= \frac{d}{dt} \int_{\Omega} \phi(g_t)\, d\rho_0 \\
-&= \int_{\Omega} \nabla \phi(g_t) \cdot v_t(g_t) \, d\rho_0 \\
+&= \frac{d}{dt} \int_{\Omega} \phi(g_t^{-1})\, d\rho_0 \\
+&= \int_{\Omega} \nabla \phi(g_t^{-1}) \cdot v_t(g_t^{-1}) \, d\rho_0 \\
 &= \int_{\Omega} \nabla \phi \cdot v_t \, d\rho_t\\
 &= -\int_{\Omega} \phi \left(\nabla\cdot v_t\rho_t \right) d\Omega
 \end{align*} 
@@ -320,11 +322,56 @@ $$
 \frac{\partial \rho_t}{\partial t} + \nabla \cdot (v_t \rho_t) = 0
 $$
 
+Note: If we further assume the incompressibility condition, i.e.
+$$
+\frac{\partial \rho_t}{\partial t} = 0
+$$
+then we have
+$$
+\nabla \cdot v_t = 0
+$$
+
 ---
 
+So we know 
+$$
+\frac{\partial \rho_t}{\partial t} (x)= -\nabla \cdot (v_t(x) \cdot \rho_t(x))
+$$
 
+Now we focus on a particle is initially at $x$, moving on trajectory $x_t=\gamma_x(t) $
 
-## Rectified Flow Matching
+$$
+\begin{align*}
+\frac{d}{dt} \rho_t(\gamma_x(t)) &= \frac{\partial \rho_t}{\partial t}(\gamma_x(t)) + \nabla \rho_t(\gamma_x(t)) \cdot \frac{d}{dt} \gamma_x(t) \\
+&= \frac{\partial \rho_t}{\partial t}(\gamma_x(t)) + \nabla \rho_t(\gamma_x(t)) \cdot v_t(\gamma_x(t)) \\
+&= -\nabla \cdot (v_t\rho_t)(\gamma_x(t)) + \nabla \rho_t(\gamma_x(t)) \cdot v_t(\gamma_x(t))\\
+&= -\rho_t(\gamma_x(t))\nabla \cdot v_t(\gamma_x(t))
+\end{align*}
+$$
+
+So 
+$$
+\frac{d}{dt}\log \rho_t(\gamma_x(t)) = \frac{1}{\rho_t(\gamma_x(t))} \frac{d}{dt} \rho_t(\gamma_x(t)) = - \nabla \cdot v_t(\gamma_x(t))
+$$
+Thus
+$$
+\log \rho_{1}(x_1) - \log \rho_{0}(x_0)= -\int_0^1 \nabla \cdot v_t(x_t) dt
+$$
+
+### Loss and Training
+
+We simulate the flow by using a neural network $g_\theta$ with parameter $\theta$.
+
+Similar to the discrete normalizing flow, we use MLE:
+
+$$
+\begin{align*}
+\mathcal L(\theta)&= -\mathbb{E}_{x_1\sim \nu}\left[\log p_{\theta}(x_1)\right] \\
+&= -\mathbb{E}_{x_1\sim\nu}\left[\log \mu(x_0)-\int_0^1 \nabla \cdot v_{t,\theta}(x_t)\right]
+\end{align*}
+$$
+
+## Flow Matching, Rectified Flow Matching
 
 TODO
 
