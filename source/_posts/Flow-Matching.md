@@ -48,7 +48,7 @@ The relation between a measure on $X$ and a linear functional (dual space) on $C
 $$
 \begin{align*}
 \Phi:\mathcal{M}(X) &\to C_b(X)^*\\
-\mu&\mapsto [f\mapsto \int_X f\, d\mu] = \langle f, \mu \rangle
+\mu&\mapsto [f\mapsto \int_X f\, d\mu = \langle f, \mu \rangle] 
 \end{align*}
 $$
 
@@ -67,7 +67,7 @@ So $\Phi$ induces the weak* topology on $\mathcal M(X)$ and its subset $P(X)$.
 
 #### Wasserstein Metric Topology
 
-When $X$ is a compact Riemann manifold $(M,g)$, the $p$-Wasserstein distance is a metric on $P(X)$, and induced a topology on $M$.
+When $X$ is a compact Riemann manifold $(M,g)$, the $p$-Wasserstein distance is a metric on $\mathcal{P}(X)$, and induced a topology on $M$. More precisely, for probability distribution with finite $p$-th moment, $\mathcal{P}_p(X)$.
 
 **Kantorovich-Rubinstein** duality states that for any $p$-Wasserstein distance, we have:
 
@@ -243,13 +243,86 @@ $$
 (t,x) &\mapsto \rho(t,x)
 \end{align*}
 $$
-And denote $\rho_t(x) = \rho(t,x)$.
+And denote $\rho_t(x):\Omega \to \mathbb {R} $ as $\rho(t,x)$.
 
 We require
 $$
 \rho_t = (g_t)_*\rho_0
 $$
 Particularly, $\rho_0 = \mu, \rho_1 = \nu$.
+
+And we assume $v$ is tangent to the boundary $\partial \Omega$, and the flow remains inside of $\Omega$, thus $\rho_t \in \mathcal{P}(\Omega)$.
+
+It must satisfy the continuity equation to make the probability mass conserve
+$$
+\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0
+$$
+
+### Proof of continuity equation
+
+---
+
+Let $\phi\in C_b(\Omega)$, 
+$$
+\begin{align*}
+\int_{\Omega} \partial_t \phi\rho_t\, d\Omega &=\int_{\Omega} \partial_t \phi\, d\rho_t\\
+&= \frac{d}{dt} \int_{\Omega} \phi(x) \, d((g_t)_* \rho_0)  \\
+&= \frac{d}{dt} \int_{\Omega} \phi(g_t)\, d\rho_0 \\
+&= \int_{\Omega} \nabla \phi(g_t) \cdot v_t(g_t) \, d\rho_0 \\
+&= \int_{\Omega} \nabla \phi \cdot v_t \, d\rho_t\\
+&= -\int_{\Omega} \phi \left(\nabla\cdot v_t\rho_t \right) d\Omega
+\end{align*} 
+$$
+By the arbitrariness of $\phi$, we get the continuity equation:
+$$
+\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0
+$$
+
+We say the $(\rho_t,v_t)$ solve the continuity in distributional sense, which is called a weak solution or distributional solution.
+
+From the Lagrangian description, we know the formula:
+$$
+J_t = \left |\det \frac{\partial g_t}{\partial x} \right | = \left | F_t \right|
+$$
+$$
+\rho_t(g_t)\cdot J_t = \rho_0
+$$
+Take differential on both side,
+$$
+J_td \rho_t(g_t) + \rho_t(g_t) dJ_t = 0
+$$
+And 
+$$
+\frac{d J_t}{dt}=J_t\cdot \operatorname{tr}\left(F_t^{-1} \frac{dF_t}{dt}\right)
+$$
+
+$$
+\frac{d F_t}{d t} = \frac{\partial}{\partial t}\frac{\partial g_t}{\partial x} = \frac{d}{d x} \frac{\partial g_t}{\partial t} = \frac{d}{dx} v_t(g_t) = \nabla v_t(g_t) \cdot F_t
+$$
+Hence
+$$
+\frac{d J_t}{d t}= J_t \cdot \operatorname{tr}\left(\nabla v_t(g_t)\right) = J_t \cdot( \nabla \cdot v_t(g_t))
+$$
+
+Take it back, and eliminate $J_t$
+$$
+d\rho_t(g_t) + \rho_t(g_t) (\nabla \cdot v_t(g_t)) = 0
+$$
+And $d\rho_t(g_t) = \frac{\partial \rho_t}{\partial t}(g_t) + \nabla \rho_t(g_t) \cdot v_t(g_t)$.
+$$
+\frac{\partial \rho_t}{\partial t}(g_t) + \nabla \rho_t(g_t) \cdot v_t(g_t) + \rho_t(g_t) (\nabla \cdot v_t(g_t)) = 0
+$$
+$$
+\frac{\partial \rho_t}{\partial t}(g_t) + \nabla \cdot (v_t(g_t) \rho_t(g_t)) = 0
+$$
+since $g_t$ is a diffeomorphism, we have:
+$$
+\frac{\partial \rho_t}{\partial t} + \nabla \cdot (v_t \rho_t) = 0
+$$
+
+---
+
+
 
 ## Rectified Flow Matching
 
