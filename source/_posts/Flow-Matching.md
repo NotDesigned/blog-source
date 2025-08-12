@@ -16,6 +16,8 @@ math: true
 
 [Continuous Normalizing Flows](https://voletiv.github.io/docs/presentations/20200901_Mila_CNF_Vikram_Voleti.pdf)
 
+[Flow Straight and Fast](https://arxiv.org/abs/2209.03003)
+
 ## Preliminaries
 
 The objective of generative modeling is to learn the underlying distribution $p_{data}(x)$ of the training data $x$. This is typically achieved by training a generative model $p_{model}(x)$ to approximate $p_{data}(x)$, allowing for the generation of new samples from the learned distribution.
@@ -338,7 +340,7 @@ $$
 \frac{\partial \rho_t}{\partial t} (x)= -\nabla \cdot (v_t(x) \cdot \rho_t(x))
 $$
 
-Now we focus on a particle is initially at $x$, moving on trajectory $x_t=\gamma_x(t) $
+Now we focus on a particle is initially at $x$, moving on trajectory $x_t=\gamma_x(t)$
 
 $$
 \begin{align*}
@@ -366,12 +368,45 @@ Similar to the discrete normalizing flow, we use MLE:
 
 $$
 \begin{align*}
-\mathcal L(\theta)&= -\mathbb{E}_{x_1\sim \nu}\left[\log p_{\theta}(x_1)\right] \\
+\mathcal L(\theta)&= -\mathbb{E}_{x_1\sim \nu}\left[\log \rho_{1,\theta}(x_1)\right] \\
 &= -\mathbb{E}_{x_1\sim\nu}\left[\log \mu(x_0)-\int_0^1 \nabla \cdot v_{t,\theta}(x_t)\right]
 \end{align*}
 $$
 
-## Flow Matching, Rectified Flow Matching
+Or minimize the KL divergence between $\rho_{1,\theta}$ and $\nu$.
+
+## Flow Matching
+
+Instead of learning $g$, flow matching directly learns the velocity field $v_{t,\theta}(x)$.
+
+The theoretical objective is:
+$$
+\mathcal{L}_{FM}=\mathbb E_{t,x_t\sim \rho_t} \|v_{t,\theta}(x_t)-v_t(x_t)\|^2
+$$
+But this cannot be trained directly since we don't know $v_t$.
+
+### Conditional Flow Matching
+
+conditioning on $x_1$, CFM use the conditional distribution $\rho_t(x_t|x_1)$
+
+Key theorem:
+
+Given conditional probability path $\rho_t(x_t|x_1)$ satisfying the continuity equation with conditional vector field $v_t(x_t| x_1)$.
+
+Then the marginal vector field $v_t$:
+$$
+v_t(x)=\int v_t(x|x_1) \frac{\rho_t(x|x_1)\nu(x_1)}{\rho_t(x)} d{x_1}
+$$
+satisfy the continuity equation and generate the marginal probability path $\rho_t(x_t)$.
+
+And one can choose any conditional probability path as long as
+$$
+\rho_0(x|x_1) = \mu, \rho_1(x|x_1) = \delta(x-x_1)
+$$
+And the paper use Gaussian kernal as an approximation.
+
+If the above condition is satisfied, the paper proves that optimizing the objective of CFM is equivalent to optimizing the objective of the original flow model.
+
+## Rectified Flow
 
 TODO
-
