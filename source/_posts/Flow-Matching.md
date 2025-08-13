@@ -451,8 +451,132 @@ $$
 $$
 And this is exactly the objective of rectified flow.
 
-Actually, the author of [Flow Matching For Generative Modeling](https://arxiv.org/pdf/2210.02747) also proposed an identical objective, but they use the name "OT-Flow" instead of "rectified flow". 
+Actually, the author of [Flow Matching For Generative Modeling](https://arxiv.org/pdf/2210.02747) also proposed an identical objective, but they use the name "OT-Flow" instead of "rectified flow". We shall see the reason in the next section.
 
 ### Relation to Optimal Transport
 
-TODO.
+What does the rectified flow and conditional flow matching have to do with optimal transport? Let's recall the method of conditional probability path. 
+
+The claim is that to get the vector field $v_t$, we can use the conditional vector field $\rho_t(x_t|x_0,x_1)$ and do summation over all $x_0$ and $x_1$. Then we shall get the vector field $v_t$ that satisfies the continuity equation and generates the marginal probability path $\rho_t(x_t)$.
+
+It is not difficult to see that summing over the conditional vector field will yield a valid vector field that satisfies the continuity equation and transport the distribution from $\mu$ to $\nu$. But what is the property of such vector field?
+
+Let's think about a principle in traditional physics, the **principle of least action**. It states that the path taken by a system between two states is the one for which the action is stationary (usually minimized).
+
+In the context of traditional physics, the shortest path between two points is a straight line. But in quantum mechanics, the particle is no longer deterministic as a point, but rather a wave function that can be spread out over a region of space assigning a probability amplitude to each point. But the principle of least action still holds, and the path taken by the particle is the one that minimizes the action.
+
+### Benamou-Brenier Theory
+
+The Benamou-Brenier theory states that the optimal transport problem can be reformulated as a dynamic problem, where the optimal transport plan is the one that minimizes the action functional.
+
+In every time $t$, we have a distribution $\rho_t$ and a velocity field $v_t$. The kinetic energy is given by the integral of the squared velocity field:
+$$
+E(t) = \int_{\Omega} \frac{1}{2}\|v_t(x)\|^2 \rho_t(x) \, dx
+$$
+
+The action functional is then defined as:
+$$
+A(\rho, v) = \int_0^1 E(t) \, dt
+= \int_0^1 \int_{\Omega}\frac{1}{2}\|v_t(x)\|^2 \rho_t(x) \, dx \, dt
+$$
+
+And we see the action functional is exactly the total energy of using the velocity field $v_t$ to transport the distribution $\rho_t$ from $\mu$ to $\nu$.
+
+**Problem** (Benamou-Brenier): Given two probability measures $\mu$ and $\nu$, find the optimal transport plan that minimizes the action functional $A(\rho, v)$ subject to some conditions.
+$$
+\begin{align*}
+\text{min} \quad & A(\rho, v) \\
+\text{s.t.} \quad &(\rho,v)\in V(\mu,\nu)
+\end{align*}
+$$
+**Admissible pairs** $V(\mu,\nu)$ are pairs $(\rho, v)$ such that:
+- $\rho_0 = \mu$, $\rho_1 = \nu$,
+- $\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0$ in distributional sense,
+- $\bigcup_{t\in[0,1]} \text{supp}(\rho_t) \subseteq \Omega$,
+- $v \in L^2(d\rho_t(x) dt)$, i.e., the velocity field is square integrable with respect to the measure $\rho_t$.
+- $\rho \in C([0,1]; w^*\text{-}P_{ac}(\mathbb \Omega))$, i.e., the probability path is absolutely continuous with respect to the weak* topology on the space of probability measures.
+
+**Theorem**: (Benamou-Brenier)
+
+The $2$-Wasserstein distance between two probability measures $\mu$ and $\nu$ can be expressed as the infimum of the action functional over all admissible pairs $(\rho, v)$
+$$
+\mathcal{T}_2 (\mu, \nu) = \inf_{(\rho, v) \in V(\mu, \nu)} A(\rho, v)
+$$
+
+This means that the optimal transport plan is the one that minimizes the action functional, which is equivalent to minimizing the total energy of the velocity field.
+
+#### Variational Calculus
+
+$$
+\begin{align*}
+\min A(\rho, v) &= \int_0^1 \int_{\Omega} \frac{1}{2}\|v_t(x)\|^2 \rho_t(x) \, dx \, dt \\
+\text{s.t.} \quad & \partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0 \\
+& \rho_0 = \mu, \rho_1 = \nu
+\end{align*}
+$$
+We introduce a Lagrange multiplier $\phi_t(x)$ to enforce the continuity equation constraint:
+$$
+\begin{align*}
+\mathcal{J}(\rho, v, \phi) &=\int_0^1 \int_{\Omega} \left[\frac{1}{2}\|v_t(x)\|^2 \rho_t(x)+\phi_t(x) \left( \partial_t \rho_t(x) + \nabla \cdot (v_t(x) \rho_t(x)) \right) \right] \,dx \, dt
+\end{align*}
+$$
+
+**Variation with respect to $v$**:
+$$
+\frac{\delta \mathcal{J}}{\delta v_t} = \int_0^1 \int_{\Omega} \left[ v_t\cdot \delta v_t \rho_t + \phi_t \nabla \cdot (\delta v_t \rho_t) \right] \, dx \, dt
+$$
+Using integration by parts on the second term
+$$
+\begin{align*}
+\int_{\Omega} \phi_t \nabla \cdot (\delta v_t \rho_t) \, dx &= \int_{\Omega} \nabla \cdot (\phi_t \rho_t \delta v_t) \, dx - \int_{\Omega} \nabla \phi_t \cdot (\delta v_t \rho_t) \, dx\\
+&=\int_{\partial \Omega} \phi_t \rho_t \delta v_t \cdot n \, dS - \int_{\Omega} \nabla \phi_t \cdot (\delta v_t \rho_t) \, dx\\
+&= - \int_{\Omega} \nabla \phi_t \cdot (\delta v_t \rho_t) \, dx
+\end{align*}
+$$
+where the boundary term vanishes due to the assumption that $v$ is tangent to the boundary $\partial \Omega$.
+
+we get
+$$
+\frac{\delta \mathcal{J}}{\delta v_t} = \int_0^1 \int_{\Omega} \left[ v_t\rho_t - \rho_t\nabla \phi_t \right] \cdot \delta v_t  \, dx \,dt
+$$
+
+Which forces
+$$
+v_t =  \nabla \phi_t
+$$
+
+**Variation with respect to $\rho$**:
+$$
+\frac{\delta \mathcal{J}}{\delta \rho_t} = \int_0^1 \int_{\Omega} \left[ \frac{1}{2}\|v_t(x)\|^2 + \phi_t(x) \partial_t \delta \rho_t(x) + \phi_t(x) \nabla \cdot (v_t(x) \delta \rho_t(x)) \right] \, dx \, dt
+$$
+Similarly, using integration by parts on the second term and the third term
+$$
+\begin{align*}
+\int_{\Omega} \phi_t\partial_t\delta\rho_t \, d\Omega &= -\int_{\Omega} \partial_t\phi_t\delta\rho_t\, d\Omega\\
+\int_{\Omega} \phi_t \nabla \cdot (v_t \delta \rho_t)\, d\Omega &= - \int_{\Omega} \nabla \phi_t \cdot (v_t \delta \rho_t) \, d\Omega
+\end{align*}
+$$
+we get
+$$
+\begin{align*}
+\frac{\delta \mathcal{J}}{\delta \rho_t} &= \int_0^1 \int_{\Omega} \left[ \frac{1}{2}\|v_t(x)\|^2 - \partial_t\phi_t(x) - \nabla \phi_t(x) \cdot v_t(x) \right] \delta\rho_t(x) \, dx \, dt
+\end{align*}
+$$
+Setting this to zero for all $\delta \rho_t(x)$, we have
+$$
+\frac{1}{2}\|v_t(x)\|^2 - \partial_t\phi_t(x) - \nabla \phi_t(x) \cdot v_t(x) = 0
+$$
+
+Substituting $v_t = \nabla \phi_t$, we have
+$$
+\partial_t \phi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0
+$$
+
+To summarize, we have three equations for the action functional, which gives us the necessary conditions for optimality:
+$$
+\begin{cases}
+v_t = \nabla \phi_t \quad \text{Velocity field as gradient of potential} \\ 
+\partial_t \phi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0 \quad \text{Hamilton-Jacobi equation} \\
+\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0\quad \text{Continuity equation for mass conservation}
+\end{cases}
+$$
