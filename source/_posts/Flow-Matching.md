@@ -395,7 +395,7 @@ Given conditional probability path $\rho_t(x_t|x_1)$ satisfying the continuity e
 
 Then the marginal vector field $v_t$:
 $$
-v_t(x)=\int v_t(x|x_1) \frac{\rho_t(x|x_1)\nu(x_1)}{\rho_t(x)} d{x_1}
+v_t(x)=\int v_t(x_t|x_1) \frac{\rho_t(x_t|x_1)\nu(x_1)}{\rho_t(x)} d{x_1}
 $$
 satisfy the continuity equation and generate the marginal probability path $\rho_t(x_t)$.
 
