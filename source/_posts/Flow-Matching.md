@@ -451,7 +451,7 @@ $$
 $$
 And this is exactly the objective of rectified flow.
 
-Actually, the author of [Flow Matching For Generative Modeling](https://arxiv.org/pdf/2210.02747) also proposed an identical objective, but they use the name "OT-Flow" instead of "rectified flow". We shall see the reason in the next section.
+Actually, the author of [Flow Matching For Generative Modeling](https://arxiv.org/pdf/2210.02747) also proposed an similar objective, but they use the name "OT-Flow" instead of "rectified flow" (And Gaussian kernal). We shall see the reason in the next section.
 
 ### Relation to Optimal Transport
 
@@ -514,46 +514,46 @@ $$
 & \rho_0 = \mu, \rho_1 = \nu
 \end{align*}
 $$
-We introduce a Lagrange multiplier $\phi_t(x)$ to enforce the continuity equation constraint:
+We introduce a Lagrange multiplier $\varphi_t(x)$ to enforce the continuity equation constraint:
 $$
 \begin{align*}
-\mathcal{J}(\rho, v, \phi) &=\int_0^1 \int_{\Omega} \left[\frac{1}{2}\|v_t(x)\|^2 \rho_t(x)+\phi_t(x) \left( \partial_t \rho_t(x) + \nabla \cdot (v_t(x) \rho_t(x)) \right) \right] \,dx \, dt
+\mathcal{J}(\rho, v, \phi) &=\int_0^1 \int_{\Omega} \left[\frac{1}{2}\|v_t(x)\|^2 \rho_t(x)+\varphi_t(x) \left( \partial_t \rho_t(x) + \nabla \cdot (v_t(x) \rho_t(x)) \right) \right] \,dx \, dt
 \end{align*}
 $$
 
 **Variation with respect to $v$**:
 $$
-\frac{\delta \mathcal{J}}{\delta v_t} = \int_0^1 \int_{\Omega} \left[ v_t\cdot \delta v_t \rho_t + \phi_t \nabla \cdot (\delta v_t \rho_t) \right] \, dx \, dt
+\frac{\delta \mathcal{J}}{\delta v_t} = \int_0^1 \int_{\Omega} \left[ v_t\cdot \delta v_t \rho_t + \varphi_t \nabla \cdot (\delta v_t \rho_t) \right] \, dx \, dt
 $$
 Using integration by parts on the second term
 $$
 \begin{align*}
-\int_{\Omega} \phi_t \nabla \cdot (\delta v_t \rho_t) \, dx &= \int_{\Omega} \nabla \cdot (\phi_t \rho_t \delta v_t) \, dx - \int_{\Omega} \nabla \phi_t \cdot (\delta v_t \rho_t) \, dx\\
-&=\int_{\partial \Omega} \phi_t \rho_t \delta v_t \cdot n \, dS - \int_{\Omega} \nabla \phi_t \cdot (\delta v_t \rho_t) \, dx\\
-&= - \int_{\Omega} \nabla \phi_t \cdot (\delta v_t \rho_t) \, dx
+\int_{\Omega} \varphi_t \nabla \cdot (\delta v_t \rho_t) \, dx &= \int_{\Omega} \nabla \cdot (\varphi_t \rho_t \delta v_t) \, dx - \int_{\Omega} \nabla \varphi_t \cdot (\delta v_t \rho_t) \, dx\\
+&=\int_{\partial \Omega} \varphi_t \rho_t \delta v_t \cdot n \, dS - \int_{\Omega} \nabla \varphi_t \cdot (\delta v_t \rho_t) \, dx\\
+&= - \int_{\Omega} \nabla \varphi_t \cdot (\delta v_t \rho_t) \, dx
 \end{align*}
 $$
 where the boundary term vanishes due to the assumption that $v$ is tangent to the boundary $\partial \Omega$.
 
 we get
 $$
-\frac{\delta \mathcal{J}}{\delta v_t} = \int_0^1 \int_{\Omega} \left[ v_t\rho_t - \rho_t\nabla \phi_t \right] \cdot \delta v_t  \, dx \,dt
+\frac{\delta \mathcal{J}}{\delta v_t} = \int_0^1 \int_{\Omega} \left[ v_t\rho_t - \rho_t\nabla \varphi_t \right] \cdot \delta v_t  \, dx \,dt
 $$
 
 Which forces
 $$
-v_t =  \nabla \phi_t
+v_t =  \nabla \varphi_t
 $$
 
 **Variation with respect to $\rho$**:
 $$
-\frac{\delta \mathcal{J}}{\delta \rho_t} = \int_0^1 \int_{\Omega} \left[ \frac{1}{2}\|v_t(x)\|^2 + \phi_t(x) \partial_t \delta \rho_t(x) + \phi_t(x) \nabla \cdot (v_t(x) \delta \rho_t(x)) \right] \, dx \, dt
+\frac{\delta \mathcal{J}}{\delta \rho_t} = \int_0^1 \int_{\Omega} \left[ \frac{1}{2}\|v_t(x)\|^2 + \varphi_t(x) \partial_t \delta \rho_t(x) + \varphi_t(x) \nabla \cdot (v_t(x) \delta \rho_t(x)) \right] \, dx \, dt
 $$
 Similarly, using integration by parts on the second term and the third term
 $$
 \begin{align*}
-\int_{\Omega} \phi_t\partial_t\delta\rho_t \, d\Omega &= -\int_{\Omega} \partial_t\phi_t\delta\rho_t\, d\Omega\\
-\int_{\Omega} \phi_t \nabla \cdot (v_t \delta \rho_t)\, d\Omega &= - \int_{\Omega} \nabla \phi_t \cdot (v_t \delta \rho_t) \, d\Omega
+\int_{\Omega} \varphi_t\partial_t\delta\rho_t \, d\Omega &= -\int_{\Omega} \partial_t\varphi_t\delta\rho_t\, d\Omega\\
+\int_{\Omega} \varphi_t \nabla \cdot (v_t \delta \rho_t)\, d\Omega &= - \int_{\Omega} \nabla \varphi_t \cdot (v_t \delta \rho_t) \, d\Omega
 \end{align*}
 $$
 Note $\rho_0 = \mu$ and $\rho_1 = \nu$ are fixed, so variations $\delta \rho_t$ are zero at the endpoints $(\delta \rho_0 = \delta \rho_1 = 0)$. 
@@ -561,24 +561,122 @@ Note $\rho_0 = \mu$ and $\rho_1 = \nu$ are fixed, so variations $\delta \rho_t$ 
 we get
 $$
 \begin{align*}
-\frac{\delta \mathcal{J}}{\delta \rho_t} &= \int_0^1 \int_{\Omega} \left[ \frac{1}{2}\|v_t(x)\|^2 - \partial_t\phi_t(x) - \nabla \phi_t(x) \cdot v_t(x) \right] \delta\rho_t(x) \, dx \, dt
+\frac{\delta \mathcal{J}}{\delta \rho_t} &= \int_0^1 \int_{\Omega} \left[ \frac{1}{2}\|v_t(x)\|^2 - \partial_t\varphi_t(x) - \nabla \varphi_t(x) \cdot v_t(x) \right] \delta\rho_t(x) \, dx \, dt
 \end{align*}
 $$
 Setting this to zero for all $\delta \rho_t(x)$, we have
 $$
-\frac{1}{2}\|v_t(x)\|^2 - \partial_t\phi_t(x) - \nabla \phi_t(x) \cdot v_t(x) = 0
+\frac{1}{2}\|v_t(x)\|^2 - \partial_t\varphi_t(x) - \nabla \varphi_t(x) \cdot v_t(x) = 0
 $$
 
-Substituting $v_t = \nabla \phi_t$, we have
+Substituting $v_t = \nabla \varphi_t$, we have
 $$
-\partial_t \phi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0
+\partial_t \varphi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0
 $$
 
 To summarize, we have three equations for the action functional, which gives us the necessary conditions for optimality:
 $$
 \begin{cases}
-v_t = \nabla \phi_t, \quad \text{Velocity field as gradient of potential} \\ 
-\partial_t \phi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0, \quad \text{Hamilton-Jacobi equation} \\
+v_t = \nabla \varphi_t, \quad \text{Velocity field as gradient of potential} \\ 
+\partial_t \varphi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0, \quad \text{Hamilton-Jacobi equation} \\
 \partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0. \quad \text{Continuity equation for mass conservation}
 \end{cases}
 $$
+
+By the $\varphi$, we can get Kantorovich potential $(\psi,\phi)$, 
+$$
+\psi(x):=\varphi_1(x), \quad \phi(x)=-\varphi_0(x)
+$$
+as the dual potentials for the optimal transport problem.
+
+One can prove it by integral along the optimal pair $(x,T(x))$, and verify the duality optimality. (Actually, this maybe give a proof to the Benamou-Brenier theorem)
+
+### Economic interpretation
+
+The optimal transport problem can be interpreted in an economic context, where we want to transport resources (e.g., goods, people) from one location to another while minimizing the cost of transportation.
+
+(Monge's formulation)
+$$
+\begin{align*}
+\min \int_X c(x, T(x)) \, d\mu(x) \\
+\text{s.t.} \quad T_* \mu = \nu
+\end{align*}
+$$
+where $c(x, T(x))$ is the cost of transporting from location $x$ to location $T(x)$, and $\mu$ and $\nu$ are the source and target distributions, respectively.
+
+(Kantorovich's formulation)
+$$
+\begin{align*}
+\min \int_{X \times Y} c(x, y) \, d\gamma(x, y) \\
+\text{s.t.} \quad \gamma \in \Pi(\mu, \nu)
+\end{align*}
+$$
+where $\gamma$ is a joint distribution over the source and target locations, and $\Pi(\mu, \nu)$ is the set of all couplings between $\mu$ and $\nu$.
+
+(Kantorovich dual formulation)
+$$
+\begin{align*}
+\max \int_X \phi(x) \, d\mu(x) + \int_Y \psi(y) \, d\nu(y) \\
+\text{s.t.} \quad \phi(x) + \psi(y) \leq c(x, y) \quad \forall (x, y) \in X \times Y
+\end{align*}
+$$
+
+Let's consider the economic interpretation:
+
+$\mu$ is the distribution of resources at the source location $X$, and $\nu$ is the target distribution of resources at the destination location $Y$. The cost function $c(x, y)$ represents the cost of transporting resources from location $x$ to location $y$. And merchants are trying to maximize their profit by transporting resources.
+
+Let $\varphi(t,x)$ be the potential function that represents the value of resources at $g_t(x)\in\Omega$, and in the nation $X$, let $\phi$ denote the cost of buying resources at $x$ and $\psi$ denote the cost of selling resources at $y$. 
+
+Now look back at the setting:
+$$
+\phi:=-\varphi_0, \quad \psi:=\varphi_1
+$$
+The potential $\phi$ represents the change of the balance of merchants buying resources at the source location $X$, and the potential $\psi$ represents the gain of merchants selling resources at the destination location $Y$.
+
+So the Kantorovich dual formulation can be interpreted as maximizing the profit of merchants by buying resources at the source location $X$ and selling them at the destination location $Y$.
+
+And the no arbitrage condition $\phi(x) + \psi(y) \leq c(x, y)$ ensures that the profit from buying and selling resources is not greater than the cost of transportation, preventing arbitrage opportunities.
+
+Look back at the optimality conditions, we have:
+1. The velocity field $v_t = \nabla \varphi_t$ represents the optimal transportation direction of resources, which is the gradient of the potential function $\varphi_t$.
+
+This is quite intuitive.
+
+2. The Hamilton-Jacobi equation $\partial_t \varphi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0$ describes the evolution of the potential function over time, where the term $\frac{1}{2}\|v_t(x)\|^2$ can be interpreted as the cost of transportation.
+
+But here is a problem, the cost of transportation is formulated as the integral of the instantaneous cost over time, but in the original optimal transport problem, the cost is formulated as independent of path, i.e., the cost is only dependent on the source and target locations, not on the path taken.
+
+To make the two formulations consistent, we impose a constraint:
+
+Let 
+$$C[\gamma]=\int_0^1 c(\dot\gamma_t)\, dt$$
+
+be the cost of transportation along the path $\gamma$, if
+$$
+c(x,y) = \inf\left\{C[(\gamma_t)_{t\in[0,1]}]\right\} \quad \text{for all } (x,y)\in X\times Y
+$$
+then the two formulations give the same optimal transport plan.
+
+---
+
+**Lemma**: If $c$ is a convex function over $\mathbb R^n$, then
+$$
+\inf\left\{\int_0^1 c(\dot\gamma_t) dt; \gamma_0=x,\gamma_1=y\right\} = c(y-x)
+$$
+Moreover, if $c$ is strictly convex, then the infimum is achieved by a unique path $\gamma_t = tx + (1-t)y$.
+
+**Proof**
+
+Use the Jensen's inequality of integral.
+
+---
+
+So for the $2$-Wasserstein distance, the cost function can be seen as the integral of velocity field over time.
+$$
+c(x,y)=\inf C_{\text{path}}=\int_0^1 c(\dot\gamma_t) dt = \int_0^1 v_t(x) dt = (x-y)^2
+$$
+where the best path $\gamma_t$ is the straight line connecting $x$ and $y$ with constant velocity $\dot\gamma_t=1$.
+
+### Why Conditioning Works?
+
+TODO.
