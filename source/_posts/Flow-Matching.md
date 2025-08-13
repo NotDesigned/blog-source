@@ -247,7 +247,7 @@ $$
 (t,x) &\mapsto \rho(t,x)
 \end{align*}
 $$
-And denote $\rho_t(x):\Omega \to \mathbb {R} $ as $\rho(t,x)$.
+And denote $\rho_t(x):\Omega \to \mathbb {R}$ as $\rho(t,x)$.
 
 We require
 $$
@@ -373,7 +373,7 @@ $$
 \end{align*}
 $$
 
-Or minimize the KL divergence between $\rho_{1,\theta}$ and $\nu$.
+Or equivalently, minimize the KL divergence between $\rho_{1,\theta}$ and $\nu$.
 
 ## Flow Matching
 
