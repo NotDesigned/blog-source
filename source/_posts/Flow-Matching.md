@@ -150,7 +150,7 @@ where $K_\sigma(x)$ is a Gaussian kernel with bandwidth $\sigma$.
 
 We shall see this is the choice of the flow matching.
 
-### (Discrete) Normalizing Flow
+## (Discrete) Normalizing Flow
 
 We learn a bijective mapping $f: \mathbb{R}^n \to \mathbb{R}^n$ such that the pushforward measure $f_{*}\mu$ matches the target distribution $\nu$.
 
