@@ -556,6 +556,8 @@ $$
 \int_{\Omega} \phi_t \nabla \cdot (v_t \delta \rho_t)\, d\Omega &= - \int_{\Omega} \nabla \phi_t \cdot (v_t \delta \rho_t) \, d\Omega
 \end{align*}
 $$
+Note $\rho_0 = \mu$ and $\rho_1 = \nu$ are fixed, so variations $\delta \rho_t$ are zero at the endpoints $(\delta \rho_0 = \delta \rho_1 = 0)$. 
+
 we get
 $$
 \begin{align*}
@@ -575,8 +577,8 @@ $$
 To summarize, we have three equations for the action functional, which gives us the necessary conditions for optimality:
 $$
 \begin{cases}
-v_t = \nabla \phi_t \quad \text{Velocity field as gradient of potential} \\ 
-\partial_t \phi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0 \quad \text{Hamilton-Jacobi equation} \\
-\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0\quad \text{Continuity equation for mass conservation}
+v_t = \nabla \phi_t, \quad \text{Velocity field as gradient of potential} \\ 
+\partial_t \phi_t(x) + \frac{1}{2}\|v_t(x)\|^2 = 0, \quad \text{Hamilton-Jacobi equation} \\
+\partial_t \rho_t + \nabla \cdot (v_t \rho_t) = 0. \quad \text{Continuity equation for mass conservation}
 \end{cases}
 $$
