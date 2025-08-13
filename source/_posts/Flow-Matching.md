@@ -381,7 +381,7 @@ Instead of learning $g$, flow matching directly learns the velocity field $v_{t,
 
 The theoretical objective is:
 $$
-\mathcal{L}_{FM}=\mathbb E_{t,x_t\sim \rho_t} \|v_{t,\theta}(x_t)-v_t(x_t)\|^2
+\mathcal{L}_{FM}=\mathbb E_{t\sim\mathcal{U}[0,1],x_t\sim \rho_t} \|v_{t,\theta}(x_t)-v_t(x_t)\|^2
 $$
 But this cannot be trained directly since we don't know $v_t$.
 
@@ -407,6 +407,52 @@ And the paper use Gaussian kernal as an approximation.
 
 If the above condition is satisfied, the paper proves that optimizing the objective of CFM is equivalent to optimizing the objective of the original flow model.
 
+$$
+\mathcal L_{CFM} = \mathbb{E}_{t\sim\mathcal{U}[0,1],x_1\sim\nu,x_t\sim\rho_t(x_t|x_1)} \left[\|v_{t,\theta}(x_t|x_1) - v_t(x_t|x_1)\|^2\right]
+$$
+
+And $\nabla_{\theta} \mathcal L_{CFM}= \nabla_{\theta} \mathcal L_{FM}$.
+
+And you can also condition on $x_0$ or both $x_0$ and $x_1$.
+
 ## Rectified Flow
 
-TODO
+In the paper, **rectified flow** optimized the velocity field $v_t$ by minimizing the following objective:
+
+$$
+\mathcal{L}_{RF}=\int_0^1 \mathbb{E} \left[\|(X_1-X_0)-v(X_t,t)\|^2 \right]\, \text{d}t,\, \text{with}\,\, X_t=tX_1+(1-t)X_0
+$$
+where $X_0\sim \mu, X_1\sim \nu$.
+
+First, lets translate this into the CFM language.
+
+Conditioning on $x_0$ and $x_1$, rectified flow defined a deterministic path as the interpolation between $x_0$ and $x_1$:
+$$
+\begin{align*}
+g_t(x|x_0,x_1) &= t x_1 + (1-t)x_0\\
+v_t(x|x_0,x_1) &= \partial_t g_t(x|x_0,x_1) = x_1 - x_0\\
+\rho_t(x|x_0,x_1) &= (g_t(x|x_0,x_1))_* \rho_0(x|x_0,x_1)\\
+&= (g_t(x|x_0,x_1))_* \delta(x - x_0) \\
+&= \delta(g_t^{-1}(x|x_0,x_1) - x_0) \left| \det \frac{\partial g_t^{-1}}{\partial x} \right|\\
+&= \delta(\frac{x-tx_1}{1-t} - x_0) \frac{1}{(1-t)^n}\\
+&= \delta\left(\frac{x-tx_1-(1-t)x_0}{1-t}\right) \frac{1}{(1-t)^n}\\
+&= \delta\left(x-tx_1-(1-t)x_0\right) (1-t)^{n} \frac{1}{(1-t)^n}\\
+&= \delta\left(x-tx_1-(1-t)x_0\right)\\
+\end{align*}
+$$
+
+And apply the CFM objective:
+$$
+\begin{align*}
+\mathcal{L}_{RF} &= \mathbb{E}_{t\sim\mathcal{U}[0,1],x_0\sim\mu,x_1\sim\nu,x_t\sim\rho_t(x|x_0,x_1)} \left[\|v_{t,\theta}(x_t|x_0,x_1) - v_t(x_t|x_0,x_1)\|^2\right]\\
+&= \int_0^1 \mathbb{E}_{x_0\sim\mu,x_1\sim\nu,x_t\sim\rho_t(x|x_0,x_1)} \left[\|v_{t,\theta}(x_t|x_0,x_1) - (x_1-x_0)\|^2\right]\, \text{d}t\\
+&= \int_0^1 \mathbb{E}_{x_0\sim\mu,x_1\sim\nu} \left[ v_{t,\theta}(x_t|x_0,x_1) - (x_1-x_0)\right]^2 \, \text{d}t\\
+\end{align*}
+$$
+And this is exactly the objective of rectified flow.
+
+Actually, the author of [Flow Matching For Generative Modeling](https://arxiv.org/pdf/2210.02747) also proposed an identical objective, but they use the name "OT-Flow" instead of "rectified flow". 
+
+### Relation to Optimal Transport
+
+TODO.
