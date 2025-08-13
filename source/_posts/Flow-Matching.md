@@ -502,7 +502,7 @@ $$
 
 The $2$-Wasserstein distance between two probability measures $\mu$ and $\nu$ can be expressed as the infimum of the action functional over all admissible pairs $(\rho, v)$
 $$
-\mathcal{T}_2 (\mu, \nu) = \inf_{(\rho, v) \in V(\mu, \nu)} A(\rho, v)
+W_2^2 (\mu, \nu) = \inf_{(\rho, v) \in V(\mu, \nu)} A(\rho, v)
 $$
 
 This means that the optimal transport plan is the one that minimizes the action functional, which is equivalent to minimizing the total energy of the velocity field.
