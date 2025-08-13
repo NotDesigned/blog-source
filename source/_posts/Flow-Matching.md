@@ -411,9 +411,11 @@ $$
 \mathcal L_{CFM} = \mathbb{E}_{t\sim\mathcal{U}[0,1],x_1\sim\nu,x_t\sim\rho_t(x_t|x_1)} \left[\|v_{t,\theta}(x_t|x_1) - v_t(x_t|x_1)\|^2\right]
 $$
 
-And $\nabla_{\theta} \mathcal L_{CFM}= \nabla_{\theta} \mathcal L_{FM}$.
+And $\nabla_{\theta} \mathcal L_{CFM}= \nabla_{\theta} \mathcal L_{FM}$
 
-And you can also condition on $x_0$ or both $x_0$ and $x_1$.
+And you can also condition on $x_0$.
+
+or both $x_0$ and $x_1$, the formula $\nabla_{\theta} \mathcal L_{CFM}$ is still valid if if the coupling $\pi\in \Gamma(\mu,\nu)$ is fixed.
 
 ## Rectified Flow
 
@@ -679,4 +681,23 @@ where the best path $\gamma_t$ is the straight line connecting $x$ and $y$ with 
 
 ### Why Conditioning Works?
 
-TODO.
+Turning back to the rectified flow, the author condition on $x_0,x_1$, let $\pi(x_0,x_1)$ be the product coupling $\mu(x_0)\nu(x_1)$.
+
+$$
+\begin{align*}
+v_t(x_t|x_0,x_1) &= x_1-x_0\\
+v_t(x_t) &= \int \int v_t(x_t|x_0,x_1) \frac{\rho_t(x_t|x_0,x_1)\pi(x_0,x_1)}{\rho_t(x_t)} \, dx_0 \, dx_1\\
+&= \int \int (x_1-x_0) \frac{\rho_t(x_t|x_0,x_1)\mu(x_0)\nu(x_1)}{\rho_t(x_t)} \, dx_0 \, dx_1\\
+\end{align*}
+$$
+
+It is easy to see if $\pi = \pi^*$, then the marginal vector field $v_t(x_t)$ is exactly the optimal transport vector field.
+
+But rectified flow set $\pi = \mu \otimes \nu$, so it cannot get the optimal transport vector field in 1 step. But the paper proves every time of reflow matching will decrease the transport cost, and the rectified flow will converge to the optimal transport vector field by the speed of $\mathcal{O}(1/k)$,
+where $k$ is the number of iterations.
+
+And in the [Flow Matching For Generative Modeling](https://arxiv.org/pdf/2210.02747), the author proposed "OT-flow" is conditioning on $x_1$ only. Therefore, since the target is a Gaussian kernal and the source is a Gaussian distribution, they just know the exact form of the optimal transport vector field 
+$$
+v_t(x_t|x_1) = \frac{x_1 - (1-\sigma_{min})x_t}{1-(1-\sigma_{min})t}
+$$
+and there is no problem of coupling since they only condition on $x_1$.
