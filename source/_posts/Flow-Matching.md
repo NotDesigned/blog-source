@@ -792,7 +792,10 @@ $$
 &=\mathbb{E}_{x\sim \rho_t^k} \left[\nabla \phi(x) \cdot v_t^{k+1}(x)\right]
 \end{align*}
 $$
+
 Solves the weak form of the continuity equation.
+
+---
 
 This is the key construct in the rectified flow.
 
