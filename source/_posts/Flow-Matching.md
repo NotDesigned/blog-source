@@ -271,8 +271,8 @@ $$
 \begin{align*}
 \int_{\Omega} \partial_t \phi\rho_t\, d\Omega &=\int_{\Omega} \partial_t \phi\, d\rho_t\\
 &= \frac{d}{dt} \int_{\Omega} \phi(x) \, d((g_t)_* \rho_0)  \\
-&= \frac{d}{dt} \int_{\Omega} \phi(g_t^{-1})\, d\rho_0 \\
-&= \int_{\Omega} \nabla \phi(g_t^{-1}) \cdot v_t(g_t^{-1}) \, d\rho_0 \\
+&= \frac{d}{dt} \int_{\Omega} \phi(g_t)\, d\rho_0 \\
+&= \int_{\Omega} \nabla \phi(g_t) \cdot v_t(g_t) \, d\rho_0 \\
 &= \int_{\Omega} \nabla \phi \cdot v_t \, d\rho_t\\
 &= -\int_{\Omega} \phi \left(\nabla\cdot v_t\rho_t \right) d\Omega
 \end{align*} 
@@ -286,7 +286,7 @@ We say the $(\rho_t,v_t)$ solve the continuity in distributional sense, which is
 
 From the Lagrangian description, we know the formula:
 $$
-J_t = \left |\det \frac{\partial g_t}{\partial x} \right | = \left | F_t \right|
+J_t = \left |\det \frac{\partial g_t}{\partial x} \right | = \left | \det  F_t \right|
 $$
 $$
 \rho_t(g_t)\cdot J_t = \rho_0
@@ -787,7 +787,7 @@ For all $\phi\in C_0(\Omega)$,
 
 $$
 \begin{align*}
-\frac{d}{dt} \mathbb{E}_{(x_0,x_1)\sim \pi^k}[h(x_t)] &= \mathbb{E}_{(x_0,x_1)\sim \pi^k} \left[\nabla \phi(x_t) \cdot (x_1 - x_0)\right] \\
+\frac{d}{dt} \mathbb{E}_{(x_0,x_1)\sim \pi^k}[\phi(x_t)] &= \mathbb{E}_{(x_0,x_1)\sim \pi^k} \left[\nabla \phi(x_t) \cdot (x_1 - x_0)\right] \\
 &=\mathbb{E}_{x\sim \rho_t^k} \left[\nabla \phi(x) \mathbb{E}_{(x_0,x_1)\sim \pi^k}[x_1 - x_0 | x_t = x]\right] \\
 &=\mathbb{E}_{x\sim \rho_t^k} \left[\nabla \phi(x) \cdot v_t^{k+1}(x)\right]
 \end{align*}
