@@ -6,7 +6,7 @@ tags:
 - Optimization
 categories:
 - Mathematics
-- Study Notes
+- Paper Study
 ---
 
 This is a reading note on the paper "Random Coordinate Descent Methods for Minimizing Decomposable Submodular Functions" by A. ENE, Huy L. NGUYEN
