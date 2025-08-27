@@ -398,6 +398,14 @@ Thus $[X,Y]$ is also a left invariant vector field.
 
 So $\mathfrak{g}$ is a Lie algebra with the Lie bracket induced by the Lie bracket of $\mathfrak{X}(G)$, which is called **the Lie Algebra on Lie group $G$**.
 
+**Example**
+
+$\text{GL}(n,\mathbb{R})$ is a open subset of $M(n,\mathbb{R})\cong \mathbb R^{n^2}$
+
+So $\mathfrak{gl}(n,\mathbb{R})$ as the tangent space of $\text{GL}(n,\mathbb{R})$ on $e=I_n$ is isomorphic to $M(n,\mathbb R)$.
+
+And $[X_A,X_B]= X_{[A,B]}$ for all $A,B\in T_{I_n} \text{GL}(n,\mathbb R)$.
+
 ### Homomorphism of Lie Groups and Lie Algebras
 
 There are two types of homomorphism, one is the **Lie group homomorphism** and the other is the **Lie algebra homomorphism**, which are morphism between Lie group categories and Lie algebra categories respectively.
@@ -513,7 +521,177 @@ Thus, $d\phi$ is a Lie algebra homomorphism.
 
 ### Exponential Map
 
+Recall that Lie algebra can be viewed as the tangent space of $T_eG$ of some Lie group $G$. For now, we put whether such $G$ can always be found aside. And a tangent vector $X\in T_eG$ induced a left-invariant vector field $X$ by the left multiplication $L_g$ on $G$. Such vector fields could induce a flow $\Phi^X$ on $G$, i.e. we can build a connection between the Lie algebra and the induced flow on the group. 
+
+We shall ask the following question:
+
+- Is $\Phi^X$ complete?
+- How does $\Phi^X$ change regarding different choices of $X$?
+
+The answer to the first question is yes.
+
+Although $G$ is not necessarily compact, but if $U\in e$ we locally have $\Gamma: (-\epsilon, \epsilon) \times U \to G$ as the fundamental theorem states, then we can apply $L_g$ to transform the local maps to anywhere $g$, thus the integral curve can be extended to the whole manifold.
+
+Note 
+$$
+\phi^X_t(g) = g \phi_t^X(e)
+$$
+where $\phi^X_t$ are the diffeomorphism induced by the flow $\Phi^X$ at time $t$.
+
+**Exercise**: Prove it.
+
+> Hint: First assume $g\in U$, and show that any $g'\in G$ can be written as finite product of $g_i\in U$
+
+So 
+$$
+\phi_t^X = R_{\phi_{t}^X(e)}
+$$
+And 
+$$
+g\phi_{s+t}^X(e) = \phi_{t}^X(\phi_{s}^X(g)) = \phi_{t}^X(g\phi_{s}^X(e)) = g\phi_{s}^X(e)\phi_{t}^X(e)
+$$
+for all $g\in G$
+
+Thus
+$$
+\phi_{s+t}^X(e) = \phi_{s}^X(e)\phi_{t}^X(e)
+$$
+
+So the mapping 
+$$
+\begin{align*}
+\rho^X: \mathbb{R} &\to G \\
+t &\mapsto \phi^X_t(e)
+\end{align*}
+$$
+is a smooth group homomorphism. 
+
+**Exercise**:
+> Prove it is smooth.
+
+So $\rho^X$ is called the **one-parameter subgroup** of $G$.
+
+And every $X\in\mathfrak{g}$ gives rise to a one-parameter subgroup $\rho^X$ of $G$.
+
+Conversely, let $\rho$ be a one-parameter subgroup of $G$. Then 
+$$
+X_g := \frac{d}{dt}\bigg|_{t=0} R_{\rho(t)}g
+$$
+is a left-invariant vector field on $G$.
+
+**Proof**:
+$$
+\begin{align*}
+dL_h(X_g) &= dL_h (\frac{d}{dt}\bigg|_{t=0} R_{\rho(t)}g)\\
+&= \frac{d}{dt}\bigg|_{t=0}(L_hR_{\rho(t)}g) \\
+&= \frac{d}{dt}\bigg|_{t=0}(R_{\rho(t)}hg) \\
+&= X_{hg}
+\end{align*}
+$$
+
+So $\rho^X$ has a bijection with $X\in \mathfrak{g}$, which is the third interpretation of the Lie algebra---the infinitesimal generator of all the one-parameter subgroup of $G$.
+
+
+To study the second problem, we define the exponential map
+$$
+\begin{align*}
+\exp: \mathfrak{g} &\to G \\
+X &\mapsto \phi^X_1(e)
+\end{align*}
+$$
+Note $\exp(tX) = \phi_{1}^{tX}(e) = \phi_{t}^{X}(e)$.
+
+The exponential map has the following properties:
+1. **Differentiable**: The exponential map is a smooth (infinitely differentiable) map.
+
+2. **Local Diffeomorphism**: The exponential map is a local diffeomorphism around the zero vector in the Lie algebra $\mathfrak{g}$. This means that for small enough $X \in \mathfrak{g}$, the map $\exp$ is invertible in a neighborhood of $0 \in \mathfrak{g}$.
+
+3. $\exp(tX)\cdot \exp(sX) = \exp((t+s)X)$
+
+**Examples**
+
+(1). $G=\mathbb R^*$, $\mathfrak{g}=T_1 G= \{c\cdot \frac{d}{dx}\big|_{1}\}\cong \mathbb R$.
+
+To calculate $\exp(X)=\phi_{1}^X(1)$, write $X= x\frac{d}{dx} \in \mathfrak{g}$.
+
+And 
+$$
+\dot \gamma(t) = X_{\gamma(t)}
+$$
+Note $X_{\gamma(t)} = \gamma(t) x \frac{d}{d x^0}$
+$$
+\frac{d}{dt}\gamma(t) = \gamma(t) \cdot x
+$$
+yields $\gamma(t) = \exp(tx)$.
+
+(2). For $G=(S^1,\cdot)$,
+$$
+\begin{align*}
+\exp: i\mathbb R=T_e S^1&\to S^1 \\
+\exp(ix) &\mapsto e^{ix}
+\end{align*}
+$$
+(3). For $G=\text{GL}(n,\mathbb R)$
+$$
+\begin{align*}
+\exp: \mathfrak{gl}(n,\mathbb R)&\to \text{GL}(n,\mathbb R) \\
+A &\mapsto e^{A}=\sum_{i=0}^{\infty} \frac{1}{i!}A^i
+\end{align*}
+$$
+where $A^0 = I$.
+
+$\exp:\mathfrak{g} \to G$ is a smooth mapping, and its differential at $e$ is the identity map
+$$
+(d \exp)_0 = Id_{\mathfrak g}: T_0\mathfrak{g}\simeq \mathfrak{g} \to \mathfrak{g} \simeq T_e G
+$$ 
+
+**Proof**
+Consider a vector field $\tilde X$ manifold $G\times \mathfrak{g}$, $\tilde X_{(g,X)}=(X_g,0)$
+
+The integral curve just be $\gamma(t) = (g \cdot \exp(tX), X)$
+
+The flow is smooth, thus
+$$
+\begin{align*}
+\mathfrak{g}&\to \mathbb{R}\times G\times \mathfrak g &&\to G\times \mathfrak g &&\to G\\
+X &\mapsto (1,e,X) &&\mapsto (\exp(X),X) &&\mapsto \exp(X)
+\end{align*}
+$$
+is smooth.
+
+The identity property is given by the following:
+$$
+d(exp)_0 X = \frac{d}{dt}\bigg|_{t=0} \exp(tX) = \frac{d}{dt}\bigg|_{t=0} \phi_t^X(e) = X_e
+$$
+
+Particularly, $\exp$ is a diffeomorphism around $0$. That is to say, locally around $e$, the Lie group looks like the corresponding Lie algebra.
+
+### Naturality
+
+Given any Lie group homomorphism $\varphi: G\to H$, the diagram
+
+$$
+\begin{array}{ccc}
+\mathfrak{g} & \xrightarrow{\quad\quad d\varphi\quad\quad} & \mathfrak{h} \\[2em]
+\Big\downarrow{\exp_G} & & \Big\downarrow{\exp_H} \\[2em]
+G & \xrightarrow{\quad\quad\varphi\quad\quad} & H
+\end{array}
+$$
+
+commute.
+
+**Exercise**
+Proof it
+> Hint: For any $X\in \mathfrak g$, $\varphi \circ \exp_{G}(tX)$ represents a one-parameter groups in $H$, what is the infinitesimal generator?
+
+Particularly, for mapping $C_g:G\to G$ and $\text{Ad}: G\to \text{GL}(\mathfrak g)$, we have:
+1. $g(\exp(tX))g^{-1} = \exp(t\text{Ad}_g(X))$
+2. $\text{Ad}(\exp(tX)) = \exp(t\text{ad}(X))$
+
+### Baker-Campbell-Hausdorff Formula
+
 TODO.
+
 
 ## Exterior Algebra, Differential Forms
 
@@ -583,7 +761,9 @@ $$ S(f)(v_1, v_2, \ldots, v_k) = \frac{1}{k!} \sum_{\sigma \in S_k} \sigma f $$
 The symmetrizing operator takes a multilinear function and produces a symmetric multilinear function by averaging over all permutations of its arguments.
 
 The **alternating operator** $A: L_k(V) \to A_k(V)$ is defined as:
-$$ A(f)(v_1, v_2, \ldots, v_k) = \frac{1}{k!} \sum_{\sigma \in S_k} \text{sgn}(\sigma) \sigma f $$   
+$$
+A(f)(v_1, v_2, \ldots, v_k) = \frac{1}{k!} \sum_{\sigma \in S_k} \text{sgn}(\sigma) \sigma f
+$$   
 
 The alternating operator takes a multilinear function and produces an alternating multilinear function by summing over all permutations of its arguments, weighted by the sign of the permutation.
 
@@ -632,9 +812,13 @@ $$ \langle x,y\rangle = \sum_{i,j} g_{ij} (\alpha^i \otimes \alpha^j)(x,y) $$
 The **wedge product** or **exterior product** is an operation on alternating multilinear functions that produces a new alternating multilinear function. It is denoted by $\wedge$ and is defined as follows:
 
 For all $f \in A_k(V)$ and $g \in A_l(V)$, the wedge product $f \wedge g \in A_{k+l}(V)$ is defined by:
-$$ (f \wedge g) = \binom{k+l}{k} A(f\otimes g)$$ 
+$$ 
+(f \wedge g) = \binom{k+l}{k} A(f\otimes g)
+$$ 
 or equivalently,
-$$(f \wedge g)(v_1, v_2, \ldots, v_{k+l}) = \frac{1}{k!l!} \sum_{\sigma \in S_{k+l}} \text{sgn}(\sigma) f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots, v_{\sigma(k)}) g(v_{\sigma(k+1)}, v_{\sigma(k+2)}, \ldots, v_{\sigma(k+l)}) $$
+$$
+(f \wedge g)(v_1, v_2, \ldots, v_{k+l}) = \frac{1}{k!l!} \sum_{\sigma \in S_{k+l}} \text{sgn}(\sigma) f(v_{\sigma(1)}, v_{\sigma(2)}, \ldots, v_{\sigma(k)}) g(v_{\sigma(k+1)}, v_{\sigma(k+2)}, \ldots, v_{\sigma(k+l)}) 
+$$
 
 To avoid division by factorials, we can define the wedge product as sum over sorted permutations:
 $$
