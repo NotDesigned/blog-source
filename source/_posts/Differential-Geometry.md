@@ -519,6 +519,39 @@ At $g = e$: $[d\phi(X), d\phi(Y)]_{e_H} = d\phi_e ([X, Y]_e).$ Since both are le
 
 Thus, $d\phi$ is a Lie algebra homomorphism.
 
+#### Adjoint Map
+
+Since every element $g\in G$ gives a isomorphism on Lie group:
+$$
+\begin{align*}
+C_g: G&\to G \\
+x&\mapsto gxg^{-1}
+\end{align*}
+$$
+Such map induces a isomorphism on Lie algebra:
+$$
+\text{Ad}_g = d C_g\big|_e: \mathfrak{g}\to\mathfrak{g}
+$$
+
+So this yields a new mapping
+$$
+\begin{align*}
+\text{Ad}: G&\to \text{GL}(\mathfrak g)\\
+g&\mapsto \text{Ad}_g
+\end{align*}
+$$
+as a group homomorphism between $G$ and $\text{GL}(\mathfrak g)$, which is called the **adjoint representation** of $G$.
+
+Again, take the induced mapping of $\text{Ad}$, we get
+$$
+\begin{align*}
+\text{ad}: \mathfrak{g} &\to \text{End}(\mathfrak{g}) \\
+X &\mapsto d \text{Ad} \big|_e (X)
+\end{align*}
+$$
+
+We shall see that $\text{ad}(X)(Y) = [X,Y]$.
+
 ### Exponential Map
 
 Recall that Lie algebra can be viewed as the tangent space of $T_eG$ of some Lie group $G$. For now, we put whether such $G$ can always be found aside. And a tangent vector $X\in T_eG$ induced a left-invariant vector field $X$ by the left multiplication $L_g$ on $G$. Such vector fields could induce a flow $\Phi^X$ on $G$, i.e. we can build a connection between the Lie algebra and the induced flow on the group. 
@@ -591,6 +624,8 @@ $$
 
 So $\rho^X$ has a bijection with $X\in \mathfrak{g}$, which is the third interpretation of the Lie algebra---the infinitesimal generator of all the one-parameter subgroup of $G$.
 
+**Exercise**
+> Now, prove $\text{ad}(X)(Y)=[X,Y]$.
 
 To study the second problem, we define the exponential map
 $$
