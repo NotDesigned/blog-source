@@ -188,7 +188,7 @@ where $\tilde{j}(p)$ is the Fourier transform of $j(x)$ and $S_{int}[\tilde{\phi
 
 ### Definition
 
-After defining the behavior of the field $\phi$ ($S[\phi]$) and its statistical distribution $P[\phi]= \exp(-S[\phi])$, we shall ask the fundamental question---What is the relation between the different point in a field.
+After defining the behavior of the field $\phi$ $(S[\phi])$ and its statistical distribution $P[\phi]= \exp(-S[\phi])$, we shall ask the fundamental question---What is the relation between the different point in a field.
 
 In other words, if I know the value $\phi(x)$ at point $x$, what can I say about the value $\phi(y)$ at another point $y$?
 
@@ -296,6 +296,38 @@ $$
 
 This momentum space formulation naturally leads to the **exact renormalization group** approach, where we systematically integrate out high-momentum modes while keeping track of how the effective action changes. The cutoff function $K_\Lambda(p^2)$ mentioned in the paper provides a smooth way to suppress high-momentum modes above the scale $\Lambda$.
 
-## Exact RG 
+## Renormalization
+
+If we directly calculate the correlation, we will encounter infinity when $d>4$. 
+
+### Introduction
 
 TODO.
+
+### Polchinski Equation
+
+Here is the detailed version of section $2.1.1$ in the paper.
+
+$$
+Z_{\Lambda}[J] =\int \mathcal D\phi \exp (-S_{\Lambda}[\phi,J]) =\int \mathcal D\phi \, \exp \left[ -\frac{1}{2} \int \frac{d^d p}{(2\pi)^d} \left(\phi(p)\phi(-p) (p^2 + m^2) K_\Lambda(p^2)^{-1} + J(p) \phi(-p)\right) - S_{int,\Lambda} [\phi] \right]
+$$
+
+where $S_{int,\Lambda}[\phi]$ is the interaction term that depends on the cutoff scale $\Lambda$, $K_\Lambda(p^2)$ is a soft cutoff function, i.e. it is $1$ for $p^2 < \Lambda^2$ and smoothly approach $0$ for $p^2 > \Lambda^2$.
+
+Then we consider a small scale $\Lambda_{R}$, which is the scale at which we want to integrate out the high-momentum modes.
+
+We want the probability functional shall not change under the perturbation of our scale $\Lambda$, so the partition function can only change by multiple amount inrelevent to $\phi$ and only relevent to $\Lambda$.
+$$
+-\frac{d \ln Z_{\Lambda}[J]}{d \Lambda} = - \Lambda \frac{d}{d \Lambda} Z_{\Lambda}[J] = C_{\Lambda} Z_{\Lambda}[J]
+$$
+
+Calculate the LHS directly
+$$
+\begin{align*}
+-\Lambda \frac{d}{d \Lambda} Z_{\Lambda}[J] &= -\Lambda \int \mathcal D\phi \, \left[ \exp (-S_{\Lambda}[\phi,J]) \cdot \left(-\frac{dS_{\Lambda}[\phi,J]}{d\Lambda}\right) \right] \\
+&= \int \mathcal D\phi \, \left( \Lambda \frac{dS_{\Lambda}[\phi,J]}{d\Lambda} \right) \exp (-S_{\Lambda}[\phi,J]) \\
+&=\int \mathcal D\phi \, \left( \frac{1}{2}\int \frac{d^d p}{(2\pi)^d} \left( \phi(p) \phi(-p) (p^2 + m^2) \Lambda \frac{\partial K_\Lambda^{-1}(p^2)}{\partial \Lambda} + \Lambda \frac{\partial S_{int,\Lambda}[\phi]}{\partial \Lambda} \right) \right) \exp (-S_{\Lambda}[\phi,J])
+\end{align*}
+$$
+
+To make it match the form of the RHS, we should adjust the coupling constants in the interaction term $S_{int,\Lambda}[\phi]$ accordingly. 
