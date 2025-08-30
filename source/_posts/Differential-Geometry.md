@@ -917,19 +917,19 @@ Corollary 3: The dimension of $A_k(V)$ is $0$ for $k > \dim V$.
 
 Proof: For $k > \dim V$, the set of indices $I=(i_1,i_2,\ldots,i_k)$ cannot be chosen such that $1 \leq i_1 < i_2 < \ldots < i_k \leq n$, hence $A_k(V) = 0$.
 
-### Inner Product
+### Interior Product
 
-Let $V$ be a vector space, $v\in V$, and $\omega \in \bigwedge^k V$. The **inner product** of $v$ and $\omega$, denoted as $\iota_v \omega$, is a linear map $\iota_v: \bigwedge^k V \to \bigwedge^{k-1} V$ defined by:
+Let $V$ be a vector space, $v\in V$, and $\omega \in \bigwedge^k V$. The **interior product** of $v$ and $\omega$, denoted as $\iota_v \omega$, is a linear map $\iota_v: \bigwedge^k V \to \bigwedge^{k-1} V$ defined by:
 $$ \iota_v(\omega) = \sum_{i=1}^k (-1)^{i-1} \alpha^i(v) \alpha^{1} \wedge \ldots \wedge \widehat{\alpha^i} \wedge \ldots \wedge \alpha^{k} $$
 
 where $\widehat{\alpha^i}$ means that the $i$-th term is omitted from the wedge product.
 
-Let $\alpha \in \bigwedge^k V, \beta \in \bigwedge^l V$, the inner product satisfies the following properties:
+Let $\alpha \in \bigwedge^k V, \beta \in \bigwedge^l V$, the interior product satisfies the following properties:
 1. **Nilpotency**: $\iota_v \iota_v \alpha = 0$ for any $v \in V$.
 2.  $\iota_v(\alpha \wedge \beta) = \iota_v(\alpha) \wedge \beta + (-1)^k \alpha \wedge \iota_v(\beta)$.
 3. **Linearity**: $\iota_{av + bw}(\alpha) = a \iota_v(\alpha) + b \iota_w(\alpha)$ for any $a,b \in \mathbb{R}$ and $v,w \in V$.
 
-The inner product $\iota_v$ is called the **interior product** or **contraction** with respect to the vector $v$. It reduces the degree of the form by 1.
+The interior product $\iota_v$ is called the **interior product** or **contraction** with respect to the vector $v$. It reduces the degree of the form by 1.
 
 Observe the definition, we see that it just the evaluation of the first argument of the alternating multilinear function $\omega$ at the vector $v$, and then take the wedge product of the remaining arguments.
 

@@ -15,7 +15,7 @@ categories:
 
 ## Introduction
 
-I have very few experience in physics, so there might be many errors in this post. If you see any errors, please point it out in the comment!
+I have very little knowledge in physics, so there might be many errors in this post. If you see any errors, please point it out in the comment!
 
 Renormalization theory, to put it simply, is a theory describing that every theory is the optimal theory under our capability of understanding, thus might be only effective to some extent.
 
