@@ -222,16 +222,67 @@ $$
 \end{align*}
 $$
 
+### The Source Field Method (as Partitional Generating Function)
 
-
-### Free Field Propagator
+Calculate the propagator directly from the definition is very complicated due to the presence of interactions. 
 
 For the **free field** (no interactions, $u_0 = 0$), the action is quadratic:
 $$
 S_0[\tilde{\phi}] = \int \frac{d^d p}{(2\pi)^d} \frac{1}{2}(p^2+m^2)\tilde{\phi}(p)\tilde{\phi}(-p)
 $$
 
-The **propagator** is:
+If we calculate the propagator directly, we get:
+
+$$
+\begin{align*}
+D(p) = \frac{1}{Z} \int \mathcal{D}\tilde{\phi} \, \tilde{\phi}(p) \tilde{\phi}(-p) e^{-S_0[\tilde{\phi}]} \\
+= \frac{\int \mathcal{D}\tilde{\phi} \, \tilde{\phi}(p) \tilde{\phi}(-p) e^{-S_0[\tilde{\phi}]}}{\int \mathcal{D}\tilde{\phi} \, e^{-S_0[\tilde{\phi}]}}\\
+\end{align*}
+$$
+
+To calculate this propagator, we need to evaluate the Gaussian integrals involved.
+
+But actually, we can use the technique of generating function.
+
+Recall that, for a random variable $X$, we can define its generating function as:
+
+$$
+G_X(t) = \mathbb{E}[e^{tX}] 
+$$
+And its moment $\mathbb{E}[X^n]$ can be obtained by differentiating $G_X(t)$ $n$ times and evaluating at $t=0$:
+
+Now we are dealing with a field $\phi$ and functional partition function $Z[\phi] = \mathbb{E}[\exp(-S[\phi])]$.
+
+Similarly, we introduce a source field $J$ and define the partition function with source $J$ as:
+$$
+Z[J] = \mathbb{E}[\exp(-S[\phi] + \int d^d x J(x) \phi(x))]
+$$
+or, in momentum space 
+$$
+Z[\tilde J] = \mathbb{E}[\exp(-S[\tilde{\phi}] + \int d^d p \tilde J(p) \tilde{\phi}(-p))]
+$$
+Take the functional derivative of $Z[J]$, we obtain:
+$$
+\frac{\delta}{\delta \tilde J(p)} Z[\tilde J] = \mathbb{E}[\tilde{\phi}(-p) \exp(-S[\tilde{\phi}] + \int d^d \tilde J(p) \tilde \phi(-p))]
+$$
+$$
+\frac{\delta}{\delta \tilde J(p)}\frac{\delta}{\delta \tilde J(-p)} Z[\tilde J] = \mathbb{E}[\tilde{\phi}(-p) \tilde{\phi}(p) \exp(-S[\tilde{\phi}] + \int d^d \tilde J(p) \tilde \phi(-p))]
+$$
+And evaluate it at $\tilde J = 0$, this is exactly the definition of propagator:
+$$
+D(p) = \frac{1}{Z} \left. \frac{\delta}{\delta \tilde J(p)}\frac{\delta}{\delta \tilde J(-p)} Z[\tilde J] \right|_{\tilde J = 0} = \left. \frac{\delta}{\delta \tilde J(p)}\frac{\delta}{\delta \tilde J(-p)} W[\tilde J] \right|_{\tilde J = 0}
+$$
+where $W[\tilde J] = \ln Z[\tilde J]$.
+
+For the free field,
+$$
+\begin{align*}
+Z_0[\tilde J] &= \int \mathcal{D}\tilde{\phi} \, \exp \left[ -\frac{1}{2} \int \frac{d^d p}{(2\pi)^d} (p^2 + m^2) \tilde{\phi}(p) \tilde{\phi}(-p) + \int d^d p \tilde J(p) \tilde{\phi}(-p) \right]\\
+&= Z_0[0] \exp \left[ \frac{1}{2} \int \frac{d^d p}{(2\pi)^d} (p^2 + m^2)^{-1} \tilde J(p) \tilde J(-p) \right]
+\end{align*}
+$$
+
+The propagator is:
 $$
 D(p) = \frac{1}{p^2 + m^2}
 $$
@@ -240,14 +291,6 @@ This gives the familiar result that in position space, the two-point correlation
 $$
 \langle \phi(x) \phi(y) \rangle = \int \frac{d^d p}{(2\pi)^d} \frac{e^{ip \cdot (x-y)}}{p^2 + m^2}
 $$
-
-### Physical Interpretation
-
-1. **Mass scale**: The parameter $m^2$ sets the mass scale of the theory. When $m^2 > 0$, we have a massive theory with exponential decay of correlations at distances $\sim 1/m$.
-
-2. **Momentum cutoff**: In practical calculations, we often introduce a UV cutoff $\Lambda$ such that $|p| < \Lambda$, regularizing high-momentum divergences.
-
-3. **Renormalization**: The parameters $m^2, u_0$ typically depend on the cutoff scale $\Lambda$ and must be renormalized to obtain finite physical predictions.
 
 ### Connection to Exact RG
 
