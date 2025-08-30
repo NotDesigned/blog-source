@@ -184,6 +184,46 @@ $$
 
 where $\tilde{j}(p)$ is the Fourier transform of $j(x)$ and $S_{int}[\tilde{\phi}]$ contains the interaction terms.
 
+## Propagator
+
+### Definition
+
+After defining the behavior of the field $\phi$ ($S[\phi]$) and its statistical distribution $P[\phi]= \exp(-S[\phi])$, we shall ask the fundamental question---What is the relation between the different point in a field.
+
+In other words, if I know the value $\phi(x)$ at point $x$, what can I say about the value $\phi(y)$ at another point $y$?
+
+We introduce the **propagator** (also Green's function, two-point correlation function)
+
+$$
+G(x,y) \equiv \langle \phi(x) \phi(y) \rangle = \frac{1}{Z} \int \mathcal{D}\phi \, \phi(x) \phi(y) e^{-S[\phi]}
+$$
+as the expectation value of the product of the fields at two different points.
+
+
+
+In the momentum space, the propagator is defined as:
+$$
+D(p) \equiv \langle \tilde{\phi}(p) \tilde{\phi}(-p) \rangle = \frac{1}{Z} \int \mathcal{D}\tilde{\phi} \, \tilde{\phi}(p) \tilde{\phi}(-p) e^{-S[\tilde{\phi}]}
+$$
+
+The relation is given by the Fourier transform:
+
+$$
+\begin{align*} G(x, y) &= \langle \phi(x)\phi(y) \rangle \\ 
+&= \left\langle \left( \int \frac{d^d p}{(2\pi)^d} e^{ip \cdot x} \tilde{\phi}(p) \right) \left( \int \frac{d^d q}{(2\pi)^d} e^{iq \cdot y} \tilde{\phi}(q) \right) \right\rangle \\
+&= \int \frac{d^d p}{(2\pi)^d} \int \frac{d^d q}{(2\pi)^d} e^{ip \cdot x} e^{iq \cdot y} \langle \tilde{\phi}(p)\tilde{\phi}(q) \rangle \\ 
+&= \int \frac{d^d p}{(2\pi)^d} \int \frac{d^d q}{(2\pi)^d} e^{ip \cdot x} e^{iq \cdot y} \left( (2\pi)^d \delta^{(d)}(p+q) D(p) \right) \\
+\end{align*} 
+$$
+Let $q = -p$：
+$$ 
+\begin{align*} G(x, y) &= \int \frac{d^d p}{(2\pi)^d} e^{ip \cdot x} e^{-ip \cdot y} D(p) \\ 
+&= \int \frac{d^d p}{(2\pi)^d} e^{ip \cdot (x-y)} D(p) 
+\end{align*}
+$$
+
+
+
 ### Free Field Propagator
 
 For the **free field** (no interactions, $u_0 = 0$), the action is quadratic:
@@ -191,12 +231,7 @@ $$
 S_0[\tilde{\phi}] = \int \frac{d^d p}{(2\pi)^d} \frac{1}{2}(p^2+m^2)\tilde{\phi}(p)\tilde{\phi}(-p)
 $$
 
-The **inverse propagator** in momentum space is:
-$$
-D^{-1}(p) = p^2 + m^2
-$$
-
-The **propagator** (Green's function) is:
+The **propagator** is:
 $$
 D(p) = \frac{1}{p^2 + m^2}
 $$
