@@ -278,9 +278,13 @@ For the free field,
 $$
 \begin{align*}
 Z_0[\tilde J] &= \int \mathcal{D}\tilde{\phi} \, \exp \left[ -\frac{1}{2} \int \frac{d^d p}{(2\pi)^d} (p^2 + m^2) \tilde{\phi}(p) \tilde{\phi}(-p) + \int d^d p \tilde J(p) \tilde{\phi}(-p) \right]\\
+&=\int \mathcal{D} \tilde \phi \exp\left(-\int\frac{d^d p}{(2\pi)^d}\left[\frac{1}{2}\tilde\phi'(-p)(p^2+m^2)\tilde\phi'(p)+(p^2+m^2)^{-1}\tilde J(p)\tilde J(-p)\right]\right)\\
 &= Z_0[0] \exp \left[ \frac{1}{2} \int \frac{d^d p}{(2\pi)^d} (p^2 + m^2)^{-1} \tilde J(p) \tilde J(-p) \right]
 \end{align*}
 $$
+where $\tilde\phi(p) = \tilde \phi'(p) + D(p)\tilde J(p)$. 
+
+This substitution is called the completing the square technique.
 
 The propagator is:
 $$
@@ -318,7 +322,7 @@ Then we consider a small scale $\Lambda_{R}$, which is the scale at which we wan
 
 We want the probability functional shall not change under the perturbation of our scale $\Lambda$, so the partition function can only change by multiple amount inrelevent to $\phi$ and only relevent to $\Lambda$.
 $$
--\frac{d \ln Z_{\Lambda}[J]}{d \Lambda} = - \Lambda \frac{d}{d \Lambda} Z_{\Lambda}[J] = C_{\Lambda} Z_{\Lambda}[J]
+- \Lambda \frac{d}{d \Lambda} Z_{\Lambda}[J] = C_{\Lambda} Z_{\Lambda}[J]
 $$
 
 Calculate the LHS directly
@@ -326,8 +330,24 @@ $$
 \begin{align*}
 -\Lambda \frac{d}{d \Lambda} Z_{\Lambda}[J] &= -\Lambda \int \mathcal D\phi \, \left[ \exp (-S_{\Lambda}[\phi,J]) \cdot \left(-\frac{dS_{\Lambda}[\phi,J]}{d\Lambda}\right) \right] \\
 &= \int \mathcal D\phi \, \left( \Lambda \frac{dS_{\Lambda}[\phi,J]}{d\Lambda} \right) \exp (-S_{\Lambda}[\phi,J]) \\
-&=\int \mathcal D\phi \, \left( \frac{1}{2}\int \frac{d^d p}{(2\pi)^d} \left( \phi(p) \phi(-p) (p^2 + m^2) \Lambda \frac{\partial K_\Lambda^{-1}(p^2)}{\partial \Lambda} + \Lambda \frac{\partial S_{int,\Lambda}[\phi]}{\partial \Lambda} \right) \right) \exp (-S_{\Lambda}[\phi,J])
+&=\int \mathcal D\phi \, \left( \frac{1}{2}\int \frac{d^d p}{(2\pi)^d}  \phi(p) \phi(-p) (p^2 + m^2) \Lambda \frac{\partial K_\Lambda^{-1}(p^2)}{\partial \Lambda} + \Lambda \frac{\partial S_{int,\Lambda}[\phi]}{\partial \Lambda} \right) \exp (-S_{\Lambda}[\phi,J])\\
+&=Z_{\Lambda}[J]\cdot\left\langle \frac{1}{2}\int \frac{d^d p}{(2\pi)^d} \phi(p) \phi(-p) (p^2 + m^2) \Lambda \frac{\partial K_\Lambda^{-1}(p^2)}{\partial \Lambda} + \Lambda \frac{\partial S_{int,\Lambda}[\phi]}{\partial \Lambda}  \right\rangle \bigg|_{J}
 \end{align*}
 $$
 
-To make it match the form of the RHS, we should adjust the coupling constants in the interaction term $S_{int,\Lambda}[\phi]$ accordingly. 
+So
+$$
+- \Lambda \frac{1}{Z_{\Lambda}[J]}\frac{d}{d \Lambda} Z_{\Lambda}[J]=-\Lambda \frac{d \ln Z_{\Lambda}[J]}{d\Lambda}=C_{\Lambda} = \left\langle \frac{1}{2}\int \frac{d^d p}{(2\pi)^d}\phi(p) \phi(-p) (p^2 + m^2) \Lambda \frac{\partial K_\Lambda^{-1}(p^2)}{\partial \Lambda} + \Lambda \frac{\partial S_{int,\Lambda}[\phi]}{\partial \Lambda}  \right\rangle \bigg|_{J}
+$$
+
+By the arbitrarity of $J$,
+$$
+\frac{1}{2}\int \frac{d^d p}{(2\pi)^d} \left( \phi(p) \phi(-p) (p^2 + m^2) \Lambda \frac{\partial K_\Lambda^{-1}(p^2)}{\partial \Lambda}\right) + \Lambda \frac{\partial S_{int,\Lambda}[\phi]}{\partial \Lambda}  = C_{\Lambda}
+$$
+And the standard form is:
+$$
+\Lambda \frac{\partial S_{int,\Lambda}}{\partial\Lambda} = -\frac{dS_{int}}{d\Lambda/\Lambda} = \frac{1}{2} \int \frac{d^dp}{(2\pi)^d} \dot{C}_{\Lambda}(p^2) \left[ \frac{\delta^2 S_{int}}{\delta\phi(p)\delta\phi(-p)} - \frac{\delta S_{int}}{\delta \phi(p)} \frac{\delta S_{int}}{\delta \phi(-p)} \right]
+$$
+
+To make it match the form of the RHS, we should adjust the coupling constants in the interaction term $S_{int,\Lambda}[\phi]$ accordingly.
+
