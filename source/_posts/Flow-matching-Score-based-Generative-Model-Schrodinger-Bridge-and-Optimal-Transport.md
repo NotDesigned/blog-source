@@ -23,6 +23,7 @@ categories:
 
 [Speed-accuracy relations for diffusion models: Wisdom from nonequilibrium thermodynamics and optimal transport](https://arxiv.org/abs/2407.04495)
 
+[Adversarial Schrödinger Bridge Matching](https://arxiv.org/abs/2405.14449)
 
 ## Introduction
 
@@ -168,7 +169,7 @@ $$
 x\sim q(x)
 $$
 
-How to sample from $x$?
+How to sample from $q(x)$?
 
 We define a markovian stochastic process $x_t$ as the **forward process**, such that:
 $$
@@ -319,7 +320,7 @@ $$
 \hat x_0(x_t) = \frac{1}{\sqrt{\bar\alpha_t}}\big(x_t-\sqrt{1-\bar\alpha_t}\,\epsilon_\theta(x_t,t)\big).
 $$
 
-#### Denoising Score Matching (DSM)
+### Denoising Score Matching (DSM)
 
 Training objective:
 $$
@@ -328,7 +329,7 @@ $$
 
 For VP, choosing $\sigma(t)=\sqrt{1-\bar\alpha_t}$ reduces DSM to the DDPM noise-prediction MSE.
 
-**Derivation**
+#### Derivation and Intuition
 
 TODO: Weak form.
 
@@ -338,3 +339,14 @@ See [Flow Matching](https://notdesigned.github.io/2025/08/09/Flow-Matching/)
 
 ## Schrödinger Bridge Models
 
+### Relation with Entropy-Regularized Optimal Transport
+
+### IPF (DSB, S-DSB)
+
+### IMF
+
+### D-IMF (ADSB)
+
+### CDSB
+
+TODO.
