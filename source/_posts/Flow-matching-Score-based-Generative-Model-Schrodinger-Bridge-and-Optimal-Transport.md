@@ -13,11 +13,20 @@ categories:
 - Physics for AI
 ---
 
+## Reference
+
+[Denoising Diffusion Probabilistic Models](http://arxiv.org/abs/2006.11239)
+
+[Diffusion Schrödinger Bridge Matching](https://arxiv.org/abs/2303.16852)
+
+[Simplified Diffusion Schrödinger Bridge](https://arxiv.org/abs/2403.14623)
+
+[Speed-accuracy relations for diffusion models: Wisdom from nonequilibrium thermodynamics and optimal transport](https://arxiv.org/abs/2407.04495)
+
+
 ## Introduction
 
-More I study generative models, the more I see their common threads.
-
-They resonate with two deep principles: the thermodynamics of entropy and the mathematics of optimal transport.
+Generative models resonate with two deep principles: the thermodynamics of entropy and the mathematics of optimal transport.
 
 ## Symbols and Preliminaries
 
@@ -318,3 +327,14 @@ $$
 $$
 
 For VP, choosing $\sigma(t)=\sqrt{1-\bar\alpha_t}$ reduces DSM to the DDPM noise-prediction MSE.
+
+**Derivation**
+
+TODO: Weak form.
+
+## Flow Matching Models
+
+See [Flow Matching](https://notdesigned.github.io/2025/08/09/Flow-Matching/)
+
+## Schrödinger Bridge Models
+
