@@ -795,7 +795,7 @@ gitalk:
   repo: gitalkcomment
   owner: NotDesigned
   admin: ['NotDesigned']
-  language: en-US
+  language: en
   labels: ['Gitalk']
   perPage: 10
   pagerDirection: last
