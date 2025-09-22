@@ -4,14 +4,13 @@ layout: about
 date: 2025-06-07 18:43:57
 ---
 
-> I’m **Luocheng Liang** — CS PhD @ University / Lab  
-> Research interests: (diffusion) generative models, optimal transport; deep learning theory, optimization, dynamics for ML;
+### About Me
 
-- **Education**: 
-    - B.S. in Computer Science, CUHK(SZ), 2022–now  
-- **Research**: 
- Graph theory
+I’m Luocheng Liang — CS senior student @ CUHK(SZ)  
 
-**Links** 
-- GitHub: https://github.com/NotDesigned  
-- Email: theadscn@gmail.com/ luochengliang@link.cuhk.edu.cn
+My research interests lie in (diffusion) generative models and its relation to optimal transport and dynamical system in physics.
+
+[CV](/files/CV.pdf)
+
+### Contact
+- Email: theadscn@gmail.com, luochengliang@link.cuhk.edu.cn
