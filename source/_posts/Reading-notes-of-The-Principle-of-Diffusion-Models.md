@@ -70,6 +70,6 @@ $$
 \end{aligned}
 $$
 
-Short summary:
+Quick summary:
 
-By introducing a latent variable $z$ and an inaccurate posterior approximation $q_{\theta}(z|x)$, we derive a lower bound of the log-likelihood $\log p_{\phi}(x)$, which is called Evidence Lower Bound (ELBO). It is the expectation of the Bayes-like ratio $\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}$ under the $q_{\theta}(z|x)$.
+By introducing a latent variable $z$ and an inaccurate posterior approximation $q_{\theta}(z|x)$, we derive a lower bound of the log-likelihood $\log p_{\phi}(x)$, which is called Evidence Lower Bound (ELBO). It is the expectation of the **Bayes-like ratio** $\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}$ under the $q_{\theta}(z|x)$.
