@@ -47,7 +47,7 @@ $$
 
 **Evidence Lower Bound (ELBO):**
 
-Idea: 
+**Core Idea**: 
 
 We try to estimate $p_{\phi}(x)$ by Bayes' theorem
 
@@ -57,19 +57,81 @@ $$
 
 Now the posterior $p_{\phi}(z|x)$ is also intractable, so we introduce a variational distribution $q_{\theta}(z|x)$ to approximate it.
 
-Lower bound of the log-likelihood $\log p_{\phi}(x)$:
+Proof of being lower bound of the log-likelihood $\log p_{\phi}(x)$:
 
 $$
 \begin{aligned}
 \log p_{\phi}(x) &= \mathbb{E}_{q_{\theta}(z|x)}\left[\log \frac{p_{\phi}(x,z)}{p_{\phi}(z|x)}\right] \\
-&= \mathbb{E}_{q_{\theta}(z|x)}\left[\\log \frac{p_{\phi}(x,z)}{q_{\theta}(z|x)} \cdot \frac{q_{\theta}(z|x)}{p_{\phi}(z|x)}\right] \\
+&= \mathbb{E}_{q_{\theta}(z|x)}\left[\log \frac{p_{\phi}(x,z)}{q_{\theta}(z|x)} \cdot \frac{q_{\theta}(z|x)}{p_{\phi}(z|x)}\right] \\
 &= \mathbb{E}_{q_{\theta}(z|x)}\left[\log \frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}\right] + \mathbb{E}_{q_{\theta}(z|x)}\left[\log \frac{q_{\theta}(z|x)}{p_{\phi}(z|x)}\right] \\
 &= \mathbb{E}_{q_{\theta}(z|x)}\left[\log \frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}\right] + \mathrm{KL}(q_{\theta}(z|x) || p_{\phi}(z|x)) \\
 &\geq \mathbb{E}_{q_{\theta}(z|x)}\left[\log \frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}\right] \\
+&= \underbrace{\mathbb E_{q_{\theta}(z|x)}\left[\log p_{\phi}(x|z)\right]}_{\text{Reconstruction Term}} - \underbrace {\mathrm{KL}(q_{\theta}(z|x) || p(z))}_{\text{Latent Regularization}}\\
 &= \mathcal{L}(\theta, \phi; x)
 \end{aligned}
 $$
 
-Quick summary:
+**Quick summary**:
 
-By introducing a latent variable $z$ and an inaccurate posterior approximation $q_{\theta}(z|x)$, we derive a lower bound of the log-likelihood $\log p_{\phi}(x)$, which is called Evidence Lower Bound (ELBO). It is the expectation of the **Bayes-like ratio** $\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}$ under the $q_{\theta}(z|x)$.
+By introducing a latent variable $z$ and an inaccurate posterior approximation $q_{\theta}(z|x)$, we derive a lower bound of the log-likelihood $\log p_{\phi}(x)$, which is called Evidence Lower Bound (ELBO). 
+
+Interpretation 1.
+
+It is the expectation of the **Bayes-like ratio** $\frac{p_{\phi}(x,z)}{q_{\theta}(z|x)}$ by replacing the intractable true posterior $p_{\phi}(z|x)$ with the variational distribution $q_{\theta}(z|x)$.
+
+Interpretation 2.
+
+It consists of two terms: a reconstruction term that encourages the decoder to reconstruct $x$ from $z$, and a latent regularization term that encourages the encoder distribution $q_{\theta}(z|x)$ to be close to the prior $p(z)$.
+
+**Reason of blurriness of Standard VAE**:
+
+The standard VAE employs Gaussian distribution for both encoder and decoder. 
+
+$$
+\begin{aligned}
+q_{\theta}(z|x) &= \mathcal{N}(z; \mu_{\theta}(x), \sigma_{\theta}^2(x)I)\\
+p_{\phi}(x|z) &= \mathcal{N}(x; \mu_{\phi}(z), \sigma^2 I)
+\end{aligned}
+$$
+
+The optimal decoder mean $\mu_{\phi}(z)$ is the conditional expectation $\mathbb{E}[x|z]$, which is the average of all possible $x$ that can be mapped to the same $z$. This averaging effect leads to blurriness in generated samples.
+
+Derivation of optimal decoder mean:
+
+First note that
+$$
+\begin{aligned}
+\mathbb{E}_{q_{\theta}(z|x)}[\log p_{\phi}(x|z)]
+&= \mathbb{E}_{q_{\theta}(z|x)}\left[-\frac{1}{2\sigma^2}\|x - \mu_{\phi}(z)\|^2 + \text{const}\right] \\
+&= -\frac{1}{2\sigma^2} \mathbb{E}_{q_{\theta}(z|x)}[\|x - \mu_{\phi}(z)\|^2] + \text{const} \\
+\end{aligned}
+$$
+
+And take expectation over $p(x)$:
+
+$$
+\begin{aligned}
+\mathbb{E}_{p(x)}[\mathbb{E}_{q_{\theta}(z|x)}[\log p_{\phi}(x|z)]]
+&= -\frac{1}{2\sigma^2} \mathbb{E}_{p(x)}[\mathbb{E}_{q_{\theta}(z|x)}[\|x - \mu_{\phi}(z)\|^2]] + \text{const} \\
+&= -\frac{1}{2\sigma^2} \mathbb{E}_{q_{\theta}(z)}[\mathbb{E}_{q_{\theta}(x|z)}[\|x - \mu_{\phi}(z)\|^2]] + \text{const} \\
+\end{aligned}
+$$
+
+where $q_{\theta}(x|z)= \frac{p(x) q_{\theta}(z|x)}{q_{\theta}(z)}$ is the posterior distribution of $x$ given $z$ under the encoder.
+
+For the inner expectation $\mathbb{E}_{q_{\theta}(x|z)}[\|x - \mu_{\phi}(z)\|^2]$, it is minimized when $\mu_{\phi}(z) = \mathbb{E}_{q_{\theta}(x|z)}[x]$.
+
+
+**Think**: 
+Which part of the structure of VAE leads to blurriness most?
+
+The encoder or the decoder?
+
+Answer: 
+
+It depends on your perspective.
+
+The encoder mixes different $x$ into the same $z$, create ambiguity. The Gaussian assumption of $z$ enforces this mixing, otherwise the aggregate posterior $q_{\theta}(z)=\int p(x) q_{\theta}(z|x) dx$ cannot match the simple prior $p(z)$.
+
+The Gaussian decoder reconstructs the average of these ambiguous $x$, leading to blurriness.
+
