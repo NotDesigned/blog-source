@@ -163,6 +163,7 @@ $$
 &= E_q\left[\log p_{\phi}(x|z_1)\right] - E_q\left[\mathrm{KL}(q_{\theta}(z_L|z_{L-1}) || p(z_L))\right] - \sum_{i=2}^{L-1} E_q\left[\mathrm{KL}(q_{\theta}(z_{i}|z_{i-1}) || p_{\phi}(z_{i}|z_{i+1}))\right] - E_q\left[\mathrm{KL}(q_{\theta}(z_1|x) || p_{\phi}(z_1|z_2))\right] \\
 \end{aligned}
 $$
+where $\mathbb E_q$ means $\mathbb E_{p(x) q_{\theta}(z_{1:L}|x)}$.
 
 ## 2.2 Denoising Diffusion Probabilistic Models
 
@@ -175,7 +176,38 @@ $$
 \begin{aligned}
 p(x_i|x_{i-1}) &= \mathcal{N}(x_i; \sqrt{1-\beta_i^2} x_{i-1}, \beta_i^2 I) \\
 x_i &= \alpha_i x_{i-1} + \beta_i \epsilon_{i}, \quad \epsilon_{i} \sim \mathcal{N}(0, I) \\
-p_i(x_i|x_0) &= \mathcal{N}(x_i; \sqrt{\bar{\alpha}_i} x_0, (1-\bar{\alpha}_i) I) , \quad \bar{\alpha}_i = \prod_{k=1}^{i} \sqrt{1-\beta_k^2} = \prod_{k=1}^{i} \alpha_k\\
-
+p_i(x_i|x_0) &= \mathcal{N}(x_i; \bar{\alpha}_i x_0, (1-\bar{\alpha}_i^2) I) , \quad \bar{\alpha}_i = \prod_{k=1}^{i} \sqrt{1-\beta_k^2} = \prod_{k=1}^{i} \alpha_k\\
+x_i &= \bar{\alpha}_i x_0 + \sqrt{1-\bar{\alpha}^2_i} \epsilon, \quad \epsilon \sim \mathcal{N}(0, I) \\
 \end{aligned}
 $$
+
+Here "=" means equality in distribution. 
+
+The forward process gradually adds Gaussian noise to the data $x_0$ until it is nearly pure Gaussian noise $x_T\sim \mathcal{N}(0, I)$.
+
+We want to learn the reverse denoising process $p_{\phi}(x_{i-1}|x_i)$ to recover data from noise.
+
+$$
+\begin{aligned}
+\mathbb E_{p_i(x_i)} \left[\mathrm{KL}(p_i(x_{i-1}|x_i) || p_{\phi}(x_{i-1}|x_i))\right] &= \int p_i(x_i) \int p_i(x_{i-1}|x_i) \log \frac{p_i(x_{i-1}|x_i)}{p_{\phi}(x_{i-1}|x_i)} dx_{i-1} dx_i\\
+&= \int \int p_i(x_i | x_{i-1}) p_i(x_{i-1}) \log \frac{p_i(x_{i}|x_{i-1})p(x_{i-1})}{p_{\phi}(x_{i-1}|x_i)p(x_i)} dx_{i-1} dx_i\\
+\end{aligned}
+$$
+
+But estimate $p_i(x_i) = \int p_i(x_i|x_0) p(x_0) dx_0$ is intractable.
+
+We turn to 
+$$
+p(x_{i-1}|x_i, x_0) = \frac{p_i(x_i|x_{i-1}, x_0) p_i(x_{i-1}|x_0)}{p_i(x_i|x_0)} = \frac{p_i(x_i|x_{i-1}) p(x_{i-1}|x_0)}{p_i(x_i|x_0)}
+$$
+which is tractable since all distributions are Gaussian.
+
+Then we have
+$$
+\begin{aligned}
+&\mathbb E_{p_i(x_i)} [\mathrm{KL}(p_i(x_{i-1}|x_i) || p_{\phi}(x_{i-1}|x_i))] \\
+= &\mathbb E_{p(x_0) p_i(x_i|x_0)} [\mathrm{KL}(p_i(x_{i-1}|x_i, x_0) || p_{\phi}(x_{i-1}|x_i))] + C
+\end{aligned}
+$$
+
+The minimizer of both is $p(x_{i-1}|x_i)$.
