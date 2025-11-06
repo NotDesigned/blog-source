@@ -135,3 +135,47 @@ The encoder mixes different $x$ into the same $z$, create ambiguity. The Gaussia
 
 The Gaussian decoder reconstructs the average of these ambiguous $x$, leading to blurriness.
 
+## 2.1.5 Hierarchical VAE
+
+Model structure:
+$$
+x \xleftrightarrow[\mathrm{decoder}, p_{\phi}(x|z_1)]{\mathrm{encoder}, q_{\theta}(z_1, z_2|x)} z_1 \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_1|z_2)]{\mathrm{encoder}, q_{\theta}(z_2|z_1)} z_2 \xleftrightarrow{}\cdots \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_{L-1}|z_L)]{\mathrm{encoder}, q_{\theta}(z_L|z_{L-1})}z_L
+$$
+
+Key formulae:
+
+Distributions
+$$
+\begin{aligned}
+p_{\phi}(x, z_{1:L}) &= p_{\phi}(x|z_1) \prod_{i=1}^{L-1} p_{\phi}(z_i|z_{i+1}) p(z_L) \\
+p_{\phi}(x) &= \int p_{\phi}(x, z_{1:L}) dz_{1:L}\\
+q_{\theta}(z_{1:L}|x) &= q_{\theta}(z_1|x) \prod_{i=1}^{L-1} q_{\theta}(z_{i+1}|z_i) \\
+\end{aligned}
+$$
+
+
+ELBO:
+
+$$
+\begin{aligned}
+\log p_{\phi}(x) &\geq \mathbb{E}_{q_{\theta}(z_{1:L}|x)}\left[\log \frac{p_{\phi}(x, z_{1:L})}{q_{\theta}(z_{1:L}|x)}\right] \\
+&= \mathbb{E}_{q_{\theta}(z_{1:L}|x)}\left[\log \frac{p_{\phi}(x|z_1) \prod_{i=2}^{L} p_{\phi}(z_{i-1}|z_{i}) p(z_L)}{q_{\theta}(z_1|x) \prod_{i=2}^{L} q_{\theta}(z_{i}|z_{i-1})}\right] \\
+&= E_q\left[\log p_{\phi}(x|z_1)\right] - E_q\left[\mathrm{KL}(q_{\theta}(z_L|z_{L-1}) || p(z_L))\right] - \sum_{i=2}^{L-1} E_q\left[\mathrm{KL}(q_{\theta}(z_{i}|z_{i-1}) || p_{\phi}(z_{i}|z_{i+1}))\right] - E_q\left[\mathrm{KL}(q_{\theta}(z_1|x) || p_{\phi}(z_1|z_2))\right] \\
+\end{aligned}
+$$
+
+## 2.2 Denoising Diffusion Probabilistic Models
+
+Model structure:
+$$
+x_0 \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{0}|x_1)]{\mathrm{add \ noise}, q(x_1|x_{0})} x_1 \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{1}|x_2)]{\mathrm{add\ noise}, q(x_2|x_{1})} x_2 \xleftrightarrow{}\cdots \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{T-1}|x_T)]{\mathrm{add\ noise}, q(x_{T-1}|x_T)} x_T
+$$
+
+$$
+\begin{aligned}
+p(x_i|x_{i-1}) &= \mathcal{N}(x_i; \sqrt{1-\beta_i^2} x_{i-1}, \beta_i^2 I) \\
+x_i &= \alpha_i x_{i-1} + \beta_i \epsilon_{i}, \quad \epsilon_{i} \sim \mathcal{N}(0, I) \\
+p_i(x_i|x_0) &= \mathcal{N}(x_i; \sqrt{\bar{\alpha}_i} x_0, (1-\bar{\alpha}_i) I) , \quad \bar{\alpha}_i = \prod_{k=1}^{i} \sqrt{1-\beta_k^2} = \prod_{k=1}^{i} \alpha_k\\
+
+\end{aligned}
+$$
