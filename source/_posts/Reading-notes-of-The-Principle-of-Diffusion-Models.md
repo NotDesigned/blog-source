@@ -211,3 +211,18 @@ $$
 $$
 
 The minimizer of both is $p(x_{i-1}|x_i)$.
+
+Proof:
+$$
+\begin{aligned}
+\mathbb E_{p(x_0, x_i)} [\mathrm{KL}(p_i(x_{i-1}|x_i, x_0) || p_{\phi}(x_{i-1}|x_i))] &= \int \int \int p(x_0, x_i) p(x_{i-1}|x_i, x_0) \log \frac{p(x_{i-1}|x_i, x_0)}{p_{\phi}(x_{i-1}|x_i)} dx_{i-1} dx_i dx_0 \\
+&= \int p(x_i) \int p(x_0|x_i) \int p(x_{i-1}|x_i, x_0) \log \frac{p(x_{i-1}|x_i, x_0)}{p_{\phi}(x_{i-1}|x_i)} dx_{i-1} dx_0 dx_i \\
+&= \mathbb E_{p(x_i)} \left[\mathbb E_{p(x_0|x_i)}\left[\mathbb E_{p(x_{i-1}|x_i,x_0)}\left[\log\frac{p(x_{i-1}|x_i,x_0)}{p_{\phi}(x_{i-1}|x_i)}\right]\right]\right]\\
+&= \mathbb E_{p(x_i)} \left[\mathbb E_{p(x_0|x_i)}\left[\mathbb E_{p(x_{i-1}|x_i,x_0)}\left[\log \frac{p(x_{i-1}|x_i,x_0)}{p(x_{i-1}|x_i)}\right] \right]\right] + \mathbb E_{p(x_i)} \left[\mathbb E_{p(x_0|x_i)}\left[\mathbb E_{p(x_{i-1}|x_i,x_0)}\left[\log \frac{p(x_{i-1}|x_i)}{p_{\phi}(x_{i-1}|x_i)}\right] \right]\right]\\
+&= \mathbb E_{p(x_i)} \left[\mathbb E_{p(x_0|x_i)}\left[\mathrm{KL}(p(x_{i-1}|x_i,x_0) || p(x_{i-1}|x_i))\right]\right] + \mathbb E_{p(x_i)} \left[\mathrm{KL}(p(x_{i-1}|x_i) || p_{\phi}(x_{i-1}|x_i))\right]\\
+\end{aligned}
+$$
+
+Note the first term is independent of $p_{\phi}$, so minimizing the whole expression is equivalent to minimizing the second term.
+
+And the second term is minimized when $p_{\phi}(x_{i-1}|x_i) = p(x_{i-1}|x_i) = \mathbb{E}_{p(x_0|x_i)}[p(x_{i-1}|x_i, x_0)]$.
