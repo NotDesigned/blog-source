@@ -139,7 +139,7 @@ The Gaussian decoder reconstructs the average of these ambiguous $x$, leading to
 
 #### Model structure
 $$
-x \xleftrightarrow[\mathrm{decoder}, p_{\phi}(x|z_1)]{\mathrm{encoder}, q_{\theta}(z_1, z_2|x)} z_1 \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_1|z_2)]{\mathrm{encoder}, q_{\theta}(z_2|z_1)} z_2 \xleftrightarrow{}\cdots \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_{L-1}|z_L)]{\mathrm{encoder}, q_{\theta}(z_L|z_{L-1})}z_L
+x \xleftrightarrow[\mathrm{decoder}, p_{\phi}(x|z_1)]{\mathrm{encoder}, q_{\theta}(z_1|x)} z_1 \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_1|z_2)]{\mathrm{encoder}, q_{\theta}(z_2|z_1)} z_2 \xleftrightarrow{}\cdots \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_{L-1}|z_L)]{\mathrm{encoder}, q_{\theta}(z_L|z_{L-1})}z_L
 $$
 
 #### Key formulae
@@ -284,3 +284,89 @@ $$
 \end{aligned}
 $$
 where $\mu_i(x_i, x_0, i)$ is the mean of $p(x_{i-1}|x_i, x_0)$ derived above and $\mu_{\phi}(x_i,i)$ is the predicted mean by the neural network.
+
+**Reparameterization trick**:
+
+It is also common to parameterize the denoising model to predict the noise $\epsilon$ added to $x_0$ instead of predicting the mean $\mu_{\phi}(x_i,i)$ directly since we have the relation
+$$
+x_i = \bar{\alpha}_i x_0 + \sqrt{1-\bar{\alpha}_i^2} \epsilon
+$$
+
+#### ELBO
+
+$$
+p_{\phi}(x_0) = \int p_{\phi}(x_0, x_{1:T}) dx_{1:T} = \int p_{\phi}(x_0|x_1) \prod_{i=2}^{T} p_{\phi}(x_{i-1}|x_i) p(x_T) dx_{1:T}
+$$
+
+To make it ELBO, we introduce the forward process $q(x_{1:T}|x_0)$ as the variational distribution to approximate the intractable true posterior $p_{\phi}(x_{1:T}|x_0)$ and expand it by the conditional posterior:
+
+
+$$
+\log p_{\phi}(x_0) \geq \mathbb{E}_{q(x_{1:T}|x_0)}\left[\log \frac{p_{\phi}(x_0, x_{1:T})}{p(x_{1:T}|x_0)}\right] \\
+$$
+Use
+$$
+p(x_{1:T}|x_0) = p(x_T|x_0) \prod_{i=2}^{T} p(x_{i-1}|x_{i}, x_0)
+$$
+
+$$
+\begin{aligned}
+\mathcal{L}_{\mathrm{ELBO}}&= \mathbb{E}_{p(x_{1:T}|x_0)}\left[\log p_{\phi}(x_0|x_1) + \sum_{i=2}^{T} \log p_{\phi}(x_{i-1}|x_i) + \log p(x_T) - \sum_{i=1}^{T} \log q(x_i|x_{i-1}) - \log p(x_T|x_0)\right] \\
+&= \underbrace{\mathbb{E}_{p(x_1|x_0)} \left[\log p_{\phi}(x_0|x_1)\right]}_{\mathrm{Reconstruction}} + \underbrace{\mathbb{E}_{p(x_T|x_0)} \left[\log p(x_T) - \log p(x_T|x_0)\right]}_{\mathrm{Prior}} + \underbrace{\sum_{i=2}^{T} \mathbb{E}_{p(x_{i}|x_0)} \left[\mathrm{KL}(p(x_{i-1}|x_i, x_0) || p_{\phi}(x_{i-1}|x_i))\right]}_{\mathrm{Diffusion}} \\
+\end{aligned}
+$$
+
+#### Features of DDPM
+
+Let's consider $x$-prediction since it is easier to understand.
+
+Assume we have the optimal denoising model in each step, i.e., $p_{\phi}(x_{i-1}|x_i) = p(x_{i-1}|x_i)$, then we can recover $x_0$ perfectly.
+
+But the reality is we approximate the denoising step with a Gaussian distribution, so the optimal posterior mean $\mu_i(x_i, i)$ is still an average of all possible $x_{i-1}$ that can be mapped to the same $x_i$.
+
+Claim: 
+
+Although we circumvent predicting $x_{T-1}$ directly by predicting $x_0$ and then computing the posterior distribution. The optimal denoising mean $\mu_i(x_i, x_0, i)$ is still the average of all possible $x_{i-1}$ that can be mapped to the same $x_i$.
+
+**Proof**:
+$$
+\begin{aligned}
+\mathbb{E}_{p(x_{t-1}|x_t)}[x_{t-1}] &= \mathbb{E}_{p(x_0|x_t)}[\mathbb{E}_{p(x_{t-1}|x_t, x_0)}[x_{t-1}]] \\
+&= \mathbb{E}_{p(x_0|x_t)}[\mu_t(x_t, x_0, t)] \\
+&= \mathbb{E}_{p(x_0|x_t)}[a_t x_t + b_t x_0] \\
+&= a_t x_t + b_t \mathbb{E}_{p(x_0|x_t)}[x_0] \\
+&= \mu_t(x_t, \mathbb{E}_{p(x_0|x_t)}[x_0], t) \\
+\end{aligned}
+$$
+where $a_t = \frac{\alpha_t (1-\bar{\alpha}_{t-1}^2)}{1-\bar{\alpha}_t^2}$ and $b_t = \frac{\bar{\alpha}_{t-1}\beta_t^2}{1-\bar{\alpha}_t^2}$.
+
+So we can just discuss it as the standard VAE/HVAE case.
+
+A more theoretical analysis will be discussed when the **differential equation perspective** is introduced later.
+
+## 3. Score-Based Perspective: From EBMs to NCSN
+
+### 3.1 Energy-Based Models
+
+EBMs define a distribution through an energy function $E_{\phi}(x)$:
+$$
+p_{\phi}(x) = \frac{\exp(-E_{\phi}(x))}{Z_{\phi}}, \quad Z_{\phi} = \int \exp(-E_{\phi}(x)) dx
+$$
+where the $Z_{\phi}$ is the partition function that normalizes the distribution.
+
+When we lower the energy of a region, the probability of that region increases, and its complement regions decrease in probability. 
+
+> Probability mass is
+redistributed across the entire space rather than assigned independently to each region.
+
+**Training through MLE**
+
+$$
+\begin{aligned}
+\mathcal{L}_{\mathrm{MLE}}(\phi) &= \mathbb{E}_{q(x)}[\log p_{\phi}(x)] \\
+&= \mathbb{E}_{q(x)}[-E_{\phi}(x)] - \log Z_{\phi} \\
+&= \mathbb{E}_{q(x)}[-E_{\phi}(x)] - \log \int \exp(-E_{\phi}(x)) dx \\
+\end{aligned}
+$$
+
+Intractable due to the partition function $Z_{\phi}$, which requires integrating over the entire data space.
