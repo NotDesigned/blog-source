@@ -20,13 +20,13 @@ TODO.
 
 ### 2.1 Variational Autoencoder
 
-**Model structure**
+#### Model structure
 
 $$
 x\xrightarrow{\mathrm{encoder},q_{\theta}(z|x)} z\sim \mathcal{N}(0,1) \xrightarrow{\mathrm{decoder}, p_{\phi}(x|z)} \hat{x}
 $$
 
-**Key formulae:**
+#### Key formulae
 
 The learned data distribution:
 
@@ -45,7 +45,7 @@ $$
 \end{aligned}
 $$
 
-**Evidence Lower Bound (ELBO):**
+### Evidence Lower Bound (ELBO)
 
 **Core Idea**: 
 
@@ -83,7 +83,7 @@ Interpretation 2.
 
 It consists of two terms: a reconstruction term that encourages the decoder to reconstruct $x$ from $z$, and a latent regularization term that encourages the encoder distribution $q_{\theta}(z|x)$ to be close to the prior $p(z)$.
 
-**Reason of blurriness of Standard VAE**:
+### Reason of blurriness of Standard VAE
 
 The standard VAE employs Gaussian distribution for both encoder and decoder. 
 
@@ -135,14 +135,14 @@ The encoder mixes different $x$ into the same $z$, create ambiguity. The Gaussia
 
 The Gaussian decoder reconstructs the average of these ambiguous $x$, leading to blurriness.
 
-## 2.1.5 Hierarchical VAE
+### 2.1.5 Hierarchical VAE
 
-Model structure:
+#### Model structure
 $$
 x \xleftrightarrow[\mathrm{decoder}, p_{\phi}(x|z_1)]{\mathrm{encoder}, q_{\theta}(z_1, z_2|x)} z_1 \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_1|z_2)]{\mathrm{encoder}, q_{\theta}(z_2|z_1)} z_2 \xleftrightarrow{}\cdots \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_{L-1}|z_L)]{\mathrm{encoder}, q_{\theta}(z_L|z_{L-1})}z_L
 $$
 
-Key formulae:
+#### Key formulae
 
 Distributions
 $$
@@ -154,7 +154,7 @@ q_{\theta}(z_{1:L}|x) &= q_{\theta}(z_1|x) \prod_{i=1}^{L-1} q_{\theta}(z_{i+1}|
 $$
 
 
-ELBO:
+#### ELBO
 
 $$
 \begin{aligned}
@@ -165,9 +165,9 @@ $$
 $$
 where $\mathbb E_q$ means $\mathbb E_{p(x) q_{\theta}(z_{1:L}|x)}$.
 
-## 2.2 Denoising Diffusion Probabilistic Models
+### 2.2 Denoising Diffusion Probabilistic Models
 
-Model structure:
+#### Model structure
 $$
 x_0 \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{0}|x_1)]{\mathrm{add \ noise}, q(x_1|x_{0})} x_1 \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{1}|x_2)]{\mathrm{add\ noise}, q(x_2|x_{1})} x_2 \xleftrightarrow{}\cdots \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{T-1}|x_T)]{\mathrm{add\ noise}, q(x_{T-1}|x_T)} x_T
 $$
@@ -182,6 +182,11 @@ x_i &= \bar{\alpha}_i x_0 + \sqrt{1-\bar{\alpha}^2_i} \epsilon, \quad \epsilon \
 $$
 
 Here "=" means equality in distribution. 
+
+**Note**: 
+> The DDPM paper uses $\sqrt{1-\beta_i}$ instead of $\sqrt{1-\beta_i^2}$, so whenever see $\beta_i$ in this note, it means the one in DDPM paper squared. And the $\bar \alpha_i$ here is also different from DDPM paper by squaring.
+
+#### Idea
 
 The forward process gradually adds Gaussian noise to the data $x_0$ until it is nearly pure Gaussian noise $x_T\sim \mathcal{N}(0, I)$.
 
@@ -210,9 +215,10 @@ $$
 \end{aligned}
 $$
 
-The minimizer of both is $p(x_{i-1}|x_i)$.
+**Claim**: 
+> The minimizer of both is $p(x_{i-1}|x_i)$.
 
-Proof:
+**Proof**:
 $$
 \begin{aligned}
 \mathbb E_{p(x_0, x_i)} [\mathrm{KL}(p_i(x_{i-1}|x_i, x_0) || p_{\phi}(x_{i-1}|x_i))] &= \int \int \int p(x_0, x_i) p(x_{i-1}|x_i, x_0) \log \frac{p(x_{i-1}|x_i, x_0)}{p_{\phi}(x_{i-1}|x_i)} dx_{i-1} dx_i dx_0 \\
@@ -226,3 +232,55 @@ $$
 Note the first term is independent of $p_{\phi}$, so minimizing the whole expression is equivalent to minimizing the second term.
 
 And the second term is minimized when $p_{\phi}(x_{i-1}|x_i) = p(x_{i-1}|x_i) = \mathbb{E}_{p(x_0|x_i)}[p(x_{i-1}|x_i, x_0)]$.
+
+The above argument shows that minimizing the KL divergence between marginal distributions is mathematically identical to minimizing the KL divergence between specific conditional distributions. 
+
+This is very powerful and we will see similar conditional techniques again in flow-based models.
+
+#### Closed form of $p(x_{i-1}|x_i, x_0)$:
+
+By Bayes' theorem and Markov property,
+
+$$
+p(x_{i-1}|x_i, x_0) = \frac{p_i(x_i|x_{i-1}, x_0) p_i(x_{i-1}|x_0)}{p_i(x_i|x_0)} = \frac{p_i(x_i|x_{i-1}) p(x_{i-1}|x_0)}{p_i(x_i|x_0)} \propto p_i(x_i|x_{i-1}) p_i(x_{i-1}|x_0)
+$$
+
+$$
+\begin{aligned}
+p_i(x_i|x_{i-1}) &= \mathcal{N}(x_i; \sqrt{1-\beta_i^2} x_{i-1}, \beta_i^2 I) \propto \mathcal{N}(x_{i-1}; \frac{1}{\sqrt{1-\beta_i^2}} x_i, \frac{\beta_i^2}{1-\beta_i^2} I) \\
+p_i(x_{i-1}|x_0) &= \mathcal{N}(x_{i-1}; \bar{\alpha}_{i-1} x_0, (1-\bar{\alpha}_{i-1}^2) I) \\
+
+\end{aligned}
+$$
+
+Formulas of Gaussian multiplication give
+$$
+\Sigma^{-1} = \Sigma_1^{-1} + \Sigma_2^{-1}\\
+\mu = \Sigma(\Sigma_1^{-1} \mu_1 + \Sigma_2^{-1} \mu_2)
+$$
+
+So we have
+$$
+\begin{aligned}
+\sigma^2 &= \left(\frac{1-\beta_i^2}{\beta_i^2} + \frac{1}{1-\bar{\alpha}_{i-1}^2}\right)^{-1} \\
+&= \frac{\beta_i^2 (1-\bar{\alpha}_{i-1}^2)}{\beta_i^2 + (1-\beta_i^2)(1-\bar{\alpha}_{i-1}^2)}\\
+&= \beta_i^2 \frac{1-\bar{\alpha}_{i-1}^2}{1-\bar{\alpha}_i^2} \\
+\mu &= \sigma^2 \left(\frac{1-\beta_i^2}{\beta_i^2} \cdot \frac{1}{\sqrt{1-\beta_i^2}} x_i + \frac{1}{1-\bar{\alpha}_{i-1}^2} \cdot \bar{\alpha}_{i-1} x_0\right)\\
+&= \frac{\sqrt{1-\beta_i^2} (1-\bar{\alpha}_{i-1}^2)}{1-\bar{\alpha}_i^2} x_i + \frac{\beta_i^2 \bar{\alpha}_{i-1}}{1-\bar{\alpha}_i^2} x_0\\
+&= \frac{\alpha_i (1-\bar{\alpha}_{i-1}^2)}{1-\bar{\alpha}_i^2} x_i + \frac{\bar{\alpha}_{i-1}\beta_i^2}{1-\bar{\alpha}_i^2} x_0\\
+\end{aligned}
+$$
+
+Thus, we have
+$$
+p(x_{i-1}|x_i, x_0) = \mathcal{N}\left(x_{i-1}; \frac{\alpha_i (1-\bar{\alpha}_{i-1}^2)}{1-\bar{\alpha}_i^2} x_i + \frac{\bar{\alpha}_{i-1}\beta_i^2}{1-\bar{\alpha}_i^2} x_0, \beta_i^2 \frac{1-\bar{\alpha}_{i-1}^2}{1-\bar{\alpha}_i^2} I\right)
+$$
+
+And the loss function for training DDPM is the sum of KL divergences:
+$$
+\begin{aligned}
+\mathcal{L}_{\mathrm{DDPM}} &= \sum_{i=1}^{T} \mathbb E_{p(x_0) p_i(x_i|x_0)} [\mathrm{KL}(p(x_{i-1}|x_i, x_0) || p_{\phi}(x_{i-1}|x_i))] \\
+&= \sum_{i=1}^{T} \frac{1}{\sigma_i^2}\mathbb E_{p(x_0) p_i(x_i|x_0)} \left[\| \mu_i(x_i, x_0, i) - \mu_{\phi}(x_i,i)\|^2\right] + C\\
+\end{aligned}
+$$
+where $\mu_i(x_i, x_0, i)$ is the mean of $p(x_{i-1}|x_i, x_0)$ derived above and $\mu_{\phi}(x_i,i)$ is the predicted mean by the neural network.
