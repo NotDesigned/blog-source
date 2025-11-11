@@ -249,14 +249,15 @@ $$
 \begin{aligned}
 p_i(x_i|x_{i-1}) &= \mathcal{N}(x_i; \sqrt{1-\beta_i^2} x_{i-1}, \beta_i^2 I) \propto \mathcal{N}(x_{i-1}; \frac{1}{\sqrt{1-\beta_i^2}} x_i, \frac{\beta_i^2}{1-\beta_i^2} I) \\
 p_i(x_{i-1}|x_0) &= \mathcal{N}(x_{i-1}; \bar{\alpha}_{i-1} x_0, (1-\bar{\alpha}_{i-1}^2) I) \\
-
 \end{aligned}
 $$
 
 Formulas of Gaussian multiplication give
 $$
-\Sigma^{-1} = \Sigma_1^{-1} + \Sigma_2^{-1}\\
-\mu = \Sigma(\Sigma_1^{-1} \mu_1 + \Sigma_2^{-1} \mu_2)
+\begin{aligned}
+\Sigma^{-1} &= \Sigma_1^{-1} + \Sigma_2^{-1}\\
+\mu &= \Sigma(\Sigma_1^{-1} \mu_1 + \Sigma_2^{-1} \mu_2)
+\end{aligned}
 $$
 
 So we have
@@ -302,7 +303,7 @@ To make it ELBO, we introduce the forward process $q(x_{1:T}|x_0)$ as the variat
 
 
 $$
-\log p_{\phi}(x_0) \geq \mathbb{E}_{q(x_{1:T}|x_0)}\left[\log \frac{p_{\phi}(x_0, x_{1:T})}{p(x_{1:T}|x_0)}\right] \\
+\log p_{\phi}(x_0) \geq \mathbb{E}_{q(x_{1:T}|x_0)}\left[\log \frac{p_{\phi}(x_0, x_{1:T})}{p(x_{1:T}|x_0)}\right]
 $$
 Use
 $$
@@ -370,3 +371,64 @@ $$
 $$
 
 Intractable due to the partition function $Z_{\phi}$, which requires integrating over the entire data space.
+
+#### Score function
+
+For a density $p(x)$, its score function is defined as the gradient of the log-density with respect to $x$:
+
+$$
+s(x):= \nabla_x \log p(x),\quad \mathbb R^D \to \mathbb R^D
+$$
+
+![Vector Field of Score Function](ScoreVector.png)
+
+Score vector field points toward regions of higher data density.
+
+Calculate the score function of EBM is irrelevant to the partition function:
+$$
+\begin{aligned}
+s_{\phi}(x) &= \nabla_x \log p_{\phi}(x) \\
+&= \nabla_x [-E_{\phi}(x) - \log Z_{\phi}] \\
+&= -\nabla_x E_{\phi}(x) \\
+\end{aligned}
+$$
+
+And one can recover the density from the score function up to a constant:
+$$
+\log p(x) = \log p(x_0) + \int_{0}^{1} s(x_0+ t(x - x_0))^{\top} (x - x_0) dt
+$$
+
+**Training EBM through Score Matching**
+
+$$
+\mathcal{L}_{\mathrm{SM}}(\phi) = \mathbb{E}_{p_{data}(x)} \left[\| \nabla_x \log p_{\phi}(x) - \nabla_x \log p_{data}(x) \|_2^2\right]
+$$
+
+And integration by parts gives an equivalent form that does not require $\nabla_x \log p_{data}(x)$:
+$$
+\mathcal{L}_{\mathrm{SM}}(\phi) = \mathbb{E}_{p_{data}(x)} \left[\mathrm{Tr}(\nabla_x^2 E_{\phi}(x)) + \frac{1}{2} \| \nabla_x E_{\phi}(x) \|_2^2\right]
+$$
+However, computing the Hessian trace $\mathrm{Tr}(\nabla_x^2 E_{\phi}(x))$ is computationally expensive for high-dimensional data.
+
+#### Langevin Sampling with Score Function
+
+Without the partition function, we cannot directly sample from EBM. Instead, Langevin dynamics is used to generate samples.
+
+![Langevin Dynamics Sampling](LangevinDynamics.png)
+
+**Discrete-time Langevin dynamics**:
+$$
+\mathbf{x}_{n+1} = \mathbf{x}_n - \eta \nabla_{\mathbf{x}} E_{\phi}(\mathbf{x}_n) + \sqrt{\eta} \mathbf{\epsilon}_n, \quad \mathbf{\epsilon}_n \sim \mathcal{N}(0, I)
+$$
+where $\eta>0$ is the step size.
+
+Write in terms of score function:
+$$
+\mathbf{x}_{n+1} = \mathbf{x}_n + \eta \nabla_{\mathbf{x}} \log p_{\phi}(\mathbf{x}_n) + \sqrt{\eta} \mathbf{\epsilon}_n
+$$
+
+**Continuous-time Langevin dynamics**:
+$$
+d\mathbf{x}(t) = \nabla_{\mathbf{x}} \log p_{\phi}(\mathbf{x}(t)) dt + \sqrt{2} d\mathbf{w}(t)
+$$
+where $d\mathbf{w}(t)$ is a Wiener process.
