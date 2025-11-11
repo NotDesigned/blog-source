@@ -125,7 +125,7 @@ For the inner expectation $\mathbb{E}_{q_{\theta}(x|z)}[\|x - \mu_{\phi}(z)\|^2]
 **Think**: 
 Which part of the structure of VAE leads to blurriness most?
 
-The encoder or the decoder?
+Encoder or Decoder?
 
 Answer: 
 
@@ -431,4 +431,54 @@ $$
 $$
 d\mathbf{x}(t) = \nabla_{\mathbf{x}} \log p_{\phi}(\mathbf{x}(t)) dt + \sqrt{2} d\mathbf{w}(t)
 $$
-where $d\mathbf{w}(t)$ is a Wiener process.
+where $\mathbf{w}(t)$ is a Wiener process.
+
+$\sqrt{2}$ is used to ensure the stationary distribution is $p_{\phi}(x)$. This will be explained in the differential equation appendix.
+
+The intution is that the score term $\nabla_{\mathbf{x}} \log p_{\phi}(\mathbf{x}(t)) dt$ pushes the sample toward high-density regions, while the noise term $\sqrt{2} d\mathbf{w}(t)$ adds randomness to explore the space.
+
+But Langevin dynamics is still struggling to sample from complex data distribution with **many isolated modes**, where it requires extremely long time to traverse low-density regions between modes.
+
+### 3.2 From Energy-Based to Score-Based Generative Models
+
+Once we have the score function, we can sample from the EBM using Langevin dynamics without computing the partition function. Therefore, we turn to directly learn the score function from data, leading to score-based generative models (SGMs).
+
+$$
+\boxed{
+\mathcal{L}_{\mathrm{SM}}(\phi) = \mathbb{E}_{p_{data}(x)} \left[\| s_{\phi}(x) - s_{data}(x) \|_2^2\right]
+}
+$$
+
+The tractable score matching loss is 
+$$
+\boxed{
+\mathcal{L}_{\mathrm{SM}}(\phi) = \mathbb{E}_{p_{data}(x)} \left[\mathrm{Tr}(\nabla_x s_{\phi}(x)) + \frac{1}{2} \| s_{\phi}(x) \|_2^2\right]
+}
+$$
+
+---
+
+**Proof of equivalence:**
+
+$$
+\begin{aligned}
+\mathcal{L}_{\mathrm{SM}}(\phi) &= \mathbb{E}_{p_{data}(x)} \left[\| s_{\phi}(x)\|_2^2\right] - 2 \mathbb{E}_{p_{data}(x)} \left[s_{\phi}(x)^{\top} s_{data}(x)\right] + \mathbb{E}_{p_{data}(x)} \left[\| s_{data}(x) \|_2^2\right] \\
+\end{aligned}
+$$
+
+Focus on the second term:
+$$
+\begin{aligned}
+\mathbb{E}_{p_{data}(x)} \left[s_{\phi}(x)^{\top} s_{data}(x)\right] &= \int p_{data}(x) s_{\phi}(x)^{\top} \nabla_x \log p_{data}(x) dx \\
+&= \int s_{\phi}(x)^{\top} \nabla_x p_{data}(x) dx \\
+&= \int \sum_{i=1}^{D} s_{\phi,i}(x) \frac{\partial p_{data}(x)}{\partial x_i} dx \\
+&= \sum_{i=1}^{D} \left[ s_{\phi,i}(x) p_{data}(x) \Big|_{x_i=-\infty}^{x_i=+\infty} - \int p_{data}(x) \frac{\partial s_{\phi,i}(x)}{\partial x_i} dx \right] \\
+&= - \mathbb{E}_{p_{data}(x)} \left[\mathrm{Tr}(\nabla_x s_{\phi}(x))\right] \\
+\end{aligned}
+$$
+
+The boundary term vanishes assuming $p_{data}(x)$ decays to zero at infinity.
+
+The third term is independent of $\phi$, so we have the equivalence. $\square$
+
+---
