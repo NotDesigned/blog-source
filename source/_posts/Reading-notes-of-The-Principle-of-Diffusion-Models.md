@@ -507,3 +507,38 @@ $$
 This can be computed using the Jacobian-vector product (JVP) technique, which only requires $O(D)$ complexity.
 
 Note the method only control the score function along random directions at observed data points, providing weak control in their neighborhood.
+
+#### Denoising Score Matching (DSM)
+
+This is proposed by Vincent (2011).
+
+**Idea**: Since the score function is undefined when the support of data distribution is a low-dimensional manifold, we can add noise to the data to make the support full-dimensional.
+
+Vincent (2011) proposed injecting noise into data via a known conditional distribution $p_{\sigma}(\tilde{x}|x)$, where $\tilde{x}$ is the corrupted data and $\sigma$ controls the noise level.
+$$
+p_{\sigma}(\tilde{x}) = \int p_{data}(x) p_{\sigma}(\tilde{x}|x) dx
+$$
+We train the neural network $s_{\phi}(\tilde{x};\sigma)$ to match the score function of the corrupted data distribution $p_{\sigma}(\tilde{x})$:
+$$
+\mathcal{L}_{\mathrm{SM}}(\phi,\sigma) = \mathbb{E}_{\tilde{x}} \left[\| s_{\phi}(\tilde{x};\sigma) - \nabla_{\tilde{x}} \log p_{\sigma}(\tilde{x}) \|_2^2\right] 
+$$
+And Vincent (2011) showed that the loss is equivalent to
+$$
+\boxed{
+\mathcal{L}_{\mathrm{DSM}}(\phi,\sigma) =    \mathbb{E}_{x\sim p_{data}(x), \tilde{x} \sim p_{\sigma}(\tilde{x}|x)} \left[\| s_{\phi}(\tilde{x};\sigma) - \nabla_{\tilde{x}} \log p_{\sigma}(\tilde{x}|x) \|_2^2\right] 
+}
+$$
+
+The optimal score function is 
+$$
+s_{\phi}^*(\tilde{x};\sigma) = \nabla_{\tilde{x}} \log p_{\sigma}(\tilde{x})
+$$
+
+If $p_{\sigma}(\tilde{x}|x) = \mathcal{N}(\tilde{x}; x, \sigma^2 I)$, then
+$$
+\nabla_{\tilde{x}} \log p_{\sigma}(\tilde{x}|x) = -\frac{\tilde{x} - x}{\sigma^2}
+$$
+So the DSM loss becomes
+$$
+\mathcal{L}_{\mathrm{DSM}}(\phi,\sigma) = \mathbb{E}_{x\sim p_{data}(x), \epsilon \sim \mathcal{N}(0, I)} \left[\| s_{\phi}(x + \sigma \epsilon; \sigma) + \frac{\epsilon}{\sigma} \|_2^2\right]
+$$
