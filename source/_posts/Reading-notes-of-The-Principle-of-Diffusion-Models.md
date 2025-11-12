@@ -479,6 +479,31 @@ $$
 
 The boundary term vanishes assuming $p_{data}(x)$ decays to zero at infinity.
 
-The third term is independent of $\phi$, so we have the equivalence. $\square$
+Note the third term is independent of $\phi$, so we have the equivalence. $\quad\square$
 
 ---
+
+### 3.3 Denoising Score Matching
+
+Although the tractable score matching loss avoids computing the partition function, it still requires calculating the Hessian trace $\mathrm{Tr}(\nabla_x s_{\phi}(x))$, which is computationally expensive for high-dimensional data at $O(D^2)$ complexity.
+
+#### Sliced Score Matching
+
+Let $\mathbf{u}$ be an isotropic random vector, i.e., $\mathbb{E}[\mathbf{u}\mathbf{u}^{\top}] = I, \mathbb{E}[\mathbf{u}] = 0$.
+
+Then we have
+$$
+\begin{aligned}
+\mathrm{Tr}(A) &= \mathbb{E}[\mathbf{u}^{\top} A \mathbf{u}] \\
+\mathbb{E}[(\mathbf{u}^{\top} s_{\phi}(x))^2] &= \| s_{\phi}(x) \|_2^2 \\
+\end{aligned}
+$$
+
+So the score matching loss can be rewritten as
+$$
+\tilde{\mathcal{L}}_{\mathrm{SM}}(\phi) = \mathbb{E}_{x,u} \left[\mathbf{u}^{\top} \nabla_x s_{\phi}(x) \mathbf{u} + \frac{1}{2} (\mathbf{u}^{\top} s_{\phi}(x))^2\right]
+$$
+
+This can be computed using the Jacobian-vector product (JVP) technique, which only requires $O(D)$ complexity.
+
+Note the method only control the score function along random directions at observed data points, providing weak control in their neighborhood.
