@@ -512,33 +512,45 @@ Note the method only control the score function along random directions at obser
 
 This is proposed by Vincent (2011).
 
-**Idea**: Since the score function is undefined when the support of data distribution is a low-dimensional manifold, we can add noise to the data to make the support full-dimensional.
+#### Denoising Score Matching (DSM)
 
-Vincent (2011) proposed injecting noise into data via a known conditional distribution $p_{\sigma}(\tilde{x}|x)$, where $\tilde{x}$ is the corrupted data and $\sigma$ controls the noise level.
+Sliced score matching still need to compute the Jacobian-vector product. And the random directions introduce variance in optimization.
+
+Vincent et al. (2011) proposed denoising score matching (DSM) to avoid computing the Hessian trace.
+
+The idea is to add noise to data and learn the score function of the noisy data distribution.
+
 $$
-p_{\sigma}(\tilde{x}) = \int p_{data}(x) p_{\sigma}(\tilde{x}|x) dx
-$$
-We train the neural network $s_{\phi}(\tilde{x};\sigma)$ to match the score function of the corrupted data distribution $p_{\sigma}(\tilde{x})$:
-$$
-\mathcal{L}_{\mathrm{SM}}(\phi,\sigma) = \mathbb{E}_{\tilde{x}} \left[\| s_{\phi}(\tilde{x};\sigma) - \nabla_{\tilde{x}} \log p_{\sigma}(\tilde{x}) \|_2^2\right] 
-$$
-And Vincent (2011) showed that the loss is equivalent to
-$$
-\boxed{
-\mathcal{L}_{\mathrm{DSM}}(\phi,\sigma) =    \mathbb{E}_{x\sim p_{data}(x), \tilde{x} \sim p_{\sigma}(\tilde{x}|x)} \left[\| s_{\phi}(\tilde{x};\sigma) - \nabla_{\tilde{x}} \log p_{\sigma}(\tilde{x}|x) \|_2^2\right] 
-}
+p_{\sigma}(\mathbf{\tilde x}) = \int p_{data}(\mathbf{x}) p_{\sigma}(\mathbf{\tilde x}|\mathbf{x}) d\mathbf{x}
 $$
 
-The optimal score function is 
 $$
-s_{\phi}^*(\tilde{x};\sigma) = \nabla_{\tilde{x}} \log p_{\sigma}(\tilde{x})
+\mathcal{L}_{\mathrm{SM}}(\phi; \sigma) = \mathbb{E}_{\mathbf{\tilde{x}} \sim p_{\sigma}} \left[\| s_{\phi}(\mathbf{\tilde{x}}; \sigma) - \nabla_{\mathbf{\tilde{x}}} \log p_{\sigma}(\mathbf{\tilde{x}}) \|_2^2\right]
 $$
 
-If $p_{\sigma}(\tilde{x}|x) = \mathcal{N}(\tilde{x}; x, \sigma^2 I)$, then
+This is equivalent to the denoising objective:
+
 $$
-\nabla_{\tilde{x}} \log p_{\sigma}(\tilde{x}|x) = -\frac{\tilde{x} - x}{\sigma^2}
+\mathcal{L}_{\mathrm{DSM}}(\phi; \sigma) = \mathbb{E}_{\mathbf x \sim p_{data}(x),\mathbf{\tilde x} \sim p_{\sigma}(\cdot |x)} \left[\| s_{\phi}(\mathbf{\tilde x}) - \nabla_{\mathbf{\tilde x}} \log p_{\sigma}(\mathbf{\tilde x}|\mathbf{x}) \|_2^2\right]
 $$
-So the DSM loss becomes
+
+Under Gaussian noise corruption $p_{\sigma}(\mathbf{\tilde x}|\mathbf{x}) = \mathcal{N}(\mathbf{\tilde x}; \mathbf{x}, \sigma^2 I)$, we have $\nabla_{\mathbf{\tilde x}} \log p_{\sigma}(\mathbf{\tilde x}|\mathbf{x}) = \frac{1}{\sigma^2} (\mathbf{x} - \mathbf{\tilde x})$.
+
+The loss becomes
+
 $$
-\mathcal{L}_{\mathrm{DSM}}(\phi,\sigma) = \mathbb{E}_{x\sim p_{data}(x), \epsilon \sim \mathcal{N}(0, I)} \left[\| s_{\phi}(x + \sigma \epsilon; \sigma) + \frac{\epsilon}{\sigma} \|_2^2\right]
+\begin{aligned}
+\mathcal{L}_{\mathrm{DSM}}(\phi; \sigma) &= \mathbb{E}_{\mathbf x \sim p_{data}(x),\mathbf{\tilde x} \sim \mathcal{N}(\mathbf{x}, \sigma^2 I)} \left[\| s_{\phi}(\mathbf{\tilde x}) - \frac{1}{\sigma^2} (\mathbf{x} - \mathbf{\tilde x}) \|_2^2\right]\\
+&=\mathbb{E}_{\mathbf x \sim p_{data}(x),\epsilon \sim \mathcal{N}(0, I)} \left[\| s_{\phi}(\mathbf{x} + \sigma \epsilon) + \frac{\epsilon}{\sigma} \|_2^2\right]\\
+\end{aligned}
 $$
+
+#### Tweedie's Formula
+
+Assume $\mathbf{x} \sim p_{data}(x)$ and $\mathbf{\tilde x}|\mathbf{x} \sim \mathcal{N}(\ \cdot \ ;\alpha\mathbf{x}, \sigma^2 I)$.
+
+Then we have:
+$$
+\alpha \mathbb{E}_{\mathbf x \sim p(\mathbf x | \mathbf{\tilde x})}[\mathbf{x}|\mathbf{\tilde x}] = \mathbf{\tilde x} + \sigma^2 \nabla_{\mathbf{\tilde x}} \log p_{\sigma}(\mathbf{\tilde x})
+$$
+where the expectation is over the posterior distribution $p(\mathbf x | \mathbf{\tilde x}) = \frac{p_{data}(\mathbf x) p_{\sigma}(\mathbf{\tilde x}|\mathbf{x})}{p_{\sigma}(\mathbf{\tilde x})}$.
