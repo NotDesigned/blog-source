@@ -547,10 +547,71 @@ $$
 
 #### Tweedie's Formula
 
-Assume $\mathbf{x} \sim p_{data}(x)$ and $\mathbf{\tilde x}|\mathbf{x} \sim \mathcal{N}(\ \cdot \ ;\alpha\mathbf{x}, \sigma^2 I)$.
+Assume $\mathbf{x} \sim p_{data}(\mathbf x)$ and $\mathbf{\tilde x}|\mathbf{x} \sim \mathcal{N}(\ \cdot \ ;\alpha\mathbf{x}, \sigma^2 I)$.
 
 Then we have:
 $$
 \alpha \mathbb{E}_{\mathbf x \sim p(\mathbf x | \mathbf{\tilde x})}[\mathbf{x}|\mathbf{\tilde x}] = \mathbf{\tilde x} + \sigma^2 \nabla_{\mathbf{\tilde x}} \log p_{\sigma}(\mathbf{\tilde x})
 $$
 where the expectation is over the posterior distribution $p(\mathbf x | \mathbf{\tilde x}) = \frac{p_{data}(\mathbf x) p_{\sigma}(\mathbf{\tilde x}|\mathbf{x})}{p_{\sigma}(\mathbf{\tilde x})}$.
+
+The proof is done by computing $\nabla_{\mathbf{\tilde x}}\log p_{\sigma}(\mathbf{\tilde x})$ using Bayes' theorem.
+
+Higher cumulants of the posterior can also be computed through higher derivatives of $\log p_{\sigma}(\mathbf{\tilde x})$.
+
+#### Higher Order Tweedie's Formula
+
+Like $\sigma$, assume the conditional law of $\mathbf{\tilde x}|\mathbf{x}$ belongs to an exponential family with natural parameter $\eta$:
+$$
+q(\mathbf{\tilde x}|\mathbf{\eta}) = q_0(\mathbf{\tilde x}) \exp(\eta^{\top} \mathbf{\tilde x} - \psi(\mathbf{\eta}))
+$$
+
+For Gaussian noise with variance $\sigma^2 \mathbf I$, $\mathbf\eta = \frac{\mathbf x}{\sigma^2}$, $q_0(\mathbf{\tilde x}) = \frac{1}{(2\pi \sigma^2)^{D/2}} \exp(-\frac{\|\mathbf{\tilde x}\|^2}{2\sigma^2})$.
+
+The observed data distribution is
+$$
+p_{\eta}(\mathbf{\tilde x}) = \int p(\mathbf \eta) q(\mathbf{\tilde x}|\mathbf{\eta}) d\mathbf{\eta}
+$$
+
+Define the $log$-$partition$ function of $p_{\eta}(\mathbf{\tilde x})$ as
+
+$$
+\lambda(\mathbf{\tilde x}) = \log p_{\mathbf{\eta}}(\mathbf{\tilde x}) - \log q_0(\mathbf{\tilde x}).
+$$
+
+Then the posterior of $\mathbf{\eta}$ given $\mathbf{\tilde x}$ is 
+$$
+p(\mathbf{\eta}|\mathbf{\tilde x}) = \exp(\eta^{\top} \mathbf{\tilde x} - \psi(\mathbf{\eta}) - \lambda(\mathbf{\tilde x}))p(\mathbf{\eta}).
+$$
+
+By Bayes' theorem,
+$$
+p(\mathbf{\eta}|\mathbf{\tilde x}) = \frac{p(\mathbf{\eta}) q(\mathbf{\tilde x}|\mathbf{\eta})}{p_{\eta}(\mathbf{\tilde x})} \propto p(\mathbf{\eta}) q(\mathbf{\tilde x}|\mathbf{\eta}) = p(\mathbf{\eta}) q_0(\mathbf{\tilde x}) \exp(\eta^{\top} \mathbf{\tilde x} - \psi(\mathbf{\eta})) = p(\mathbf{\eta}) \exp(\eta^{\top} \mathbf{\tilde x} - \psi(\mathbf{\eta}) - \lambda(\mathbf{\tilde x}))
+$$
+
+The $\lambda$ is the log-partition function of the posterior distribution.
+
+For every $\mathbf{\tilde x}$, we have
+$$
+\int p(\mathbf{\eta}| \mathbf{\tilde x}) d\mathbf{\eta} = \int p(\mathbf{\eta}) \exp(\eta^{\top} \mathbf{\tilde x} - \psi(\mathbf{\eta}) - \lambda(\mathbf{\tilde x})) d\mathbf{\eta} = 1
+$$
+
+Taking derivatives with respect to $\mathbf{\tilde x}$ on both sides gives
+$$
+\begin{aligned}
+0 &= \int p(\mathbf{\eta}) \exp(\eta^{\top} \mathbf{\tilde x} - \psi(\mathbf{\eta}) - \lambda(\mathbf{\tilde x})) (\mathbf{\eta} - \nabla_{\mathbf{\tilde x}} \lambda(\mathbf{\tilde x})) d\mathbf{\eta} \\
+&= \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta} - \nabla_{\mathbf{\tilde x}} \lambda(\mathbf{\tilde x})] \\
+\end{aligned}
+$$
+
+Thus, we have
+$$
+\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}] = \nabla_{\mathbf{\tilde x}} \lambda(\mathbf{\tilde x})
+$$
+Taking the second derivative gives
+$$
+\mathrm{Cov}[\mathbf{\eta}|\mathbf{\tilde x}]=\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[(\mathbf{\eta} - \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}])(\mathbf{\eta} - \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}])^{\top}] = \nabla_{\mathbf{\tilde x}}^2 \lambda(\mathbf{\tilde x})
+$$
+
+Higher order moments can be derived similarly by taking higher order derivatives of $\lambda(\mathbf{\tilde x})$, which is a $k$-th tensor for the $k$-th moment.
+
