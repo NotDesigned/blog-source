@@ -510,10 +510,6 @@ Note the method only control the score function along random directions at obser
 
 #### Denoising Score Matching (DSM)
 
-This is proposed by Vincent (2011).
-
-#### Denoising Score Matching (DSM)
-
 Sliced score matching still need to compute the Jacobian-vector product. And the random directions introduce variance in optimization.
 
 Vincent et al. (2011) proposed denoising score matching (DSM) to avoid computing the Hessian trace.
@@ -568,12 +564,18 @@ $$
 
 For Gaussian noise with variance $\sigma^2 \mathbf I$, $\mathbf\eta = \frac{\mathbf x}{\sigma^2}$, $q_0(\mathbf{\tilde x}) = \frac{1}{(2\pi \sigma^2)^{D/2}} \exp(-\frac{\|\mathbf{\tilde x}\|^2}{2\sigma^2})$.
 
+$$
+\psi(\mathbf{\eta}) = \log \int q_0(\mathbf{\tilde x}) \exp(\eta^{\top} \mathbf{\tilde x}) d\mathbf{\tilde x} = \frac{\sigma^2}{2} \|\mathbf{\eta}\|^2
+$$
+
+is the log-partition function of the $q(\mathbf{\tilde x}|\mathbf{\eta})$.
+
 The observed data distribution is
 $$
 p_{\eta}(\mathbf{\tilde x}) = \int p(\mathbf \eta) q(\mathbf{\tilde x}|\mathbf{\eta}) d\mathbf{\eta}
 $$
 
-Define the $log$-$partition$ function of $p_{\eta}(\mathbf{\tilde x})$ as
+Define the log-partition function of $p_{\eta}(\mathbf{\tilde x})$ as
 
 $$
 \lambda(\mathbf{\tilde x}) = \log p_{\mathbf{\eta}}(\mathbf{\tilde x}) - \log q_0(\mathbf{\tilde x}).
@@ -615,3 +617,95 @@ $$
 
 Higher order moments can be derived similarly by taking higher order derivatives of $\lambda(\mathbf{\tilde x})$, which is a $k$-th tensor for the $k$-th moment.
 
+$$
+\nabla_{\mathbf{\tilde x}}^k \lambda(\mathbf{\tilde x}) = \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})} \left[(\mathbf{\eta} - \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}])^{\otimes k}\right] = \kappa_k(\mathbf{\eta}|\mathbf{\tilde x})
+$$
+
+#### Denoising, Tweedie and SURE
+
+Stein's Unbiased Risk Estimator (SURE) provides an unbiased estimate of the mean squared error (MSE) between a denoised estimate and the true signal without access to the true signal.
+
+$$
+\tilde x = x + \sigma \epsilon, \quad \epsilon \sim \mathcal{N}(0, I)
+$$
+A denoiser is any weakly differentiable function $\mathbf{D}: \mathbb{R}^D \to \mathbb{R}^D$ that maps the noisy observation $\tilde x$ to a denoised estimate $\hat x = \mathbf{D}(\tilde x)$.
+
+Quality of the denoiser is measured by the MSE:
+$$
+R(\mathbf{D}; \mathbf x) = \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - x \|_2^2|x].
+$$
+
+The SURE states that the following quantity is an unbiased estimator of the MSE:
+$$
+\mathrm{SURE}(\mathbf{D}; \tilde x) = \|\mathbf{D}(\tilde x) - \tilde x\|_2^2 + 2 \sigma^2 \nabla_{\tilde x}\cdot \mathbf{D}(\tilde x) - D \sigma^2
+$$
+
+For the proof, first use the identity
+$$
+\mathbb{E}[\nabla_{\mathbf z} \cdot \mathbf{D}(\mathbf z)] ] = \mathbb{E}[\mathbf z^{\top} \mathbf{D}(\mathbf z)]
+$$
+by integration by parts on each component.
+
+Therefore 
+$$
+\begin{aligned}
+\mathbb{E} [(\tilde x- x)^{\top} \mathbf{D}(\tilde x)]&=\sigma \mathbb{E}[\mathbf{z}^{\top} \mathbf{D}(\tilde x)] \\
+&= \sigma \mathbb{E}[\nabla_{\mathbf z} \cdot \mathbf{D}(\mathbf x + \sigma \mathbf z)] \\
+&= \sigma \mathbb{E}[\sigma \nabla_{\mathbf{\tilde x}} \cdot \mathbf{D}(\mathbf{\tilde x})] \\
+&= \sigma^2 \mathbb{E}[\nabla_{\mathbf{\tilde x}} \cdot \mathbf{D}(\mathbf{\tilde x})]
+\end{aligned}
+$$
+
+And then expand the MSE:
+$$
+\begin{aligned}
+R(\mathbf{D}; \mathbf x) &= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - x \|_2^2|x] \\
+&= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - \tilde x + \tilde x - x \|_2^2|x] \\
+&= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - \tilde x \|_2^2 |x] + 2 \mathbb{E}_{\tilde x | x}[(\tilde x - x)^{\top} (\mathbf{D}(\tilde x)- \tilde x) |x] + \mathbb{E}_{\tilde x | x}[\| \tilde x - x \|_2^2|x] \\
+&= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - \tilde x \|_2^2 |x] + 2 \left(\sigma^2 \mathbb{E}_{\tilde x | x}[\nabla_{\mathbf{\tilde x}} \cdot \mathbf{D}(\mathbf{\tilde x}) |x] - \mathbb{E}_{\tilde x | x}[(\tilde x - x)^{\top} \tilde x |x]\right) + \mathbb{E}_{\tilde x | x}[\| \tilde x - x \|_2^2|x] \\
+&= \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - \tilde x \|_2^2 |x] + 2 \sigma^2 \mathbb{E}_{\tilde x | x}[\nabla_{\mathbf{\tilde x}} \cdot \mathbf{D}(\mathbf{\tilde x}) |x] - 2 \sigma^2 D + D \sigma^2 \\
+&= \mathbb{E}_{\tilde x | x}[\mathrm{SURE}(\mathbf{D}; \tilde x) |x]
+\end{aligned}
+$$
+
+$$
+\mathbb{E}_{\tilde x | x}[\mathrm{SURE}(\mathbf{D}; \tilde x)]  = \mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - x \|_2^2]
+$$
+
+$$
+\begin{aligned}
+\mathbb{E}_{(\tilde x, x)}[\| \mathbf{D}(\tilde x) - x \|_2^2] &= \mathbb{E}_{x} [\mathbb{E}_{\tilde x | x}[\| \mathbf{D}(\tilde x) - x \|_2^2]] \\
+&= \mathbb{E}_{x} [\mathbb{E}_{\tilde x | x}[\mathrm{SURE}(\mathbf{D}; \tilde x)]] \\
+&= \mathbb{E}_{\tilde x} [\mathrm{SURE}(\mathbf{D}; \tilde x)] \\
+\end{aligned}
+$$
+
+On the other hand
+$$
+\begin{aligned}
+\mathbb{E}_{(\tilde x, x)}[\| \mathbf{D}(\tilde x) - x \|_2^2] &= \mathbb{E}_{\tilde x} [\mathbb{E}_{x | \tilde x}[\| \mathbf{D}(\tilde x) - x \|_2^2]] \\
+\end{aligned}
+$$
+Pointwise minimization of the MSE gives
+$$
+\mathbf{D}^*(\tilde x) = \mathbb{E}[x|\tilde x]
+$$
+for almost every $\tilde x$.
+
+By Tweedie's formula, we have
+$$
+\mathbf{D}^*(\tilde x) = \tilde x + \sigma^2 \nabla_{\tilde x} \log p_{\sigma}(\tilde x)
+$$
+
+Therefore, we deduce
+$$
+\frac{1}{2\sigma^4} \mathrm{SURE}(\mathbf{D}; \tilde x) = \mathrm{Tr}(\nabla_{\tilde x} s_{\phi}(\tilde x)) + \frac{1}{2} \| s_{\phi}(\tilde x) \|_2^2 + C(\sigma)
+$$
+
+This shows the equivalence between denoising, score matching and SURE up to a constant depending on $\sigma$.
+
+#### Generalized Score Matching
+
+Omitted. TODO.
+
+### 3.4 Noise Conditional Score Network (NCSN)
