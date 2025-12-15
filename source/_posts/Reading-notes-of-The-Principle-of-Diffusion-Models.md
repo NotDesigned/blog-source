@@ -615,7 +615,7 @@ $$
 \mathrm{Cov}[\mathbf{\eta}|\mathbf{\tilde x}]=\mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[(\mathbf{\eta} - \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}])(\mathbf{\eta} - \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}])^{\top}] = \nabla_{\mathbf{\tilde x}}^2 \lambda(\mathbf{\tilde x})
 $$
 
-Higher order moments can be derived similarly by taking higher order derivatives of $\lambda(\mathbf{\tilde x})$, which is a $k$-th tensor for the $k$-th moment.
+Higher order cumulants can be derived similarly by taking higher order derivatives of $\lambda(\mathbf{\tilde x})$, which is a $k$-th tensor for the $k$-th cumulant.
 
 $$
 \nabla_{\mathbf{\tilde x}}^k \lambda(\mathbf{\tilde x}) = \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})} \left[(\mathbf{\eta} - \mathbb{E}_{p(\mathbf{\eta}|\mathbf{\tilde x})}[\mathbf{\eta}])^{\otimes k}\right] = \kappa_k(\mathbf{\eta}|\mathbf{\tilde x})
