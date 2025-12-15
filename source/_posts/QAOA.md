@@ -126,3 +126,47 @@ $$
 $$
 This means we can compute the gradient of $J(\theta)$ by evaluating $J$ at two shifted parameter values, avoiding the need to compute the score function directly.
 
+## Parameterized Quantum Circuit in QAOA
+
+In QAOA, the parameterized quantum circuit is constructed using two types of unitary operators: the cost unitary $U_C(\gamma)$ and the mixing unitary $U_B(\beta)$. The overall circuit for $p$ layers is given by:
+$$
+U(\boldsymbol{\gamma}, \boldsymbol{\beta}) = U_B(\beta_p) U_C(\gamma_p) \ldots U_B(\beta_1) U_C(\gamma_1)
+$$
+
+The cost unitary is defined as:
+$$
+U_C(\gamma) = e^{-i \gamma H_C}
+$$
+and the mixing unitary is defined as:
+$$
+U_B(\beta) = e^{-i \beta H_B}
+$$
+where $H_B = \sum_{i=1}^n X_i$ with $X_i = I^{\otimes (i-1)} \otimes X \otimes I^{\otimes (n-i)}$ being the Pauli-X operator acting on qubit $i$.
+
+The initial state is typically chosen as the uniform superposition state:
+$$
+\ket{\psi_0} = \frac{1}{\sqrt{2^n}} \sum_{z \in \{0,1\}^n} \ket{z}
+$$
+which is the ground state of the mixing Hamiltonian $H_B$.
+
+Reason (Can be omitted, I don't know very well about this quantum physics part):
+
+>The Adiabatic Theorem suggests that if we vary the parameters $\boldsymbol{\gamma}$ and $\boldsymbol{\beta}$ slowly enough, the system will remain in its ground state, allowing us to approximate the optimal solution to the original combinatorial optimization problem.
+> $$
+> H(t) = (1 - \frac{t}{T}) H_B + \frac{t}{T} H_C
+> $$
+> The time evolution operator can be approximated using the Trotter-Suzuki decomposition:
+> $$
+> e^{-i (A+B) t} \approx \left( e^{-i A \frac{t}{n}} e^{-i B \frac{t}{n}} \right)^n
+> $$
+
+## Algorithm Summary
+
+1. Initialize the quantum state $\ket{\psi_0}$ as the uniform superposition state.
+2. Choose the number of layers $p$ and initialize the parameters $\boldsymbol{\gamma}, \boldsymbol{\beta}$.
+3. Construct the parameterized quantum circuit $U(\boldsymbol{\gamma}, \boldsymbol{\beta})$.
+4. Measure the expectation value $J(\boldsymbol{\gamma}, \boldsymbol{\beta}) = \langle \psi(\boldsymbol{\gamma}, \boldsymbol{\beta}) | H_C | \psi(\boldsymbol{\gamma}, \boldsymbol{\beta}) \rangle$.
+5. Use the parameter shift rule to compute the gradients $\nabla_{\boldsymbol{\gamma}} J$ and $\nabla_{\boldsymbol{\beta}} J$.
+6. Update the parameters $\boldsymbol{\gamma}, \boldsymbol{\beta}$ using a classical optimization algorithm (e.g., gradient descent).
+7. Repeat steps 3-6 until convergence or a stopping criterion is met.
+8. Measure the final state to obtain a bit string $z$ that approximates the optimal solution to the original problem.
