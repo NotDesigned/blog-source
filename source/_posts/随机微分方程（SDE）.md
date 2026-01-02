@@ -61,7 +61,7 @@ categories:
 
 ($\Rightarrow$) 如果存在 Borel 可测函数 $f$ 使得 $Y = f(X)$，则对于任意的 Borel 集合 $B \in \mathcal{B}$，$Y^{-1}(B) = X^{-1}(f^{-1}(B)).$ 由于 $f$ 是 Borel 可测的，$f^{-1}(B)$ 也是 Borel 集合，因此 $Y^{-1}(B) \in \sigma(X)$，即 $\sigma(Y) \subseteq \sigma(X)$。
 
-($\Leftarrow$) 如果 $ Y = \mathbf{1}_A $ 是集合 $A \in \sigma(X)$ 的指示函数，则存在 Borel 集合 $B \in \mathcal{B}$，使得 $A = X^{-1}(B)$。定义函数 $f: \mathbb{R}^n \to \mathbb{R}$ 为 $f(x) = \mathbf{1}_B(x)$，则 $Y(\omega) = f(X(\omega))$ 对所有 $\omega \in \Omega$ 成立。然后可以将该结论推广到简单函数 $Y = \sum a_i \mathbf{1}_{A_i}$，其中 $A_i \in \sigma(X)$，再通过测度论里的套路构造逐点极限收敛序列$Y_k$，推广到非负的随机变量 $Y$，最后正负分解推广到任意随机变量 $Y$。后面此过程简要带过了。
+($\Leftarrow$) 如果 $ Y = \mathbf{1}_A $ 是集合 $A \in \sigma(X)$ 的指示函数，则存在 Borel 集合 $B \in \mathcal{B}$，使得 $A = X^{-1}(B)$。定义函数 $f: \mathbb{R}^n \to \mathbb{R}$ 为 $f(x) = \mathbf{1}_B(x)$，则 $Y(\omega) = f(X(\omega))$ 对所有 $\omega \in \Omega$ 成立。然后可以将该结论推广到简单函数 $Y = \sum a_i \mathbf{1}_{A_i}$，其中 $A_i \in \sigma(X)$，再通过测度论里的套路构造逐点极限收敛序列$Y_k$，推广到非负的随机变量 $Y$，最后正负分解推广到任意随机变量 $Y$。
 
 这个引理的意义在于，它告诉 $Y$ 是否可以通过 $X$ 来表示，取决于 $Y$ 的信息（引导的测度）是否包含在 $X$ 的信息中。
 
@@ -140,7 +140,7 @@ $$
 
 我们可以将 $\omega$ 视同于路径 $t \mapsto X_t(\omega)$，从而将 $\Omega$ 视作所有从 $T$ 到 $\mathbb R^n$ 的函数空间 $\tilde \Omega = (\mathbb R^n)^T$ 上的一个子集。
 
-定义在 $\tilde \Omega$ 上的自然 $\sigma$-代数为 $\tilde{\mathcal{F}}$，由所有形如 $\mathbb W=\{\tilde \omega \in \tilde \Omega : \tilde \omega(t_1) \in B_1, \ldots, \tilde \omega(t_k) \in B_k\}$ 的集合生成，其中 $t_i \in T$，$B_i \in \mathcal{B}(\mathbb{R}^n)$。称为柱集（cylinder sets）。这个代数记作 $\mathcal{B}(\mathbb W)$。（注意这个实际上包含了可数点）
+定义在 $\tilde \Omega$ 上的自然 $\sigma$-代数为 $\tilde{\mathcal{F}}$，由所有形如 $\mathbb W=\{\tilde \omega \in \tilde \Omega : \tilde \omega(t_1) \in B_1, \ldots, \tilde \omega(t_k) \in B_k\}$ 的集合生成，其中 $t_i \in T$，$B_i \in \mathcal{B}(\mathbb{R}^n)$。称为柱集（cylinder sets）。这个代数记作 $\mathcal{B}(\mathbb W)$。（注意这个实际上包含了可数点，这里的有限 $k$ 可以加强为 $1$，但是实际应用中有限比较方便）
 
 > 对于连续函数空间，这个 $\sigma$-代数恰好等于由一致收敛拓扑诱导的 Borel $\sigma$-代数。（因为连续函数的上下极限可以只考虑稠密可数的有理数点）
 
@@ -149,7 +149,63 @@ $$
 \tilde P(A) = P(\pi^{-1}(A)).
 $$
 
-这样，我们就得到了一个新的概率空间 $(\tilde \Omega, \tilde{\mathcal{F}}, \tilde P)$，其中 $\tilde{\mathcal{F}}$ 是 $\tilde \Omega$ 上的 $\sigma$-代数，$\tilde P$ 是定义在 $\tilde{\mathcal{F}}$ 上的概率测度。这个新的概率空间描述了随机过程 $X$ 的路径空间结构。
+这样，我们就得到了一个新的概率空间 $(\tilde \Omega, \tilde{\mathcal{F}}, \tilde P)$，其中 $\tilde{\mathcal{F}}$ 是 $\tilde \Omega$ 上的 $\sigma$-代数，$\tilde P$ 是定义在 $\tilde{\mathcal{F}}$ 上的概率测度。
 
-> 于是可以采用这样的观点：随机过程 $X$ 可以被视为定义在路径空间 $(\tilde \Omega = (\mathbb R^n)^{T}, \tilde{\mathcal{F}} = \mathcal{B}(\mathbb W), \tilde P)$ 上的路径测度 $\tilde P$。
+这样，随机过程 $X$ 可以被视为定义在路径空间 $(\tilde \Omega = (\mathbb R^n)^{T}, \tilde{\mathcal{F}} = \mathcal{B}(\mathbb W), \tilde P)$ 上的路径概率测度 $\tilde P$。
+
+现在考虑从有限观测点出发，构造随机过程。
+
+#### Kolmogorov 扩展定理（Kolmogorov Extension Theorem）
+
+观测 $k\in \mathbb{N}$ 次，假定存在 $\nu_{t_1, t_2, \ldots, t_k}$ 是 $\mathbb{R}^{nk}$ 上的概率测度。
+
+满足一致性条件：对于 $\forall k \in \mathbb{N},t_1, t_2, \ldots, t_k \in T$，以及任意的 Borel 集合 $B_1, B_2, \ldots, B_k \in \mathcal{B}(\mathbb{R}^n)$，有
+$$
+\nu_{t_1, t_2, \ldots, t_k}(B_1 \times B_2 \times \ldots \times B_k) = \nu_{t_1, t_2, \ldots, t_k, t_{k+1}}(B_1 \times B_2 \times \ldots \times B_k \times \mathbb{R}^n).
+$$
+
+那么存在 一个随机过程 $\{X_t\}$，定义在某个概率空间 $(\Omega, \mathcal{F}, P)$ 上，使得对于任意的 $k \in \mathbb{N}$ 和 $t_1, t_2, \ldots, t_k \in T$，随机变量 $(X_{t_1}, X_{t_2}, \ldots, X_{t_k})$ 的分布为 $\nu_{t_1, t_2, \ldots, t_k}$。换言之，对任意 Borel 集合 $B_1, B_2, \ldots, B_k \in \mathcal{B}(\mathbb{R}^n)$，有
+$$
+P(X_{t_1} \in B_1, X_{t_2} \in B_2, \ldots, X_{t_k} \in B_k) = \nu_{t_1, t_2, \ldots, t_k}(B_1 \times B_2 \times \ldots \times B_k).
+$$
+
+注意，这个定理并没有保证样本路径的正则性（如连续性或可测性）。它仅仅保证了存在一个随机过程，其有限维分布与给定的一致性条件相符。也就是说目前的 $\Omega$ 只能视作 $(\mathbb R^n)^T$。
+
+为了得到具有更好路径性质的随机过程，我们需要以下定理。
+
+#### Kolmogorov 连续性定理（Kolmogorov Continuity Theorem）
+
+设 $\{X_t : t \in [0, T]\}$ 是定义在概率空间 $(\Omega, \mathcal{F}, P)$ 上的随机过程。假设存在常数 $\alpha, \beta, C > 0$，使得对于所有的 $s, t \in [0, T]$，有
+$$
+E[\|X_t - X_s\|^\alpha] \leq C |t - s|^{1 + \beta}.
+$$
+那么存在一个修改版本 $\{\tilde{X}_t : t \in [0, T]\}$，使得对于几乎所有的 $\omega \in \Omega$，路径 $t \mapsto \tilde{X}_t(\omega)$ 是 Hölder 连续的，指数为 $\gamma$，其中 $0 < \gamma < \frac{\beta}{\alpha}$。也就是说，存在随机变量 $K(\omega)$，使得对于所有的 $s, t \in [0, T]$，有
+$$
+\|\tilde{X}_t(\omega) - \tilde{X}_s(\omega)\| \leq K(\omega) |t - s|^{\gamma}.
+$$
+
+证明：
+
+考虑所有二进位网格点 $\mathcal{D}_n = \{ \frac{k}{2^n} : k = 0, 1, \dots, 2^n \}$ 上的随机变量 $X_t$。利用假设的矩不等式与切比雪夫不等式
+$$
+P\left( |X_{\frac{k}{2^n}} - X_{\frac{k-1}{2^n}}| > \epsilon \right) \le \frac{E[|X_{\frac{k}{2^n}} - X_{\frac{k-1}{2^n}}|^\alpha]}{\epsilon^\alpha} \le \frac{C (2^{-n})^{1+\beta}}{\epsilon^\alpha}
+$$
+$M_n = \max_{1 \le k \le 2^n} |X_{\frac{k}{2^n}} - X_{\frac{k-1}{2^n}}|$, 则
+$$
+P(M_n > \epsilon) \le \sum_{k=1}^{2^n} P\left( |X_{\frac{k}{2^n}} - X_{\frac{k-1}{2^n}}| > \epsilon \right) \le \frac{C 2^{-n\beta}}{\epsilon^\alpha}
+$$
+取 $\epsilon = 2^{-n\gamma}$，其中 $0 < \gamma < \frac{\beta}{\alpha}$，则
+$$
+P(M_n > 2^{-n\gamma}) \le C 2^{n(\alpha \gamma - \beta)}
+$$
+由于 $\alpha \gamma - \beta < 0$，级数 $\sum_{n=1}^{\infty} P(M_n > 2^{-n\gamma})$ 收敛。由 Borel-Cantelli 引理，几乎处处存在随机变量 $N(\omega)$，使得对于所有的 $n \geq N(\omega)$， 有 $M_n(\omega) \leq 2^{-n\gamma}$。
+因此，对于几乎所有的 $\omega \in \Omega$，存在 $N(\omega)$，使得对于所有的 $n \geq N(\omega)$ 和 $k = 1, 2, \ldots, 2^n$，有
+$$
+|X_{\frac{k}{2^n}}(\omega) - X_{\frac{k-1}{2^n}}(\omega)| \leq 2^{-n\gamma}.
+$$
+这表明对于几乎所有的 $\omega \in \Omega$，路径 $t \mapsto X_t(\omega)$ 在二进位网格点上是 Hölder 连续的。我们可以将这种 Hölder 连续性扩展到整个区间 $[0, T]$，从而得到修改版本 $\tilde{X}_t$，使得对于几乎所有的 $\omega \in \Omega$，路径 $t \mapsto \tilde{X}_t(\omega)$ 是 $\gamma$-Hölder 连续的。
+
+所以对于矩被控的随机过程，我们总能找到一个修改版本，使得路径具有 Hölder 连续性。
+
+### 布朗运动 （Brownian Motion）
 
