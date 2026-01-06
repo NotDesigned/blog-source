@@ -61,7 +61,7 @@ categories:
 
 ($\Rightarrow$) 如果存在 Borel 可测函数 $f$ 使得 $Y = f(X)$，则对于任意的 Borel 集合 $B \in \mathcal{B}$，$Y^{-1}(B) = X^{-1}(f^{-1}(B)).$ 由于 $f$ 是 Borel 可测的，$f^{-1}(B)$ 也是 Borel 集合，因此 $Y^{-1}(B) \in \sigma(X)$，即 $\sigma(Y) \subseteq \sigma(X)$。
 
-($\Leftarrow$) 如果 $ Y = \mathbf{1}_A $ 是集合 $A \in \sigma(X)$ 的指示函数，则存在 Borel 集合 $B \in \mathcal{B}$，使得 $A = X^{-1}(B)$。定义函数 $f: \mathbb{R}^n \to \mathbb{R}$ 为 $f(x) = \mathbf{1}_B(x)$，则 $Y(\omega) = f(X(\omega))$ 对所有 $\omega \in \Omega$ 成立。然后可以将该结论推广到简单函数 $Y = \sum a_i \mathbf{1}_{A_i}$，其中 $A_i \in \sigma(X)$，再通过测度论里的套路构造逐点极限收敛序列$Y_k$，推广到非负的随机变量 $Y$，最后正负分解推广到任意随机变量 $Y$。
+($\Leftarrow$) 如果 $Y = \mathbf{1}_A$ 是集合 $A \in \sigma(X)$ 的指示函数，则存在 Borel 集合 $B \in \mathcal{B}$，使得 $A = X^{-1}(B)$。定义函数 $f: \mathbb{R}^n \to \mathbb{R}$ 为 $f(x) = \mathbf{1}_B(x)$，则 $Y(\omega) = f(X(\omega))$ 对所有 $\omega \in \Omega$ 成立。然后可以将该结论推广到简单函数 $Y = \sum a_i \mathbf{1}_{A_i}$，其中 $A_i \in \sigma(X)$，再通过测度论里的套路构造逐点极限收敛序列$Y_k$，推广到非负的随机变量 $Y$，最后正负分解推广到任意随机变量 $Y$。
 
 这个引理的意义在于，它告诉 $Y$ 是否可以通过 $X$ 来表示，取决于 $Y$ 的信息（引导的测度）是否包含在 $X$ 的信息中。
 
@@ -209,3 +209,53 @@ $$
 
 ### 布朗运动 （Brownian Motion）
 
+考虑这样的一个过程，在任何时刻 $t_1$ 观察，在 $t_2$ 时候的概率分布只与经过的时间 $t_2 - t_1$ 与位移有关。 
+$$
+p(t,x,y) = (2\pi t)^{-n/2}\cdot \exp(-\frac{|x-y|^2}{2t}) \forall y\in \mathbb R^n, t > 0
+$$
+给定 $k$ 个观测点, $0\leq t_1 \leq t_2 \leq \cdots \leq t_k$，定义这样的概率度量为 $\nu_{t_1,\ldots, t_k}$ 在 $\mathbb R^{nk}$ 为
+$$
+v_{t_1,\ldots, t_k}(F_1\times\cdots \times F_k) = \int_{F_1\times \cdots \times F_k} p(t_1, x, x_1) p(t_2-t_1,x_1,x_2) \cdots p(t_k-t_{k-1}, x_{k-1}, x_k) d x_1 \cdots d x_k
+$$
+并且规定 $p(0,x,y) dy = \delta_x(y)$，其中 $dy=dy_1\cdots dy_k$ 是Lebesgue测度。
+这些测度满足一致性条件，因此由 Kolmogorov 扩展定理，存在一个概率空间 $(\Omega, \mathcal{F}, P^{x})$ 和随机过程 $\{B_t : t \geq 0\}$，使得对于任意的 $k \in \mathbb{N}$ 和 $0 \leq t_1 \leq t_2 \leq \cdots \leq t_k$，随机变量 $(B_{t_1}, B_{t_2}, \ldots, B_{t_k})$ 的分布为 $\nu_{t_1, t_2, \ldots, t_k}$。
+这个随机过程称为从点 $x$ 开始的布朗运动（Brownian Motion），记作 $B_t^x$ 或简称 $B_t$。
+
+根据 Kolmogorov 连续性定理，布朗运动存在一个修改版本，使得对于几乎所有的 $\omega \in \Omega$，路径 $t \mapsto B_t(\omega)$ 是 Hölder 连续的，指数为 $\gamma$，其中 $0 < \gamma < \frac{1}{2}$。故可以视为 $C([0,\infty);\mathbb R^n)$ 上的概率测度。
+
+布朗运动具有以下重要性质：
+1. 是高斯过程：对于任意的 $k \in \mathbb{N}$ 和 $0 \leq t_1 < t_2 < \cdots < t_k$，随机变量 $Z=(B_{t_1}, B_{t_2}, \ldots, B_{t_k})$ 服从多元正态分布。
+$$
+\mathbb E^{x} \left[\exp\left(i \sum_j^{nk} u_j Z_j\right)\right] = \exp\left(i \sum_j^{nk} u_j M_j - \frac{1}{2} \sum_{j,l}^{nk} u_j c_{jl} u_l \right)
+$$
+
+其中 
+$$
+M = [x, x, \ldots, x]^T \in \mathbb R^{nk}
+$$
+$$
+C = \begin{bmatrix}
+t_1 I_n & t_1 I_n & \cdots & t_1 I_n \\
+t_1 I_n & t_2 I_n & \cdots & t_2 I_n \\
+\vdots & \vdots & \ddots & \vdots \\
+t_1 I_n & t_2 I_n & \cdots & t_k I_n
+\end{bmatrix} \in \mathbb R^{nk \times nk}
+$$
+
+我们有 $\mathbb E^{x}[(B_t - x)^2] = n t$。即布朗运动的方差与时间成正比； $\mathbb E^{x}[(B_t - x) (B_s - x)] = n \min(t,s)$。即布朗运动的协方差与时间的最小值成正比。
+
+因此，$\mathbb E^{x}[ (B_t - B_s)^2] = n (t-s), \forall 0 \leq s < t$。
+
+2. 具有独立增量：对于任意的 $0 \leq t_1 < t_2 < \cdots < t_k$，增量 $B_{t_2} - B_{t_1}, B_{t_3} - B_{t_2}, \ldots, B_{t_k} - B_{t_{k-1}}$ 是相互独立的随机变量。
+
+
+3. 几乎处处连续路径：布朗运动存在一个修改版本，使得对于几乎所有的 $\omega \in \Omega$，路径 $t \mapsto B_t(\omega)$ 是连续的。
+
+4. 几乎处处不可微：对于几乎所有的 $\omega \in \Omega$，路径 $t \mapsto B_t(\omega)$ 在任意时刻 $t$ 都不可微。
+
+1, 2, 3 是直接由构造和 Kolmogorov 连续性定理得到的。
+
+证明 4：
+设 $t=0$，考虑增量商 $\frac{B_h - B_0}{h}$，其中 $h > 0$。由于布朗运动的增量 $B_h - B_0$ 服从正态分布，均值为 $0$，方差为 $n h$，因此增量商 $\frac{B_h - B_0}{h}$ 服从均值为 $0$，方差为 $\frac{n}{h}$ 的正态分布。
+随着 $h \to 0^+$，方差 $\frac{n}{h}$ 趋向于无穷大，这意味着增量商 $\frac{B_h - B_0}{h}$ 的分布变得越来越分散。因此，几乎处处不存在极限 $\lim_{h \to 0^+} \frac{B_h - B_0}{h}$，即布朗运动在 $t=0$ 处不可微。
+类似地，可以证明布朗运动在任意时刻 $t$ 处不可微。
