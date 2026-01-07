@@ -334,11 +334,29 @@ $$
 \begin{aligned}
 \mathbb E\left[\left(\int_S^T X_t dB_t\right)^2\right] &= \mathbb E\left[\left(\sum_{j} e_j (B_{t_{j+1}} - B_{t_j})\right)^2\right] \\
 & = \sum_{i,j} \mathbb E[e_i e_j \Delta B_i \Delta B_j] \\
-& = \sum_{j} \mathbb E[e_j^2] \mathbb E[(\Delta B_j)^2] \\
-& = \sum_{j} \mathbb E[e_j^2] (t_{j+1} - t_j) \\
 \end{aligned}
 $$
-这里利用了布朗运动的增量是独立的。
+
+为了进一步计算，我们假设 $e_j$ 是 $\mathcal{F}_{t_j}$-可测的，其中 $\mathcal{F}_t$ 是由 $\{B_s : s \leq t\}$ 生成的 $\sigma$-代数（则$\mathcal{F}_{s} \subseteq \mathcal{F}_{t}$ 对于 $s < t$）。
+
+对于 $i < j$，有 $e_i, e_j, \Delta B_i$ 都是 $\mathcal{F}_{t_j}$-可测的，而 $\Delta B_j$ 独立于 $\mathcal{F}_{t_j}$，因此
+$$
+\begin{aligned}
+\mathbb E[e_i e_j \Delta B_i \Delta B_j] &= \mathbb E\left[ \mathbb E[e_i e_j \Delta B_i \Delta B_j | \mathcal{F}_{t_j}] \right] \quad \text{（全期望公式）} \\
+&= \mathbb E\left[ e_i e_j \Delta B_i \mathbb E[\Delta B_j | \mathcal{F}_{t_j}] \right] \quad \text{（条件期望的线性性质）} \\
+&= 0 \quad \text{（} \mathbb E[\Delta B_j | \mathcal{F}_{t_j}] = \mathbb E[\Delta B_j] = 0 \text{）}
+\end{aligned}
+$$
+
+类似地，对于 $i > j$，也有 $\mathbb E[e_i e_j \Delta B_i \Delta B_j] = 0$。
+因此，只有当 $i = j$ 时，$\mathbb E[e_i e_j \Delta B_i \Delta B_j]$ 才可能非零。此时，
+$$
+\mathbb E[e_j^2 (\Delta B_j)^2] = \mathbb E[e_j^2] \mathbb E[(\Delta B_j)^2] = \mathbb E[e_j^2] (t_{j+1} - t_j)
+$$
+综上所述，我们得到了
+$$
+\mathbb E\left[\left(\int_S^T X_t dB_t\right)^2\right] = \sum_{j} \mathbb E[e_j^2] (t_{j+1} - t_j) = \mathbb E\left[\int_S^T X_t^2 dt\right]
+$$
 
 因此，我们得到了 Ito 等距公式 （简单过程版本）：
 $$
@@ -346,3 +364,33 @@ $$
 $$
 
 左边是一个 Ito 积分作为随机变量的 $L^2$ 范数，右边是一个随机过程被视作 $\Omega \times [S,T]$ 上的概率测度/随机变量的 $L^2$ 范数。因此叫做等距公式。
+
+这个实际上就在告诉我们，我们在时间这一维积分后，整体的长度是不变的。
+
+现在我们将它推广到较为一般的过程并给出正式定义。
+
+令 $\{\mathcal{N}_t\}$ 为一族递增的 $\sigma$-代数，称为过滤（filtration）。随机过程 $X_t$ 称为适应于过滤 $\{\mathcal{N}_t\}$ 的，如果对于每个 $t$，$X_t$ 是 $\mathcal{N}_t$-可测的。
+
+令 $\mathcal{F}_t$ 为由布朗运动 $\{B_s : s \leq t\}$ 生成的自然过滤，即
+$$
+\mathcal{F}_t = \sigma(B_s : s \leq t) = \sigma(\omega; \omega(t_1)\in B_1, \ldots, \omega(t_k) \in B_k, \text{其中 } t_i \leq t, B_i \in \mathcal{B}(\mathbb{R}^n))
+$$
+这里我们假设 $\mathcal{F}_t$ 是完备化的，即包含所有的 $P$-零测集。
+
+定义空间 $\mathcal{V}=\mathcal{V}(S,T)$ 为所有适应于过滤 $\{\mathcal{F}_t\}$ 的随机过程 $X_t$（或函数 $X: [S,T] \times \Omega \to \mathbb{R}$）且满足
+1. $X$ 在 $[S,T] \times \Omega$ 上联合可测；
+2. $\int_S^T E[X_t^2] dt < \infty$，即 $X_t \in L^2([S,T] \times \Omega)$。
+
+首先，令 $g \in \mathcal{V}$ 是有界的，并且 $g$ 对于每个 $\omega$ 是连续的。则存在一列简单过程 $\{g_n\} \subset \mathcal{V}$，使得
+$$
+\lim_{n \to \infty} E\left[\int_S^T (g_n(t,\omega) - g(t,\omega))^2 dt\right] = 0.
+$$
+
+证明：
+取 $\phi_n = \sum_j g(t_j, \omega) \mathbf{1}_{[t_j, t_{j+1})}(t)$，其中 $\{t_j\}$ 是 $[S,T]$ 的一个划分，且当 $n \to \infty$，划分的间距趋近于零。显然有 $\phi_n \in \mathcal{V}$，并且由于 $g$ 对于每个 $\omega$ 连续，因此 $\phi_n(t,\omega)$ 对于每个 $\omega$ 在 $[S,T]$ 上逐点收敛于 $g(t,\omega)$，且一致有界。
+
+由有界收敛定理，我们有
+$$
+\lim_{n \to \infty} \mathbb E\left[\int_S^T (\phi_n(t,\omega) - g(t,\omega))^2 dt\right] = \mathbb E\left[\int_S^T \lim_{n \to \infty} (\phi_n(t,\omega) - g(t,\omega))^2 dt\right] = 0.
+$$
+因此，$\{\phi_n\}$ 是所需的简单过程列。
