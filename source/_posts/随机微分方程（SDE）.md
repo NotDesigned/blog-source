@@ -119,7 +119,7 @@ $$
 $$
 \int_{A} X(\omega) dP(\omega) = \int_{A} E[X | \mathcal{G}](\omega) dP(\omega).
 $$
-条件期望的存在性和唯一性（几乎处处相等意义下）可以通过Radon-Nikodym 定理来证明。
+条件期望的存在性和唯一性（几乎处处相等意义下）可以通过 Radon-Nikodym 定理来证明。
 
 条件期望的一些重要性质包括：
 1. 线性：对于任意的随机变量 $X, Y$ 和标量 $a, b \in \mathbb{R}$，有
