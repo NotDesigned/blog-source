@@ -15,7 +15,7 @@ categories:
 
 ## 项目简介
 
-nanochat 是一个用纯 Python 实现的全栈 GPT库，包括 pretrain、midtrain、finetune、inference 等。它的目标是最简化帮助理解大型语言模型（LLM）的工作原理。
+nanochat 是一个用（几乎，有一点 Rust 用来训练分词器）纯 Python 实现的全栈 GPT库，包括 pretrain、midtrain、finetune、inference 等。它的目标是最简化帮助理解大型语言模型（LLM）的工作原理。
 
 计划从以下几个方面来学习这个项目：
 
