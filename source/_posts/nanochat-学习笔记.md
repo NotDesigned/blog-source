@@ -49,7 +49,6 @@ python -m nanochat.dataset -n 240
 python -m scripts.tok_train --max_chars=2000000000 --vocab_size=65536
 python -m scripts.tok_eval
 python -m scripts.base_train --depth=4 --max_seq_len=512 --device_batch_size=1 --eval_tokens=512 --core_metric_every=-1 --total_batch_size=512 --num_iterations=20
-
 ```
 
 ## 代码结构
@@ -500,4 +499,321 @@ nanochat 使用了 KV Cache 来加速推理过程中的自注意力计算，并�
 对于 KV Cache 的推理，要记录当前 Token 的位置索引，并索引正确的 RoPE 位置嵌入（按绝对位置）。
 
 对于 GQA 的实现，即保持 Q 的头数不变，但将 K 和 V 的头数减少分组，每组共享 K 和 V。
+
+先来看 `gpt.py` 中注意力模块的实现
+
+```python
+class CausalSelfAttention(nn.Module):
+    def __init__(self, config, layer_idx):
+        super().__init__()
+        # 记录是第几层 Transformer，用于 KV Cache 索引
+        self.layer_idx = layer_idx 
+        # 有多少个 Q 头，多少个 KV 头
+        self.n_head = config.n_head 
+        self.n_kv_head = config.n_kv_head
+        # 嵌入维度和每个头的维度
+        self.n_embd = config.n_embd
+        self.head_dim = self.n_embd // self.n_head
+        assert self.n_embd % self.n_head == 0
+        assert self.n_kv_head <= self.n_head and self.n_head % self.n_kv_head == 0
+        # 定义线性层用于生成 Q、K、V 和输出投影
+        self.c_q = nn.Linear(self.n_embd, self.n_head * self.head_dim, bias=False)
+        self.c_k = nn.Linear(self.n_embd, self.n_kv_head * self.head_dim, bias=False)
+        self.c_v = nn.Linear(self.n_embd, self.n_kv_head * self.head_dim, bias=False)
+        self.c_proj = nn.Linear(self.n_embd, self.n_embd, bias=False)
+
+    def forward(self, x, cos_sin, kv_cache):
+        B, T, C = x.size()
+
+        # Project the input to get queries, keys, and values
+        q = self.c_q(x).view(B, T, self.n_head, self.head_dim)
+        k = self.c_k(x).view(B, T, self.n_kv_head, self.head_dim)
+        v = self.c_v(x).view(B, T, self.n_kv_head, self.head_dim)
+
+        # Apply Rotary Embeddings to queries and keys to get relative positional encoding
+        cos, sin = cos_sin
+        q, k = apply_rotary_emb(q, cos, sin), apply_rotary_emb(k, cos, sin) # QK rotary embedding
+        q, k = norm(q), norm(k) # QK norm
+        q, k, v = q.transpose(1, 2), k.transpose(1, 2), v.transpose(1, 2) # make head be batch dim, i.e. (B, T, H, D) -> (B, H, T, D)
+
+        # Apply KV cache: insert current k,v into cache, get the full view so far
+        if kv_cache is not None:
+            k, v = kv_cache.insert_kv(self.layer_idx, k, v)
+        # 在预训练的时候，Tq == Tk，因为没有缓存
+        # 在推理的时候，Tq 可以小于 Tk，因为有缓存，每次只处理一个 token，然后询问前面的缓存 + 当前 token
+        Tq = q.size(2) # number of queries in this forward pass
+        Tk = k.size(2) # number of keys/values in total (in the cache + current forward pass)
+
+        # Attention: queries attend to keys/values autoregressively. A few cases to handle:
+        enable_gqa = self.n_head != self.n_kv_head # Group Query Attention (GQA): duplicate key/value heads to match query heads if desired
+        if kv_cache is None or Tq == Tk:
+            # During training (no KV cache), attend as usual with causal attention
+            # And even if there is KV cache, we can still use this simple version when Tq == Tk
+            y = F.scaled_dot_product_attention(q, k, v, is_causal=True, enable_gqa=enable_gqa)
+            # 训练时没有缓存，或者推理时当前查询数等于缓存的键值数，都可以直接使用因果注意力。
+        elif Tq == 1:
+            # During inference but with a single query in this forward pass:
+            # The query has to attend to all the keys/values in the cache
+            y = F.scaled_dot_product_attention(q, k, v, is_causal=False, enable_gqa=enable_gqa)
+            # 推理时如果只有一个查询，可以直接让这个查询关注缓存中的所有键值对。
+        else:
+            # During inference AND we have a chunk of queries in this forward pass:
+            # First, each query attends to all the cached keys/values (i.e. full prefix)
+            attn_mask = torch.zeros((Tq, Tk), dtype=torch.bool, device=q.device) # True = keep, False = mask
+            prefix_len = Tk - Tq
+            attn_mask[:, :prefix_len] = True
+            # Then, causal attention within this chunk
+            attn_mask[:, prefix_len:] = torch.tril(torch.ones((Tq, Tq), dtype=torch.bool, device=q.device))
+            y = F.scaled_dot_product_attention(q, k, v, attn_mask=attn_mask, enable_gqa=enable_gqa)
+            # 推理时如果有多个查询，需要先让每个查询关注缓存中的所有键值对，然后在当前查询块内进行因果注意力。（下三角掩码）
+
+        # Re-assemble the heads side by side and project back to residual stream
+        y = y.transpose(1, 2).contiguous().view(B, T, -1)
+        y = self.c_proj(y)
+        return y
+```
+
+简单的 MLP 和 Transformer Block 堆叠块
+
+```python
+class MLP(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+        self.c_fc = nn.Linear(config.n_embd, 4 * config.n_embd, bias=False)
+        self.c_proj = nn.Linear(4 * config.n_embd, config.n_embd, bias=False)
+
+    def forward(self, x):
+        x = self.c_fc(x)
+        x = F.relu(x).square()
+        x = self.c_proj(x)
+        return x
+
+
+class Block(nn.Module):
+    def __init__(self, config, layer_idx):
+        super().__init__()
+        self.attn = CausalSelfAttention(config, layer_idx)
+        self.mlp = MLP(config)
+
+    def forward(self, x, cos_sin, kv_cache):
+        x = x + self.attn(norm(x), cos_sin, kv_cache)
+        x = x + self.mlp(norm(x))
+        return x
+```
+
+最后是 GPT 模型的整体实现（去除部分辅助函数）：
+
+```python
+class GPT(nn.Module):
+    def __init__(self, config, pad_vocab_size_to=64):
+        super().__init__()
+        self.config = config
+        # For DDP, we want vocab_size divisible by world_size. Also, there are potential performance benefits, see:
+        # https://huggingface.co/docs/transformers/main_classes/model#transformers.PreTrainedModel.resize_token_embeddings
+        padded_vocab_size = ((config.vocab_size + pad_vocab_size_to - 1) // pad_vocab_size_to) * pad_vocab_size_to
+        if padded_vocab_size != config.vocab_size:
+            print0(f"Padding vocab_size from {config.vocab_size} to {padded_vocab_size} to be divisible by {pad_vocab_size_to}")
+        self.transformer = nn.ModuleDict({
+            "wte": nn.Embedding(padded_vocab_size, config.n_embd),
+            "h": nn.ModuleList([Block(config, layer_idx) for layer_idx in range(config.n_layer)]),
+        })
+        # wte 是 word to embedding 的缩写，表示词嵌入层
+        # h 是 transformer blocks 
+        self.lm_head = nn.Linear(config.n_embd, padded_vocab_size, bias=False)
+        # To support meta device initialization, we init the rotary embeddings here, but it's just "fake" meta tensors only.
+        # As for rotary_seq_len, these rotary embeddings are pretty small/cheap in memory,
+        # so let's just over-compute them by 10X, but assert fail if we ever reach that amount.
+        # In the future we can dynamically grow the cache, for now it's fine.
+        self.rotary_seq_len = config.sequence_len * 10 # 10X over-compute should be enough, TODO make nicer?
+        # 这里的意思是预计算 RoPE 位置嵌入，长度是序列长度的 10 倍，以防止在推理时超出范围，比如模型上下文长度是 1024，则预计算长度是 10240。理论上 sin, cos 可以滚动计算，但为了简单起见，直接预计算一个较大的长度。
+        head_dim = config.n_embd // config.n_head
+        cos, sin = self._precompute_rotary_embeddings(self.rotary_seq_len, head_dim)
+        self.register_buffer("cos", cos, persistent=False) # persistent=False means it's not saved to the checkpoint
+        self.register_buffer("sin", sin, persistent=False)
+
+    def init_weights(self):
+        """
+        Initialize the full model in this one function for maximum clarity.
+
+        wte (embedding):     normal, std=1.0
+        lm_head:             normal, std=0.001
+        for each block:
+            attn.c_q:        uniform, std=1/sqrt(n_embd)
+            attn.c_k:        uniform, std=1/sqrt(n_embd)
+            attn.c_v:        uniform, std=1/sqrt(n_embd)
+            attn.c_proj:     zeros
+            mlp.c_fc:        uniform, std=1/sqrt(n_embd)
+            mlp.c_proj:      zeros
+        """
+
+        # Embedding and unembedding
+        torch.nn.init.normal_(self.transformer.wte.weight, mean=0.0, std=1.0)
+        torch.nn.init.normal_(self.lm_head.weight, mean=0.0, std=0.001)
+
+        # Transformer blocks: uniform init with bound = sqrt(3) * std (same standard deviation as normal)
+        n_embd = self.config.n_embd
+        s = 3**0.5 * n_embd**-0.5 # sqrt(3) multiplier makes sure Uniform achieves the same std as Normal
+        for block in self.transformer.h:
+            torch.nn.init.uniform_(block.attn.c_q.weight, -s, s) # weights use Uniform to avoid outliers
+            torch.nn.init.uniform_(block.attn.c_k.weight, -s, s)
+            torch.nn.init.uniform_(block.attn.c_v.weight, -s, s)
+            torch.nn.init.zeros_(block.attn.c_proj.weight) # projections are zero
+            torch.nn.init.uniform_(block.mlp.c_fc.weight, -s, s)
+            torch.nn.init.zeros_(block.mlp.c_proj.weight)
+
+        # Rotary embeddings
+        head_dim = self.config.n_embd // self.config.n_head
+        cos, sin = self._precompute_rotary_embeddings(self.rotary_seq_len, head_dim)
+        self.cos, self.sin = cos, sin
+
+        # Cast token embeddings to bf16: optimizer can tolerate it and it saves memory
+        if self.transformer.wte.weight.device.type == "cuda":
+            self.transformer.wte.to(dtype=torch.bfloat16)
+
+    def _precompute_rotary_embeddings(self, seq_len, head_dim, base=10000, device=None):
+        # TODO: bump base theta more? e.g. 100K is more common more recently
+        # autodetect the device from model embeddings
+        if device is None:
+            device = self.transformer.wte.weight.device
+        # stride the channels
+        channel_range = torch.arange(0, head_dim, 2, dtype=torch.float32, device=device)
+        inv_freq = 1.0 / (base ** (channel_range / head_dim))
+        # stride the time steps
+        t = torch.arange(seq_len, dtype=torch.float32, device=device)
+        # calculate the rotation frequencies at each (time, channel) pair
+        freqs = torch.outer(t, inv_freq)
+        cos, sin = freqs.cos(), freqs.sin()
+        cos, sin = cos.bfloat16(), sin.bfloat16() # keep them in bfloat16
+        cos, sin = cos[None, :, None, :], sin[None, :, None, :] # add batch and head dims for later broadcasting
+        return cos, sin
+
+    def get_device(self):
+        return self.transformer.wte.weight.device
+
+    def setup_optimizers(self, unembedding_lr=0.004, embedding_lr=0.2, matrix_lr=0.02, weight_decay=0.0, adam_betas=(0.8, 0.95)):
+        model_dim = self.config.n_embd
+        ddp, rank, local_rank, world_size = get_dist_info()
+        # Separate out all parameters into 3 groups (matrix, embedding, lm_head)
+        matrix_params = list(self.transformer.h.parameters())
+        embedding_params = list(self.transformer.wte.parameters())
+        lm_head_params = list(self.lm_head.parameters())
+        assert len(list(self.parameters())) == len(matrix_params) + len(embedding_params) + len(lm_head_params)
+        # Create the AdamW optimizer for the embedding and lm_head
+        # Scale the LR for the AdamW parameters by ∝1/√dmodel (having tuned the LRs for 768 dim model)
+        dmodel_lr_scale = (model_dim / 768) ** -0.5
+        print0(f"Scaling the LR for the AdamW parameters ∝1/√({model_dim}/768) = {dmodel_lr_scale:.6f}")
+        adam_groups = [
+            dict(params=lm_head_params, lr=unembedding_lr * dmodel_lr_scale),
+            dict(params=embedding_params, lr=embedding_lr * dmodel_lr_scale),
+        ]
+        adamw_kwargs = dict(betas=adam_betas, eps=1e-10, weight_decay=weight_decay)
+        AdamWFactory = DistAdamW if ddp else partial(torch.optim.AdamW, fused=True)
+        adamw_optimizer = AdamWFactory(adam_groups, **adamw_kwargs)
+        # Create the Muon optimizer for the linear layers
+        muon_kwargs = dict(lr=matrix_lr, momentum=0.95)
+        MuonFactory = DistMuon if ddp else Muon
+        muon_optimizer = MuonFactory(matrix_params, **muon_kwargs)
+
+        # 对2d矩阵参数使用 Muon 优化器，对1d的嵌入和输出层参数使用 AdamW 优化器。
+        
+        # Combine them the two optimizers into one list
+        optimizers = [adamw_optimizer, muon_optimizer]
+        for opt in optimizers:
+            for group in opt.param_groups:
+                group["initial_lr"] = group["lr"]
+        return optimizers
+
+    def forward(self, idx, targets=None, kv_cache=None, loss_reduction='mean'):
+        B, T = idx.size()
+
+        # Grab the rotary embeddings for the current sequence length (they are of shape (1, seq_len, 1, head_dim/2))
+        assert T <= self.cos.size(1), f"Sequence length grew beyond the rotary embeddings cache: {T} > {self.cos.size(1)}"
+        assert idx.device == self.cos.device, f"Rotary embeddings and idx are on different devices: {idx.device} != {self.cos.device}"
+        assert self.cos.dtype == torch.bfloat16, "Rotary embeddings must be in bfloat16"
+        # if kv cache exists, we need to offset the rotary embeddings to the current position in the cache
+        T0 = 0 if kv_cache is None else kv_cache.get_pos()
+        cos_sin = self.cos[:, T0:T0+T], self.sin[:, T0:T0+T] # truncate cache to current sequence length
+
+        # Forward the trunk of the Transformer
+        x = self.transformer.wte(idx)
+        x = norm(x)
+        for block in self.transformer.h:
+            x = block(x, cos_sin, kv_cache)
+        x = norm(x)
+
+        # Forward the lm_head (compute logits)
+        softcap = 15 # smoothly cap the logits to the range [-softcap, softcap]
+        logits = self.lm_head(x) # (B, T, padded_vocab_size) <- very big tensor, large amount of memory
+        logits = logits[..., :self.config.vocab_size] # slice to remove padding
+        logits = logits.float() # switch to fp32 for logit softcap and loss computation
+        logits = softcap * torch.tanh(logits / softcap) # squash the logits
+
+        # 这里利用 tanh 函数对 logits 进行平滑限制在 [-softcap, softcap]，防止极端值导致训练不稳定。
+
+        if targets is not None:
+            # training: given the targets, compute and return the loss
+            # TODO experiment with chunked cross-entropy?
+            loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=-1, reduction=loss_reduction)
+            return loss
+        else:
+            # inference: just return the logits directly
+            return logits
+
+    @torch.inference_mode()
+    def generate(self, tokens, max_tokens, temperature=1.0, top_k=None, seed=42):
+        """
+        Naive autoregressive streaming inference.
+        To make it super simple, let's assume:
+        - batch size is 1
+        - ids and the yielded tokens are simple Python lists and ints
+        """
+        assert isinstance(tokens, list)
+        device = self.get_device()
+        rng = None
+        if temperature > 0:
+            rng = torch.Generator(device=device)
+            rng.manual_seed(seed)
+        ids = torch.tensor([tokens], dtype=torch.long, device=device) # add batch dim
+        for _ in range(max_tokens):
+            logits = self.forward(ids) # (B, T, vocab_size)
+            logits = logits[:, -1, :] # (B, vocab_size)
+            if top_k is not None:
+                v, _ = torch.topk(logits, min(top_k, logits.size(-1)))
+                logits[logits < v[:, [-1]]] = -float('Inf')
+            if temperature > 0:
+                logits = logits / temperature
+                probs = F.softmax(logits, dim=-1)
+                next_ids = torch.multinomial(probs, num_samples=1, generator=rng)
+            else:
+                next_ids = torch.argmax(logits, dim=-1, keepdim=True)
+            ids = torch.cat((ids, next_ids), dim=1)
+            token = next_ids.item()
+            yield token
+```
+
+权重初始化：
+
+1. 嵌入层与输出层的极端标准差差异 `wte` (Token Embedding): `std=1.0`: Token 嵌入被初始化为标准正态分布。由于 $wte$ 的权重通常会随后被层归一化（LayerNorm）处理，较大的初始标准差可以为模型提供丰富的初始特征表示。`lm_head`: `std=0.001` 输出层使用了非常小的标准差。目的： 在训练开始时，使模型对所有词汇的预测概率趋于均匀分布。如果初始权重过大，模型会产生强烈的随机偏见，导致初始损失值（Loss）极高，增加收敛难度。
+
+2. 均匀分布初始化与 $\sqrt{3}$ 的数学推导代码中使用了均匀分布 `uniform_(-s, s)` 而非正态分布，并定义了 $s = \sqrt{3} \times \frac{1}{\sqrt{n\_embd}}$。为什么用 Uniform： 注释提到是为了“避免离群值（outliers）”。正态分布理论上可能产生极大或极小的权重，而均匀分布的范围是严格受限的。$\sqrt{3}$ 的来源： 对于均匀分布 $U(-s, s)$，其方差为 $Var = \frac{(s - (-s))^2}{12} = \frac{4s^2}{12} = \frac{s^2}{3}$。为了让均匀分布的方差等于期望的方差 $\sigma^2$（即 $1/n\_embd$），则需要：
+$$
+\frac{s^2}{3} = \sigma^2 \implies s = \sigma \sqrt{3}
+$$
+这确保了无论使用哪种分布，权重的统计特性是一致的。
+
+3. 投影层初始化为零 (`c_proj`: zeros)这是一个非常关键的技巧，常见于高性能模型实现（如 GPT-2 或部分版本的 Llama）：残差流的恒等映射： 在训练初始时刻，如果注意力投影 `c_proj` 为零，那么 Transformer 块的输出就等于输入（因为残差连接 $x + 0 = x$）。逻辑： 这种做法类似于“恒等函数”初始化，让模型先学习直通的数据流动，再逐渐通过训练学习如何修改残差流中的特征。这极大地提高了极深网络的训练稳定性。
+
+4. 旋转位置嵌入（RoPE）的预计算操作： 调用内部函数生成 `cos` 和 `sin` 表。逻辑： 如前所述，这部分内容是确定性的数学值（频率分布），不需要学习，因此在初始化阶段一次性生成并缓存，以供推理和训练时快速索引。
+
+5. 混合精度转换 (`bfloat16`)操作： 显式将 `wte.weight` 转为 `bfloat16`。优势： 显存节省： 词表往往很大，将其从 float32 转为 bf16 可以直接节省一半的词表显存。精度特性： `bf16` 具有与 `fp32` 相同的指数位范围，能够有效防止训练中的溢出风险。
+
+RoPE 位置嵌入预计算公式：
+
+设 $d$ 为每个注意力头的维度，$i$ 为通道索引，$t$ 为时间步索引，$\theta$ 为基频（通常取 10000）。则每个位置 $t$ 和通道 $i$ 的旋转频率和角度为：
+$$
+\text{freq}(t, i) = \frac{1}{\theta^{\frac{2i}{d}}}
+$$
+$$
+\text{angle}(t, i) = t \times \text{freq}(t, i) = \frac{t}{\theta^{\frac{2i}{d}}}
+$$
 
