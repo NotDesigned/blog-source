@@ -253,3 +253,203 @@ class RustBPETokenizer:
 
 #### 数据集
 
+数据是 fineweb_100b 数据集的一个子集，[link](https://huggingface.co/datasets/karpathy/fineweb-edu-100b-shuffle)。下载到 `$BASE_DIR/base_data` 目录下。
+数据被切片成多个 `.parquet` 文件。
+
+```py
+def parquets_iter_batched(split, start=0, step=1):
+    """
+    Iterate through the dataset, in batches of underlying row_groups for efficiency.
+    - split can be "train" or "val". the last parquet file will be val.
+    - start/step are useful for skipping rows in DDP. e.g. start=rank, step=world_size
+    """
+    assert split in ["train", "val"], "split must be 'train' or 'val'"
+    parquet_paths = list_parquet_files()
+    parquet_paths = parquet_paths[:-1] if split == "train" else parquet_paths[-1:]
+    for filepath in parquet_paths:
+        pf = pq.ParquetFile(filepath)
+        for rg_idx in range(start, pf.num_row_groups, step):
+            rg = pf.read_row_group(rg_idx)
+            texts = rg.column('text').to_pylist()
+            yield texts
+```
+
+parquet 文件是一个列式存储格式，这里按行组（row group）来读取，避免一次性加载过多数据。
+
+而 DataLoader 负责读取数据并生成训练所需的一个批次的 token 序列：
+
+```py
+def tokenizing_distributed_data_loader_with_state(B, T, split, tokenizer_threads=4, tokenizer_batch_size=128, device="cuda", resume_state_dict=None):
+    """
+    Stream pretraining text from parquet files, tokenize, yield training batches.
+
+    This implementation became a bit more complex because we wish to support approximate resume training.
+    Instead of turning this into a Class, we opt to return the state_dict with every batch,
+    and then the caller can pass in a state_dict to resume training from a desired point.
+    Note that this resumption is atm only *approximate* for simplicity.
+    We won't repeat the same documents but we might skip a few.
+    The state_dict that is returned can be later passed into this function via `resume_state_dict` to approximately resume.
+
+    Perfect state resumption is possible but would be a lot more bloated, probably not worth it atm.
+    """
+    assert split in ["train", "val"], "split must be 'train' or 'val'"
+
+    # infinite iterator over document batches (list of text strings)
+    ddp, ddp_rank, ddp_local_rank, ddp_world_size = get_dist_info()
+    def document_batches():
+        parquet_paths = list_parquet_files()
+        assert len(parquet_paths) != 0, "No dataset parquet files found, did you run dataset.py?"
+        parquet_paths = parquet_paths[:-1] if split == "train" else parquet_paths[-1:]
+        resume_pq_idx = resume_state_dict["pq_idx"] if resume_state_dict is not None else 0
+        resume_rg_idx = resume_state_dict["rg_idx"] if resume_state_dict is not None else None
+        first_pass = True
+        pq_idx = resume_pq_idx # we kick off parquet files at the resume index (or by default just 0)
+        while True: # iterate infinitely (multi-epoch)
+            pq_idx = resume_pq_idx if first_pass else 0
+            while pq_idx < len(parquet_paths): # iterate over all parquet files
+                filepath = parquet_paths[pq_idx]
+                pf = pq.ParquetFile(filepath)
+                # Start from resume point if resuming on same file, otherwise from DDP rank
+                # I know this state resumption is a little bit tricky and a little bit hacky... sigh.
+                if first_pass and (resume_rg_idx is not None) and (pq_idx == resume_pq_idx):
+                    base_idx = resume_rg_idx // ddp_world_size # in units of ddp_world_size
+                    base_idx += 1 # advance by 1 so that we definitely don't repeat data after resuming
+                    rg_idx = base_idx * ddp_world_size + ddp_rank
+                    if rg_idx >= pf.num_row_groups:
+                        pq_idx += 1
+                        continue
+                    resume_rg_idx = None # set to None as we only want to do this a single time
+                else:
+                    rg_idx = ddp_rank
+                while rg_idx < pf.num_row_groups:
+                    rg = pf.read_row_group(rg_idx)
+                    batch = rg.column('text').to_pylist() # each batch is a parquet group, e.g. 1024 rows
+                    # the tokenizer encode might want to go in even smaller batches, e.g. 128 rows
+                    for i in range(0, len(batch), tokenizer_batch_size):
+                        yield batch[i:i+tokenizer_batch_size], (pq_idx, rg_idx)
+                    rg_idx += ddp_world_size # advance to the next row group (in DDP)
+                pq_idx += 1 # advance to the next parquet file
+            first_pass = False
+    batches = document_batches()
+
+    # Now emit batches of tokens.
+    needed_tokens = B * T + 1 # +1 is because we also need the target at the last token
+    # get the tokenizer and the bos token
+    tokenizer = get_tokenizer()
+    bos_token = tokenizer.get_bos_token_id()
+    # scratch buffer holds the tokens for one iteration
+    token_buffer = deque() # we stream tokens on the right and pop from the left
+    while True:
+        # Accumulate enough tokens for one iteration before yielding.
+        while len(token_buffer) < needed_tokens:
+            doc_batch, (pq_idx, rg_idx) = next(batches)
+            token_lists = tokenizer.encode(doc_batch, prepend=bos_token, num_threads=tokenizer_threads)
+            for tokens in token_lists:
+                token_buffer.extend(tokens)
+        # Move tokens from the deque into the scratch buffer
+        tokens = [token_buffer.popleft() for _ in range(needed_tokens)]
+        # CUDA supports memory pinning for asynchronous transfers between CPU and GPU
+        use_cuda_optimizations = device == "cuda"
+        scratch = torch.tensor(tokens, dtype=torch.long, pin_memory=use_cuda_optimizations) # in PyTorch, long=int64
+        # Create the inputs/targets as 1D tensors
+        inputs_cpu = scratch[:-1]
+        targets_cpu = scratch[1:]
+        # Reshape to 2D and move to GPU async
+        inputs = inputs_cpu.view(B, T).to(device=device, non_blocking=use_cuda_optimizations)
+        targets = targets_cpu.view(B, T).to(device=device, non_blocking=use_cuda_optimizations)
+        state_dict = {"pq_idx": pq_idx, "rg_idx": rg_idx} # we need this in case we wish to approximately resume training
+        yield inputs, targets, state_dict
+```
+
+document_batches 函数流式 yields tokenized_batch_size 个文本列表+(parquet文件索引，行组索引)，然后外层循环不断累积 token 直到满足一个训练批次的需求，再切分成 inputs 和 targets 返回，并附带当前的 parquet 文件和行组索引状态，方便后续恢复训练时使用。
+
+### 优化器
+
+优化器代码在 `adamw.py` 和 `muon.py` 中。
+
+#### AdamW 优化器
+
+令参数为 $\theta_t$，学习率为 $\alpha$，一阶矩估计为 $m_t$，二阶矩估计为 $v_t$，偏置修正后的一阶矩为 $\hat{m}_t$，偏置修正后的二阶矩为 $\hat{v}_t$，权重衰减系数为 $\lambda$。
+$$
+\begin{align*}
+\theta_{t+1} &= \theta_t - \alpha \frac{\hat{m}_t}{\sqrt{\hat{v}_t} + \epsilon} - \alpha \lambda \theta_t \\
+m_{t+1} &= \beta_1 m_t + (1 - \beta_1) g_t\\
+v_{t+1} &= \beta_2 v_t + (1 - \beta_2) g_t^2\\
+\hat{m}_t &= \frac{m_t}{1 - \beta_1^t} \\
+\hat{v}_t &= \frac{v_t}{1 - \beta_2^t} \\
+\end{align*}
+$$
+
+这里采取分布式训练的方式实现 AdamW 优化器，关键是利用了 `torch.distributed.reduce_scatter_tensor`与 `torch.distributed.all_gather_into_tensor` 来实现梯度的分布式平均和切分，从而减少每个 GPU 的内存占用。
+
+```python
+    @torch.compile
+    @torch.no_grad()
+    def step(self):
+        rank = dist.get_rank()
+        world_size = dist.get_world_size()
+        reduce_scatter_futures: list[torch.Future] = []
+        all_reduce_futures: list[torch.Future] = []
+        grad_slices = []
+        for group in self.param_groups:
+            params: list[Tensor] = group["params"]
+            for base_i in range(len(params)):
+                assert params[base_i].shape[0] % world_size == 0, f"First dim of parameter shape {params[base_i].shape} must be divisible by world size {world_size}"
+                grad = params[base_i].grad
+                rank_size = grad.shape[0] // world_size
+                grad_slice = torch.empty_like(grad[:rank_size])
+                reduce_scatter_futures.append(dist.reduce_scatter_tensor(grad_slice, grad, op=dist.ReduceOp.AVG, async_op=True).get_future())
+                grad_slices.append(grad_slice)
+```
+这里先对每个参数的梯度进行 `reduce_scatter` 操作，将梯度平均后切分成多个片段，每个 GPU 只保留自己负责的片段，减少内存占用。
+
+目前有 grad_slices 列表，存储了每个参数在当前 GPU 上的梯度片段和对应的 future 对象。
+接下来对每个参数组，读取AdamW 的超参数，再对每个参数进行更新：
+
+状态存储在 self.state[p] 中，包括 step 计数器，一阶矩 exp_avg 和二阶矩 exp_avg_sq。
+
+```python
+        idx = 0
+        for group in self.param_groups:
+            beta1, beta2 = group['betas']
+            eps = group['eps']
+            wd = group['weight_decay']
+            params = group['params']
+            for base in range(len(params)):
+                reduce_scatter_futures[idx].wait()
+                p = params[base]
+                rank_size = p.shape[0] // world_size
+                p_slice = p[rank * rank_size:(rank + 1) * rank_size]
+                lr = group['lr'] * getattr(p, "lr_mul", 1.0)
+                state = self.state[p]
+                g_slice = grad_slices[idx]
+                # State init
+                if not state:
+                    state['step'] = torch.tensor(0, dtype=torch.int64, device=p.device)
+                    state['exp_avg'] = torch.zeros_like(p_slice)
+                    state['exp_avg_sq'] = torch.zeros_like(p_slice)
+                exp_avg = state['exp_avg']
+                exp_avg_sq = state['exp_avg_sq']
+                state['step'] += 1
+                t = state['step']
+                # weight decay
+                if wd != 0:
+                    eff_weight_decay = lr * wd * getattr(p, "wd_mul", 1.0)
+                    p_slice.mul_(1 - eff_weight_decay)
+                # update running averages
+                exp_avg.mul_(beta1).add_(g_slice, alpha=1 - beta1)
+                exp_avg_sq.mul_(beta2).addcmul_(g_slice, g_slice, value=1 - beta2)
+                # bias corrections
+                bias1 = 1 - beta1 ** t
+                bias2 = 1 - beta2 ** t
+                # compute step
+                denom = (exp_avg_sq / bias2).sqrt().add_(eps)
+                step_size = lr / bias1
+                update = exp_avg.div(denom).mul_(step_size)
+                p_slice.add_(other=update, alpha=-1.0)
+                idx += 1
+                all_reduce_futures.append(dist.all_gather_into_tensor(p, p_slice, async_op=True).get_future())
+        torch.futures.collect_all(all_reduce_futures).wait()
+        # 阻塞直到所有 all_gather 操作完成，确保所有 GPU 上的参数都同步更新完毕。
+```
+
