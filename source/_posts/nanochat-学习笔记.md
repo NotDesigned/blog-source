@@ -453,3 +453,8 @@ $$
         # 阻塞直到所有 all_gather 操作完成，确保所有 GPU 上的参数都同步更新完毕。
 ```
 
+#### Muon 优化器
+
+咕咕咕，可先看 [link](https://kexue.fm/archives/10592)。
+
+### GPT 模型实现
