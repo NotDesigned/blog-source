@@ -20,10 +20,8 @@ nanochat 是一个用纯 Python 实现的全栈 GPT库，包括 pretrain、midtr
 计划从以下几个方面来学习这个项目：
 
 1. **代码结构**：了解项目的整体架构和各个模块的功能。
-2. **模型实现**：深入理解 Transformer 模型的实现细节。
+2. **模型实现**：理解 Transformer 模型的实现细节。
 3. **训练流程**：学习模型的训练过程，包括数据预处理、训练循环等。
-
-对于里面涉及的算法，会结合相关论文进行学习和理解，但是应该不会去复现论文中的数学推导。
 
 Wiki 参考：
 - [nanochat Wiki](https://deepwiki.com/karpathy/nanochat)
@@ -458,3 +456,48 @@ $$
 咕咕咕，可先看 [link](https://kexue.fm/archives/10592)。
 
 ### GPT 模型实现
+
+架构流程：
+1. 输入的Token进入输入嵌入层（Token Embeddings），输入类型：
+```python
+inputs: Tensor  # (B, T) long tensor of token indices
+outputs: Tensor # (B, T, C) float tensor of logits over vocabulary
+```
+2. RoPE 位置嵌入层（Positional Embeddings）为每个位置添加位置信息。
+```
+pos_emb: Tensor # (T, C) float tensor of positional embeddings
+```
+加法广播到输入嵌入上
+
+3. 多层 Transformer 块（Transformer Blocks）处理嵌入，捕捉上下文关系。
+
+4. 输出层（Output Layer）将 Transformer 的输出映射到词汇表大小的 logits。
+
+5. 从 logits 计算损失（Loss Computation），用于训练。或者按照multinomial分布采样生成下一个 token，用于推理。
+
+我们需要的块包括：
+- 输入嵌入层
+- 预计算位置嵌入层
+- Transformer 块 （多个堆叠+ 残差连接）
+    - 层归一化
+    - 多头自注意力机制 （推理时缓存 K,V）
+    - 前馈神经网络
+- 输出层 
+
+表格如下
+
+模块名称 | 输入维度 | 输出维度 | 核心功能
+--- | --- | --- | ---
+Token Embedding | (B,T) | (B,T,C) | 将离散索引转为连续向量
+Pos Embedding | (T,C) | (T,C) | 提供序列位置的绝对/相对信息
+Transformer Block | (B,T,C) | (B,T,C) | 包含 LayerNorm -> Self-Attention -> Residual -> LayerNorm -> FFN -> Residual
+Output Head | (B,T,C) | (B,T,V) | 投影至词汇表空间
+
+优化方面：
+
+nanochat 使用了 KV Cache 来加速推理过程中的自注意力计算，并且使用了 GQA （Grouped Query Attention）来优化多头注意力的计算效率。
+
+对于 KV Cache 的推理，要记录当前 Token 的位置索引，并索引正确的 RoPE 位置嵌入（按绝对位置）。
+
+对于 GQA 的实现，即保持 Q 的头数不变，但将 K 和 V 的头数减少分组，每组共享 K 和 V。
+
