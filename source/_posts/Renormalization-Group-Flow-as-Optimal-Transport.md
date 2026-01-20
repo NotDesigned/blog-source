@@ -6,7 +6,6 @@ tags:
 - Optimal Transport
 categories:
 - Physics
-- Paper Study
 ---
 
 ## Reference 

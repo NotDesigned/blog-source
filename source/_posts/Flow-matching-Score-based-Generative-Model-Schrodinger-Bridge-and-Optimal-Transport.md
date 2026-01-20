@@ -4,13 +4,13 @@ title: >-
   Transport
 date: 2025-09-18 20:18:45
 tags:
+- Generative Models
+- Flow Matching
+- Score-based Models
+- Optimal Transport
 - Stochastic Differential Equations
-- Optiaml Transport
 categories:
-- Study Notes
 - Machine Learning
-- Mathematics
-- Physics for AI
 ---
 
 ## Reference

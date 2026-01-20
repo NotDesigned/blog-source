@@ -2,11 +2,10 @@
 title: nanochat 学习笔记
 date: 2026-01-10 16:20:15
 tags:
-- Code
-- Nanochat
+- LLM
 - Open Source
 categories:
-- Code Implementation
+- Programming
 ---
 
 本文档记录解读学习 Andrej Karpathy 开源项目 [nanochat](https://github.com/karpathy/nanochat) 的笔记。

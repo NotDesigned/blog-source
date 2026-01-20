@@ -2,10 +2,9 @@
 title: Differential Manifold
 date: 2025-08-04 10:28:20
 tags:
-- Mathematics
+- Differential Geometry
 categories:
 - Mathematics
-- Study Notes
 math: true
 ---
 

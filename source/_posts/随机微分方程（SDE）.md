@@ -1,13 +1,11 @@
 ---
 title: 随机微分方程（SDE）
 date: 2026-01-01 21:01:50
-tags: 
-    - 随机微分方程
-    - Diffusion
-    - Ito Calculus
+tags:
+- Stochastic Differential Equations
+- Ito Calculus
 categories:
-    - Mathematics
-    - Finance
+- Mathematics
 ---
 
 ## 参考文献

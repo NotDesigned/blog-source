@@ -2,10 +2,9 @@
 title: Differential Geometry
 date: 2025-07-30 10:47:26
 tags:
-- Mathematics
+- Differential Geometry
 categories:
 - Mathematics
-- Study Notes
 ---
 
 ## References

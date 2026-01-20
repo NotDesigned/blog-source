@@ -1,12 +1,11 @@
 ---
 title: Wasserstein Distance and Optimal Transport
 date: 2025-07-16 20:47:31
-tags: 
-- Wasserstein Distance
+tags:
 - Optimal Transport
+- Wasserstein Distance
 categories:
 - Mathematics
-- Study Notes
 ---
 
 # Optimal Transport Problem 

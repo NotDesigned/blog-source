@@ -5,7 +5,6 @@ tags:
 - Topology
 categories:
 - Mathematics
-- Study Notes
 ---
 
 ## Basic Concepts

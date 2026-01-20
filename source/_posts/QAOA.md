@@ -2,9 +2,11 @@
 title: QAOA
 date: 2025-12-15 15:42:28
 tags:
-- Quantum Algorithms
-- Machine Learning
+- Quantum Computing
+- QAOA
 - Optimization
+categories:
+- Machine Learning
 ---
 
 # Quantum Approximate Optimization Algorithm (QAOA)

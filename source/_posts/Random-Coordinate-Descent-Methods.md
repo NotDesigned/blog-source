@@ -2,11 +2,10 @@
 title: Random Coordinate Descent Methods
 date: 2025-06-14 13:18:06
 tags:
-- Coordinate Descent
 - Optimization
+- Coordinate Descent
 categories:
 - Mathematics
-- Paper Study
 ---
 
 This is a reading note on the paper "Random Coordinate Descent Methods for Minimizing Decomposable Submodular Functions" by A. ENE, Huy L. NGUYEN

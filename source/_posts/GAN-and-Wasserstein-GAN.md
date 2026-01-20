@@ -2,12 +2,11 @@
 title: GAN and Wasserstein GAN
 date: 2025-07-22 14:17:15
 tags:
-- Generative Adversarial Networks
-- Wasserstein GAN
+- Generative Models
+- GAN
+- Wasserstein Distance
 categories:
 - Machine Learning
-- Deep Learning
-- Generative Models
 ---
 
 # Introduction

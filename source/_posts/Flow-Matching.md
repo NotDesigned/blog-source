@@ -2,11 +2,10 @@
 title: Flow Matching
 date: 2025-08-09 13:49:15
 tags:
+- Generative Models
 - Flow Matching
 categories:
 - Machine Learning
-- Deep Learning
-- Generative Models
 math: true
 ---
 

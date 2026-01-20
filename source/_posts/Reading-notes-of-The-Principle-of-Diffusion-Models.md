@@ -2,8 +2,8 @@
 title: Reading notes of The Principle of Diffusion Models
 date: 2025-11-03 21:08:49
 tags:
-- Diffusion Models
 - Generative Models
+- Diffusion Models
 categories:
 - Machine Learning
 ---

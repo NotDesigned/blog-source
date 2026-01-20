@@ -3,10 +3,9 @@ title: Densest Subgraph
 date: 2025-06-16 14:53:23
 tags:
 - Graph Theory
+- Optimization
 categories:
 - Mathematics
-- Optimization
-- Computer Science
 ---
 
 Reference:

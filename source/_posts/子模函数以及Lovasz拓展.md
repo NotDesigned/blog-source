@@ -4,10 +4,8 @@ date: 2025-06-11 17:04:05
 tags:
 - Optimization
 - Submodular Functions
-- Lovász Extension
 categories:
 - Mathematics
-- Computer Science
 ---
 
 参考文献: 

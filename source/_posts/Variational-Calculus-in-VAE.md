@@ -2,8 +2,9 @@
 title: Variational Calculus in VAE
 date: 2025-08-25 14:28:57
 tags:
-- Calculus of Variation
+- Generative Models
 - VAE
+- Calculus of Variations
 categories:
 - Machine Learning
 ---
