@@ -112,4 +112,3 @@ deploy:
 
 markdown:
   plugins:
-    - "@traptitech/markdown-it-katex"
