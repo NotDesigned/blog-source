@@ -363,7 +363,7 @@ $$
 
 左边是一个 Ito 积分作为随机变量的 $L^2$ 范数，右边是一个随机过程被视作 $\Omega \times [S,T]$ 上的概率测度/随机变量的 $L^2$ 范数。因此叫做等距公式。
 
-这个实际上就在告诉我们，我们在时间这一维积分后，整体的长度是不变的。
+这个实际上就在告诉我们，**我们在时间这一维积分后，整体的长度是不变的。**
 
 现在我们将它推广到较为一般的过程并给出正式定义。
 
@@ -379,6 +379,8 @@ $$
 1. $X$ 在 $[S,T] \times \Omega$ 上联合可测；
 2. $\int_S^T E[X_t^2] dt < \infty$，即 $X_t \in L^2([S,T] \times \Omega)$。
 
+#### Step 1
+
 首先，令 $g \in \mathcal{V}$ 是有界的，并且 $g$ 对于每个 $\omega$ 是连续的。则存在一列简单过程 $\{g_n\} \subset \mathcal{V}$，使得
 $$
 \lim_{n \to \infty} E\left[\int_S^T (g_n(t,\omega) - g(t,\omega))^2 dt\right] = 0.
@@ -392,3 +394,12 @@ $$
 \lim_{n \to \infty} \mathbb E\left[\int_S^T (\phi_n(t,\omega) - g(t,\omega))^2 dt\right] = \mathbb E\left[\int_S^T \lim_{n \to \infty} (\phi_n(t,\omega) - g(t,\omega))^2 dt\right] = 0.
 $$
 因此，$\{\phi_n\}$ 是所需的简单过程列。
+
+#### Step 2
+
+令 $h$ 是有界的。那存在以上有界过程 $g_n \in \mathcal V$，使得
+$$
+\lim_{n\to \infty} \mathbb E \left[\int_S^T (h(t,\omega)-g_n(t,\omega))^2 dt\right] = 0
+$$
+
+证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$，令 $g_n=\phi_n * h$ 作为卷积，有界连续且弱收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^+$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega) ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
