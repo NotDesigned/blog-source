@@ -375,11 +375,13 @@ $$
 $$
 这里我们假设 $\mathcal{F}_t$ 是完备化的，即包含所有的 $P$-零测集。
 
+#### 逼近过程
+
 定义空间 $\mathcal{V}=\mathcal{V}(S,T)$ 为所有适应于过滤 $\{\mathcal{F}_t\}$ 的随机过程 $X_t$（或函数 $X: [S,T] \times \Omega \to \mathbb{R}$）且满足
 1. $X$ 在 $[S,T] \times \Omega$ 上联合可测；
 2. $\int_S^T E[X_t^2] dt < \infty$，即 $X_t \in L^2([S,T] \times \Omega)$。
 
-#### Step 1
+##### Step 1
 
 首先，令 $g \in \mathcal{V}$ 是有界的，并且 $g$ 对于每个 $\omega$ 是连续的。则存在一列简单过程 $\{g_n\} \subset \mathcal{V}$，使得
 $$
@@ -395,7 +397,7 @@ $$
 $$
 因此，$\{\phi_n\}$ 是所需的简单过程列。
 
-#### Step 2
+##### Step 2
 
 令 $h\in \mathcal V$ 是有界的。则存在以上有界过程 $g_n \in \mathcal V$，使得
 $$
@@ -404,7 +406,7 @@ $$
 
 证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$，令 $g_n=\phi_n * h$ 作为卷积，有界连续且弱收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^+$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega)\, ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
 
-#### Step 3
+##### Step 3
 
 令 $f \in \mathcal V$。则存在以上有界过程 $h_n \in \mathcal V$，$h_n$ 对每个 $n$ 有界，而且
 $$
