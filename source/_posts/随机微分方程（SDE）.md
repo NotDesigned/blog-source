@@ -397,9 +397,27 @@ $$
 
 #### Step 2
 
-令 $h$ 是有界的。那存在以上有界过程 $g_n \in \mathcal V$，使得
+令 $h\in \mathcal V$ 是有界的。则存在以上有界过程 $g_n \in \mathcal V$，使得
 $$
 \lim_{n\to \infty} \mathbb E \left[\int_S^T (h(t,\omega)-g_n(t,\omega))^2 dt\right] = 0
 $$
 
-证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$，令 $g_n=\phi_n * h$ 作为卷积，有界连续且弱收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^+$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega) ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
+证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$，令 $g_n=\phi_n * h$ 作为卷积，有界连续且弱收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^+$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega)\, ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
+
+#### Step 3
+
+令 $f \in \mathcal V$。则存在以上有界过程 $h_n \in \mathcal V$，$h_n$ 对每个 $n$ 有界，而且
+$$
+\lim_{n\to \infty} \mathbb E\left[\int_S^T (f(t,\omega)-h_n(t,\omega))^2 dt\right] = 0
+$$
+证明：令 
+$$
+h_n = 
+\begin{cases}
+-n & \text{if  $f(t,\omega) < -n$ } \\
+f(t,\omega) & \text{if  $-n\leq f(t,\omega) \leq n$ } \\
+n & \text{if  $f(t,\omega) > n$ } \\
+\end{cases}
+$$
+
+然后使用控制收敛定理交换极限和积分即可。
