@@ -622,3 +622,52 @@ P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) = P(\tau \leq T) \leq \f
 $$
 这就完成了 Doob 鞅不等式的证明。
 
+#### Ito 积分路径的连续性
+
+现在我们回到 Ito 积分路径的连续性问题。设 $f \in \mathcal{V}(0,T)$，我们定义 Ito 积分过程
+$$
+M_t = \int_0^t f(s,\omega) \, dB_s(\omega).
+$$
+我们希望证明 $M_t$ 存在一个修改版本，使得对于几乎所有的 $\omega$，路径 $t \mapsto M_t(\omega)$ 是连续的。
+
+令 $\phi_n$ 是逼近 $f$ 的简单过程列，使得
+$$
+\lim_{n \to \infty} \mathbb E\left[\int_0^T |f(t,\omega) - \phi_n(t,\omega)|^2 \, dt\right] = 0.
+$$
+对应的 Ito 积分过程为
+$$
+I_n(t,\omega) = \int_0^t \phi_n(s,\omega) \, dB_s(\omega).
+$$
+同时定义
+$$
+I(t,\omega) = \int_0^t f(s,\omega) \,dB_s(\omega).
+$$
+由于 $\phi_n$ 是简单过程，$I_n(t,\omega)$ 对于每个 $\omega$ 都是连续的。
+现在我们来估计 $I_n(t,\omega)$ 和 $I_m(t,\omega)$ 之间的差异。利用 Doob 鞅不等式，对于任意的 $\epsilon > 0$，有
+$$
+P\left(\sup_{0 \leq t \leq T} |I_n(t,\omega) - I_m(t,\omega)| \geq \epsilon\right) \leq \frac{1}{\epsilon^2} \mathbb{E}\left[|I_n(T,\omega) - I_m(T,\omega)|^2\right].
+$$
+根据 Ito 等距公式，我们有
+$$
+\mathbb{E}\left[|I_n(T,\omega) - I_m(T,\omega)|^2\right] = \mathbb{E}\left[\int_0^T |\phi_n(s,\omega) - \phi_m(s,\omega)|^2 \, ds\right]=0
+$$
+所以我们可以选取一个子序列 $\{I_{n_k}\}$，使得
+$$
+\sum_{k=1}^\infty P\left(\sup_{0 \leq t \leq T} |I_{n_{k+1}}(t,\omega) - I_{n_k}(t,\omega)| \geq 2^{-k}\right) < \infty.
+$$
+根据 Borel-Cantelli 引理，几乎所有的 $\omega$，存在一个 $k_0(\omega)$，使得对于所有的 $k \geq k_0(\omega)$，都有
+$$
+\sup_{0 \leq t \leq T} |I_{n_{k+1}}(t,\omega) - I_{n_k}(t,\omega)| < 2^{-k}.
+$$
+这说明对于几乎所有的 $\omega$，序列 $\{I_{n_k}(t,\omega)\}$ 在 $C([0,T])$ 空间中是一致收敛的。因此，定义
+$$
+I(t,\omega) = \lim_{k \to \infty} I_{n_k}(t,\omega),
+$$
+则对于几乎所有的 $\omega$，路径 $t \mapsto I(t,\omega)$ 是连续的。
+
+因此，我们得出结论：对于任意的 $f \in \mathcal{V}(0,T)$，Ito 积分过程 $M_t = \int_0^t f(s,\omega) \, dB_s(\omega)$ 存在一个修改版本，使得对于几乎所有的 $\omega$，路径 $t \mapsto M_t(\omega)$ 是连续的。以后我们默认使用这个连续版本的 Ito 积分过程。
+
+而且我们有
+$$
+P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) \leq \frac{1}{\lambda^2} \mathbb{E}\left[|M_T|^2\right] = \frac{1}{\lambda^2} \mathbb{E}\left[\int_0^T f(s,\omega)^2 \, ds\right].
+$$
