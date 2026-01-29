@@ -440,7 +440,7 @@ $$
 $$
 因此，$\left\{\int_S^T \phi_n(t,\omega) \, dB_t(\omega)\right\}$ 是 $L^2(\Omega)$ 中的 Cauchy 列，从而 $\mathcal{I}[f](\omega)$ 是良定义的。
 
-#### 总结
+##### 总结
 
 1. 对于 $f \in \mathcal V$，Ito 积分 $\int_S^T f(t,\omega) \, dB_t(\omega)$ 是良定义的随机变量，且满足 Ito 等距公式
 $$
@@ -458,4 +458,44 @@ $$
     换句话说，如果随机过程列在 $L^2([S,T] \times \Omega)$ 意义下收敛，则对应的 Ito 积分列在 $L^2(\Omega)$ 意义下收敛。 **Ito 积分是一个在两个 $L^2$ 空间之间的连续线性映射。**
 
 以上逻辑为，第一，因为布朗运动的二次变差是时间的线性函数，所以在 $L^2$ 下，简单过程对布朗运动的积分是良定义并且等距的。第二、简单过程（在适应过程的） $L^2$ 意义下是**稠密**的，所以可以推广到所有过程。
+
+#### Ito积分的鞅性质
+
+设 $f \in \mathcal{V}(S,T)$，我们容易知道
+$$
+\mathbb E\left[\int_S^T f\, dB_t\right] = 0
+$$
+因为对于简单过程，每一段增量的期望均是零。
+
+更强的结果是，Ito 积分得到的过程本身是一个鞅，也就是说如果我们只考虑事件点 $t$ 之前的信息 $\mathcal{F}_t$，那么这个随机变量的期望是当前点的值。
+
+具体地说，给定概率空间 $(\Omega, \mathcal{F}, P)$ 上的一个滤过 $\{\mathcal{F}_t\}$，以及一个适应于 $\{\mathcal{F}_t\}$ 的随机过程 $M_t$，并且假设对于每个 $t$，$\mathbb E[|M_t|] < \infty$。
+
+如果对于所有的 $s < t$，都有
+$$
+\mathbb E[M_t | \mathcal{F}_s] = M_s
+$$
+则称 $M_t$ 是一个鞅（martingale）。
+
+现在我们来证明 Ito 积分过程是一个鞅。
+
+> 证明：
+> 首先取逼近列 $\{f_n\}$，则对应的 Ito 积分过程为
+> $$M_t^n = \int_S^t f_n(u,\omega) \, dB_u(\omega)$$
+> 对于 $s < t$，我们有
+> $$
+> \begin{aligned}
+> \mathbb E[M_t^n | \mathcal{F}_s] &= \mathbb E\left[\int_S^s f_n(u,\omega) \, dB_u(\omega) + \int_s^t f_n(u,\omega) \, dB_u(\omega) \bigg| \mathcal{F}_s\right] \\
+> &= \int_S^s f_n(u,\omega) \, dB_u(\omega) + \mathbb E\left[\int_s^t f_n(u,\omega) \, dB_u(\omega) \bigg| \mathcal{F}_s\right] \text{ （因为左侧 $\mathcal{F}_s$ 可测）} \\
+> &= M_s^n + \mathbb E\left[\sum_{j} f_n(t_j,\omega) (B_{t_{j+1}} - B_{t_j}) \bigg| \mathcal{F}_s\right] \\
+> &= M_s^n + 0 \quad \text{（增量独立于 $\mathcal{F}_s$）} \\
+> &= M_s^n
+> \end{aligned}
+> $$
+> 
+> 现在令 $n \to \infty$，由于 Ito 积分在 $L^2(\Omega)$ 意义下连续，我们有
+> $$
+> \mathbb E[M_t | \mathcal{F}_s] = M_s
+> $$
+> 因此，Ito 积分过程 $M_t = \int_S^t f(u,\omega) \, dB_u(\omega)$ 是一个鞅。
 
