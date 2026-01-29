@@ -215,7 +215,7 @@ $$
 $$
 v_{t_1,\ldots, t_k}(F_1\times\cdots \times F_k) = \int_{F_1\times \cdots \times F_k} p(t_1, x, x_1) p(t_2-t_1,x_1,x_2) \cdots p(t_k-t_{k-1}, x_{k-1}, x_k) d x_1 \cdots d x_k
 $$
-并且规定 $p(0,x,y) dy = \delta_x(y)$，其中 $dy=dy_1\cdots dy_k$ 是Lebesgue测度。
+并且规定 $p(0,x,y) dy = \delta_x(y)$，其中 $dy=dy_1\cdots dy_k$ 是 Lebesgue 测度。
 这些测度满足一致性条件，因此由 Kolmogorov 扩展定理，存在一个概率空间 $(\Omega, \mathcal{F}, P^{x})$ 和随机过程 $\{B_t : t \geq 0\}$，使得对于任意的 $k \in \mathbb{N}$ 和 $0 \leq t_1 \leq t_2 \leq \cdots \leq t_k$，随机变量 $(B_{t_1}, B_{t_2}, \ldots, B_{t_k})$ 的分布为 $\nu_{t_1, t_2, \ldots, t_k}$。
 这个随机过程称为从点 $x$ 开始的布朗运动（Brownian Motion），记作 $B_t^x$ 或简称 $B_t$。
 
@@ -498,4 +498,127 @@ $$
 > \mathbb E[M_t | \mathcal{F}_s] = M_s
 > $$
 > 因此，Ito 积分过程 $M_t = \int_S^t f(u,\omega) \, dB_u(\omega)$ 是一个鞅。
+
+但是我们首先注意到，目前我们只说明了，Ito 积分的结果是一个鞅过程。但是，这个过程是否具有连续路径呢？是否能类似于在定义布朗运动时的情况，我们找一个修改版本，使得几乎对于所有的 $\omega$，路径 $t \mapsto M_t(\omega)$ 是连续的呢？
+
+为了应用 Kolmogorov 连续性定理，我们需要估计增量的矩。也即
+$$
+\mathbb E[|M_t - M_s|^\alpha] \leq C |t - s|^{1 + \beta}.
+$$
+对于某个 $\alpha > 0$。
+利用 Ito 等距公式，我们有
+$$
+\mathbb E[|M_t - M_s|^2] = \mathbb E\left[\left(\int_s^t f(u,\omega) \, dB_u(\omega)\right)^2\right] = \mathbb E\left[\int_s^t f(u,\omega)^2 \, du\right]
+$$
+但是，我们实际上需要更高阶的矩估计来应用 Kolmogorov 连续性定理，所以用等距公式还不够。
+
+#### Doob 鞅不等式（Doob's Martingale Inequality）
+
+设 $M_t$ 是一个鞅过程，且对于每个 $t$，$t \mapsto M_t(\omega)$ 是连续的。则对于任意的 $p > 1$，$T > 0$，$\lambda > 0$，有
+$$
+P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) \leq \frac{\mathbb E[|M_T|^p]}{\lambda^p}
+$$
+
+这个实际上是类比概率论中的 Markov 不等式。回顾 Markov 不等式的证明过程，给定一个 $\lambda$，我们只考虑那些 $|X| \geq \lambda$ 的事件，每一个都至少贡献 $\lambda^p$，所以总贡献至少是 $\lambda^p P(|X| \geq \lambda)$，而这个贡献不能超过 $E[|X|^p]$。
+
+那么现在，我们处理的是一个随机过程 $M_t$，我们考虑在区间 $[0,T]$ 上的最大值 $\sup_{0 \leq t \leq T} |M_t|$。对于那些路径上最大值超过 $\lambda$ 的事件 $\omega$，我们需要考虑它对 $|M_T|^p$ 的贡献。
+
+换句话说，我们需要一个不等式，控制路径最大值和终点值之间的关系。那么，现在我们考虑第一次超过 $\lambda$ 的时间点 $\tau$。在这个时候，鞅性质告诉我们，因为我们不知道未来信息，未来的期望值仍然是当前值，$\mathbb E[M_{T}(\omega) | \mathcal{F}_\tau] = M_\tau(\omega)$。
+
+##### 可选停时定理 （Optional Stopping Theorem）
+
+对于过滤 $\{\mathcal{F}_t\}$，随机变量 $\tau: \Omega \to [0, \infty]$ 称为一个停时 （stopping time），如果对于每个 $t \geq 0$，事件 $\{\tau \leq t\} \in \mathcal{F}_t$。
+
+现给定随机过程 $M_t$ 和停时 $\tau$，定义截断过程 $M_{t \wedge \tau}$ 为
+$$
+M_{t \wedge \tau}(\omega) = M_{\min(t, \tau(\omega))}(\omega)
+$$
+也就是在时间 $\tau(\omega)$ 之后，过程保持不变，因此称作停止过程。
+
+停止过程**保持适应性**：如果 $M_t$ 是关于 $\{\mathcal{F}_t\}$ 的适应过程，则 $M_{t \wedge \tau}$ 也是关于 $\{\mathcal{F}_t\}$ 的适应过程。
+证明：对于任意的 $t \geq 0$，有
+$$
+\{ \omega : M_{t \wedge \tau}(\omega) \in B \} = \{\omega : \tau(\omega) \leq t, M_{\tau(\omega)}(\omega) \in B\} \cup \{\omega : \tau(\omega) > t, M_t(\omega) \in B\}
+$$
+其中 $\{\omega : \tau(\omega) \leq t\} \in \cal{F}_t$，且 $\{\omega : M_{\tau(\omega)}(\omega) \in B\} \in \cal{F}_{\tau(\omega)} \subseteq \cal{F}_t$，因此第一部分在 $\cal{F}_t$ 中。同理，第二部分也在 $\cal{F}_t$ 中，因此整体也在 $\cal{F}_t$ 中。
+
+注意到 $M_{t \wedge \tau_2} - M_{t \wedge \tau_1} = \mathbb{1}_{\{\tau_1 < t\}} (M_{t \wedge \tau_2} - M_{\tau_1})$。特别地，$M_{t \wedge \tau} - M_0 = \mathbb{1}_{\{\tau < t\}} (M_{t \wedge \tau} - M_0)$。
+
+设 $\{M_t\}_{t \geq 0}$ 是关于 $\{\mathcal{F}_t\}$ 的右连续鞅（即对于每个 $\omega$，$t \mapsto M_t(\omega)$ 是右连续的），满足 $M_{t\wedge \tau}$ 是均匀可积的（uniformly integrable），即
+$$
+\lim_{K \to \infty} \sup_{t\geq 0} \mathbb E[|M_t| \mathbf{1}_{\{|M_t| > K\}}] = 0.
+$$
+（一个充分条件是 $\tau$ 是有界的，或者被某个可积随机变量控制。）
+
+则对于两个有限停时（$P(\tau<\infty) = 1$） $\tau_1 \leq \tau_2$，有
+$$
+\mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] = M_{\tau_1}, \quad \text{a.s.}
+$$
+特别地，
+$$
+\mathbb E[M_{\tau_2}] = \mathbb E[M_{\tau_1}].
+$$
+
+
+证明：
+首先考虑简单停时的情况。设 $\tau_1$ 和 $\tau_2$ 是简单停时，分别取值于有限集合 $\{t_1, t_2, \ldots, t_n\}$ 和 $\{s_1, s_2, \ldots, s_m\}$。则
+$$
+\begin{aligned}
+\mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] &= \sum_{i=1}^n \mathbb E[M_{\tau_2} | \mathcal{F}_{t_i}] \mathbf{1}_{\tau_1 = t_i} \\
+&= \sum_{i=1}^n \left( \sum_{j=1}^m \mathbb E[M_{s_j} | \mathcal{F}_{t_i}] \mathbf{1}_{\tau_2 = s_j} \right) \mathbf{1}_{\tau_1 = t_i} \\
+&= \sum_{i=1}^n \left( \sum_{j=1}^m M_{t_i} \mathbf{1}_{\tau_2 = s_j} \right) \mathbf{1}_{\tau_1 = t_i} \quad \text{（鞅性质）} \\
+&= \sum_{i=1}^n M_{t_i} \mathbf{1}_{\tau_1 = t_i} \\
+&= M_{\tau_1}
+\end{aligned}
+$$
+而对于一般的停时 $\tau_1, \tau_2$，我们可以找到一列简单停时 $\{\tau_1^n\}, \{\tau_2^n\}$，使得 $\tau_1^n \downarrow \tau_1$，$\tau_2^n \downarrow \tau_2$。
+
+对于每一组 $\tau_1^n, \tau_2^n$，我们已经知道：
+$$
+\mathbb{E}[M_{\tau_2^n} \mathbf{1}_{A}] = \mathbb{E}[M_{\tau_1^n} \mathbf{1}_{A}] \quad (\text{对所有 } A \in \mathcal{F}_{\tau_1^n})
+$$
+现在约定 $A \in \mathcal{F}_{\tau_1}$，则对于每个 $n$，都有 $A \in \mathcal{F}_{\tau_1^n}$，因此，两侧取极限得到
+$$
+\mathbb{E}[M_{\tau_2} \mathbf{1}_{A}] = \mathbb{E}[M_{\tau_1} \mathbf{1}_{A}]
+$$
+于是 $\mathbb{E}[M_{\tau_2} | \mathcal{F}_{\tau_1}] = M_{\tau_1}$ 几乎处处成立，这里我们使用了均匀可积性来交换极限和期望。
+
+##### 次鞅的可选停时定理
+
+定义次鞅（submartingale）：如果对于所有的 $s < t$，都有
+$$
+\mathbb E[M_t | \mathcal{F}_s] \geq M_s,
+$$
+则称 $M_t$ 是一个次鞅。而可选停时定理同样适用于次鞅，结论变为
+$$
+\mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] \geq M_{\tau_1}, \quad \text{a.s.}
+$$
+
+-----
+
+回到 Doob 鞅不等式的证明，我们取停时 $\tau = \inf\{t \geq 0 : |M_t| \geq \lambda\}$，则
+$$
+P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) = P(\tau \leq T).
+$$
+根据 Jensen 不等式 的条件期望版本，对于 $s < t$：
+$$
+E[|M_t|^p \mid \mathcal{F}_s] \geq |E[M_t \mid \mathcal{F}_s]|^p = |M_s|^p
+$$
+因此，$|M_t|^p$ 是一个次鞅。由可选停时定理，有
+$$
+\mathbb E[|M_{T \wedge \tau}|^p] \geq \mathbb E[|M_0|^p] = |M_0|^p.
+$$
+
+注意到当 $\tau \leq T$ 时，$|M_{T \wedge \tau}| \geq \lambda$，因此
+$$
+\begin{aligned}
+\mathbb E[|M_{T \wedge \tau}|^p] &\geq \mathbb E[|M_{T \wedge \tau}|^p \mathbf{1}_{\{\tau \leq T\}}] \\
+&\geq \lambda^p P(\tau \leq T).
+\end{aligned}
+$$
+综上所述，我们得到
+$$
+P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) = P(\tau \leq T) \leq \frac{\mathbb E[|M_{T \wedge \tau}|^p]}{\lambda^p} \leq \frac{\mathbb E[|M_T|^p]}{\lambda^p}.
+$$
+这就完成了 Doob 鞅不等式的证明。
 
