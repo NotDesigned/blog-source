@@ -404,7 +404,7 @@ $$
 \lim_{n\to \infty} \mathbb E \left[\int_S^T (h(t,\omega)-g_n(t,\omega))^2 dt\right] = 0
 $$
 
-证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$，令 $g_n=\phi_n * h$ 作为卷积，有界连续且弱收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^+$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega)\, ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
+证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$，令 $g_n(t)=(\phi_n * h)(t)=\int_S^T h(s, \omega) \phi_n(s-t)\, ds$ 作为卷积，易知有界连续且弱收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^+$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega)\, ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
 
 ##### Step 3
 
@@ -423,3 +423,39 @@ n & \text{if  $f(t,\omega) > n$ } \\
 $$
 
 然后使用控制收敛定理交换极限和积分即可。
+
+于是我们现在可以定义一个随机过程 $f \in \mathcal V$ 的 Ito 积分为
+
+$$
+\mathcal{I}[f](\omega):=\int_S^T f(t,\omega) \, dB_t(\omega)=\lim_{n\to \infty} \int_S^T \phi_n(t,\omega)\, dB_t(\omega) 
+$$
+
+其中 $\phi_n$ 是简单函数列，满足
+$$
+\lim_{n\to \infty} \mathbb E\left[\int_S^T |f-\phi_n|^2 \,dt \right] = 0
+$$
+由以上的证明保证存在性，并且由 Ito 等距公式（简单过程版），我们知道
+$$
+\mathbb E\left[\int_S^T \phi_n(t,\omega)^2 \, dt \right] = \mathbb E\left[\left(\int_S^T \phi_n(t,\omega) \, dB_t(\omega)\right)^2\right]
+$$
+因此，$\left\{\int_S^T \phi_n(t,\omega) \, dB_t(\omega)\right\}$ 是 $L^2(\Omega)$ 中的 Cauchy 列，从而 $\mathcal{I}[f](\omega)$ 是良定义的。
+
+#### 总结
+
+1. 对于 $f \in \mathcal V$，Ito 积分 $\int_S^T f(t,\omega) \, dB_t(\omega)$ 是良定义的随机变量，且满足 Ito 等距公式
+$$
+\mathbb E\left[\left(\int_S^T f(t,\omega) \, dB_t(\omega)\right)^2\right] = \mathbb E\left[\int_S^T f(t,\omega)^2 \, dt\right]
+$$
+
+2. 对于 $f \in \mathcal V$ 和 一列 $\left\{f_n\right\} \subset \mathcal V$，如果 
+    $$
+    \lim_{n\to \infty} \mathbb E\left[\int_S^T |f_n(t,\omega)-f(t,\omega)|^2 \, dt\right] = 0
+    $$
+    则
+    $$
+    \int_S^T f_n(t,\omega) \, dB_t(\omega) \xrightarrow{L^2(\Omega)} \int_S^T f(t,\omega) \, dB_t(\omega)
+    $$
+    换句话说，如果随机过程列在 $L^2([S,T] \times \Omega)$ 意义下收敛，则对应的 Ito 积分列在 $L^2(\Omega)$ 意义下收敛。 **Ito 积分是一个在两个 $L^2$ 空间之间的连续线性映射。**
+
+以上逻辑为，第一，因为布朗运动的二次变差是时间的线性函数，所以在 $L^2$ 下，简单过程对布朗运动的积分是良定义并且等距的。第二、简单过程（在适应过程的） $L^2$ 意义下是**稠密**的，所以可以推广到所有过程。
+
