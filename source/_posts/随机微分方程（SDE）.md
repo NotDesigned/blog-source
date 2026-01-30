@@ -542,7 +542,7 @@ $$
 $$
 其中 $\{\omega : \tau(\omega) \leq t\} \in \cal{F}_t$，且 $\{\omega : M_{\tau(\omega)}(\omega) \in B\} \in \cal{F}_{\tau(\omega)} \subseteq \cal{F}_t$，因此第一部分在 $\cal{F}_t$ 中。同理，第二部分也在 $\cal{F}_t$ 中，因此整体也在 $\cal{F}_t$ 中。
 
-注意到 $M_{t \wedge \tau_2} - M_{t \wedge \tau_1} = \mathbb{1}_{\{\tau_1 < t\}} (M_{t \wedge \tau_2} - M_{\tau_1})$。特别地，$M_{t \wedge \tau} - M_0 = \mathbb{1}_{\{\tau < t\}} (M_{t \wedge \tau} - M_0)$。
+注意到 $M_{t \wedge \tau_2} - M_{t \wedge \tau_1} = \mathbf{1}_{\{\tau_1 < t\}} (M_{t \wedge \tau_2} - M_{\tau_1})$。特别地，$M_{t \wedge \tau} - M_0 = \mathbf{1}_{\{\tau < t\}} (M_{t \wedge \tau} - M_0)$。
 
 设 $\{M_t\}_{t \geq 0}$ 是关于 $\{\mathcal{F}_t\}$ 的右连续鞅（即对于每个 $\omega$，$t \mapsto M_t(\omega)$ 是右连续的），满足 $M_{t\wedge \tau}$ 是均匀可积的（uniformly integrable），即
 $$
