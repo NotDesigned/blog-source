@@ -671,3 +671,7 @@ $$
 $$
 P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) \leq \frac{1}{\lambda^2} \mathbb{E}\left[|M_T|^2\right] = \frac{1}{\lambda^2} \mathbb{E}\left[\int_0^T f(s,\omega)^2 \, ds\right].
 $$
+
+### Ito 引理
+
+在讨论 Ito 引理之前，我们先具体计算一下几个 Ito 积分和 Stratonovich 积分的例子，来帮助理解它们和普通微积分的区别。
