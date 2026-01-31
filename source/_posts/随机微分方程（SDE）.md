@@ -733,6 +733,7 @@ $$\int_S^T f(t,\omega) \, dB_t(\omega) = F(T, B_T, \omega) - F(S, B_S, \omega) -
 而我们希望这个等式成立对于任意的 $f$，所以我们需要
 $$f(t,\omega) = \frac{\partial F}{\partial x}(t, B_t, \omega)$$
 因此，我们得出 Ito 引理的基本形式： 
+
 #### Ito 引理（Ito's Lemma）
 设 $B_t$ 是一个标准布朗运动，$F: [0,T] \times \mathbb{R} \to \mathbb{R}$ 是一个二次连续可微函数（即 $F \in C^{1,2}([0,T] \times \mathbb{R})$）。定义随机过程
 $$
@@ -744,8 +745,11 @@ dX_t = \frac{\partial F}{\partial t}(t, B_t) dt + \frac{\partial F}{\partial x}(
 $$
 
 于是我们记住以下微分的规则：
+
 - $dt \cdot dt = 0$
+
 - $dt \cdot dB_t = 0$
+
 - $dB_t \cdot dB_t = dt$
 
 这些都是在 $L^2$ 意义下对积分求和逼近意义下成立的。
