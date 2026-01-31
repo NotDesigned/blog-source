@@ -649,7 +649,7 @@ P\left(\sup_{0 \leq t \leq T} |I_n(t,\omega) - I_m(t,\omega)| \geq \epsilon\righ
 $$
 根据 Ito 等距公式，我们有
 $$
-\mathbb{E}\left[|I_n(T,\omega) - I_m(T,\omega)|^2\right] = \mathbb{E}\left[\int_0^T |\phi_n(s,\omega) - \phi_m(s,\omega)|^2 \, ds\right]=0
+\lim_{n,m\to \infty} \mathbb{E}\left[|I_n(T,\omega) - I_m(T,\omega)|^2\right] = \mathbb{E}\left[\int_0^T |\phi_n(s,\omega) - \phi_m(s,\omega)|^2 \, ds\right]=0
 $$
 所以我们可以选取一个子序列 $\{I_{n_k}\}$，使得
 $$
@@ -665,7 +665,7 @@ I(t,\omega) = \lim_{k \to \infty} I_{n_k}(t,\omega),
 $$
 则对于几乎所有的 $\omega$，路径 $t \mapsto I(t,\omega)$ 是连续的。
 
-因此，我们得出结论：对于任意的 $f \in \mathcal{V}(0,T)$，Ito 积分过程 $M_t = \int_0^t f(s,\omega) \, dB_s(\omega)$ 存在一个修改版本，使得对于几乎所有的 $\omega$，路径 $t \mapsto M_t(\omega)$ 是连续的。以后我们默认使用这个连续版本的 Ito 积分过程。
+因此，我们得出结论：对于任意的 $f \in \mathcal{V}(0,T)$，Ito 积分过程 $M_t = \int_0^t f(s,\omega) \, dB_s(\omega)$ 存在一个修改版本，使得对于几乎所有的 $\omega$，路径 $t \mapsto M_t(\omega)$ 是连续的。**以后我们默认使用这个连续版本的 Ito 积分过程。**
 
 而且我们有
 $$
@@ -675,3 +675,77 @@ $$
 ### Ito 引理
 
 在讨论 Ito 引理之前，我们先具体计算一下几个 Ito 积分和 Stratonovich 积分的例子，来帮助理解它们和普通微积分的区别。
+
+#### 计算 Ito 积分 $\int_0^T f \, dB_t$
+
+假设我们什么公式都没学过，我们拿到这个积分在手，唯一能做的就是按照定义展开，
+取 $\phi_n= \sum f(t_j,\cdot) \mathbf{1}_{t_j\leq t < t_{j+1}}, t_j = \frac{j}{2^n} T$
+$$
+\int_{0}^{T} f \, dB_t = \lim_{n\to\infty } \sum_{j}\phi_n(t_j) (B_{t_{j+1}}-B_{t_j}) =  \lim_{n\to\infty } \sum_{j}f(t_j,\cdot) (B_{t_{j+1}}-B_{t_j})
+$$
+
+仿照之前的计算，我们希望把 $f$ 在 $t_j$ 的取值分成一些部分，每个部分都是某个不定积分的增量。我们先假定我们的积分结果形式为 
+$$
+\int_S^t f \, dB_t = F(t,B_t, \omega) - F(S,B_S, \omega)
+$$ 
+其中 $F$ 是某个待定函数。然后我们来计算增量
+$$
+\begin{aligned}
+\Delta F_j &:= F(t_{j+1}, B_{t_{j+1}}, \omega) - F(t_j, B_{t_j}, \omega) \\
+&= F(t_{j+1}, B_{t_j} + \Delta B_j, \omega) - F(t_j, B_{t_j}, \omega) \\
+&= \sum_{k=1}^\infty \frac{1}{k!} \frac{\partial^k F}{\partial x^k}(t_j, B_{t_j}, \omega) (\Delta B_j)^k + \frac{\partial F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j + o(\Delta t_j)
+\end{aligned}
+$$
+这里的展开是对 $x$ 变量的泰勒展开加上对 $t$ 变量的线性近似。我们简单考虑一下对 $x$ 的二阶截断误差项 $R_j$ 在 $L^2$ 意义下的收敛性。我们有
+$$
+E \left[ \left( \sum_j R_j \right)^2 \right] = \sum_j E[R_j^2] + \sum_{i \neq j} E[R_i R_j]
+$$
+根据拉格朗日余项，$R_j = \frac{1}{6} F_{xxx}(\eta_j) (\Delta B_j)^3$。
+假设 $F_{xxx}$ 有界（或局部有界），则：
+
+第一部分（平方项）：$E[R_j^2] \leq C \cdot E[(\Delta B_j)^6]$。由正态分布矩性质，$E[(\Delta B_j)^6] = 15(\Delta t_j)^3$。
+$$
+\sum_j E[R_j^2] \leq 15C \sum_j (\Delta t_j)^3 \leq 15C \cdot \delta^2 \sum_j \Delta t_j = 15C \cdot \delta^2 (T-S) \to 0
+$$
+
+第二部分（交叉项）：
+
+根据全期望公式，$E[R_i R_j] = E[E[R_i R_j | \mathcal{F}_{t_{\max(i,j)}}]]$。假设 $i < j$，则
+$$E[R_i R_j | \mathcal{F}_{t_j}] = R_i E[R_j | \mathcal{F}_{t_j}] = R_i \cdot 0 = 0$$
+因为 $\Delta B_j$ 独立于 $\mathcal{F}_{t_j}$，且 $E[\Delta B_j] = 0$。所以交叉项为零。
+
+所以当我们对所有的增量求和时，$n\geq 2$ 的误差项 在 $L^2$ 意义下收敛到零。
+
+我们只需要对这个展开式取前两项：
+$$
+\Delta F_j \approx \frac{\partial F}{\partial x}(t_j, B_{t_j}, \omega) \Delta B_j + \frac{1}{2} \frac{\partial^2 F}{\partial x^2}(t_j, B_{t_j}, \omega) (\Delta B_j)^2 + \frac{\partial F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j
+$$
+因此，我们有
+$$
+\sum_j \Delta F_j \approx \sum_j \frac{\partial F}{\partial x}(t_j, B_{t_j}, \omega) \Delta B_j + \frac{1}{2} \sum_j \frac{\partial^2 F}{\partial x^2}(t_j, B_{t_j}, \omega) (\Delta B_j)^2 + \sum_j \frac{\partial F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j
+$$
+注意到 $(\Delta B_j)^2$ 收敛到 $\Delta t_j$，所以在极限下，第二项变成
+$$\frac{1}{2} \int_S^T \frac{\partial^2 F}{\partial x^2}(t, B_t, \omega) dt$$
+而第三项则是
+$$\int_S^T \frac{\partial F}{\partial t}(t, B_t, \omega) dt$$
+因此，我们得到
+$$\int_S^T f(t,\omega) \, dB_t(\omega) = F(T, B_T, \omega) - F(S, B_S, \omega) - \frac{{1}}{2} \int_S^T \frac{\partial^2 F}{\partial x^2}(t, B_t, \omega) dt - \int_S^T \frac{\partial F}{\partial t}(t, B_t, \omega) dt$$
+而我们希望这个等式成立对于任意的 $f$，所以我们需要
+$$f(t,\omega) = \frac{\partial F}{\partial x}(t, B_t, \omega)$$
+因此，我们得出 Ito 引理的基本形式： 
+#### Ito 引理（Ito's Lemma）
+设 $B_t$ 是一个标准布朗运动，$F: [0,T] \times \mathbb{R} \to \mathbb{R}$ 是一个二次连续可微函数（即 $F \in C^{1,2}([0,T] \times \mathbb{R})$）。定义随机过程
+$$
+X_t = F(t, B_t).
+$$
+则 $X_t$ 的微分满足
+$$
+dX_t = \frac{\partial F}{\partial t}(t, B_t) dt + \frac{\partial F}{\partial x}(t, B_t) dB_t + \frac{1}{2} \frac{\partial^2 F}{\partial x^2}(t, B_t) dt.
+$$
+
+于是我们记住以下微分的规则：
+- $dt \cdot dt = 0$
+- $dt \cdot dB_t = 0$
+- $dB_t \cdot dB_t = dt$
+
+这些都是在 $L^2$ 意义下对积分求和逼近意义下成立的。
