@@ -701,7 +701,7 @@ $$
 E \left[ \left( \sum_j R_j \right)^2 \right] = \sum_j E[R_j^2] + \sum_{i \neq j} E[R_i R_j]
 $$
 根据拉格朗日余项，$R_j = \frac{1}{6} F_{xxx}(\eta_j) (\Delta B_j)^3$。
-假设 $F_{xxx}$ 有界（或局部有界），则：
+假设 $F_{xxx}$ 一致有界，则：
 
 第一部分（平方项）：$E[R_j^2] \leq C \cdot E[(\Delta B_j)^6]$。由正态分布矩性质，$E[(\Delta B_j)^6] = 15(\Delta t_j)^3$。
 $$
