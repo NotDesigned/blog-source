@@ -750,3 +750,42 @@ $$
 - $dB_t \cdot dB_t = dt$
 
 这些都是在 $L^2$ 意义下对积分求和逼近意义下成立的。
+
+回到上面的例子，我们现在试图构造一个函数 $F$，使得
+$$
+\frac{\partial F}{\partial x}(t, B_t) = f(t, B_t).
+$$
+这就意味着我们可以取
+$$
+F(t,x) = \int_0^x f(t,y) \, dy - G(t),
+$$
+其中 $G(t)$ 是任意的关于 $t$ 的可微函数。
+
+根据 Ito 引理，我们有
+$$
+dX_t = \frac{\partial F}{\partial t}(t, B_t) dt + f(t, B_t) dB_t + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) dt.
+$$
+因此，Ito 积分 $\int_0^T f(t, B_t) \, dB_t$ 可以表示为
+$$
+\int_0^T f(t, B_t) \, dB_t = X_T - X_0 - \int_0^T \left( \frac{\partial F}{\partial t}(t, B_t) + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt.
+$$
+
+这就是我们通过 Ito 引理计算 Ito 积分的一个基本方法。首先对 $f$ 非时间依赖部分进行不定积分，得到 $F$，然后应用 Ito 引理计算 $dX_t$，最后减去时间积分部分即可得到所需的 Ito 积分表达式。
+
+在以上的例子中，我们取 $f(x,t)=x$， $G(t) = 0$，$F(t,x) = \int_0^x y \, dy = \frac{1}{2} x^2$，$ X_t = F(t, B_t)$。
+
+$$
+\int_0^T B_t \, dB_t = X_T - X_0 - \int_0^T \left( 0 + \frac{1}{2} \cdot 1 \right) dt = \frac{1}{2} B_T^2 - \frac{1}{2} T
+$$
+这和我们之前直接计算的结果是一致的。
+
+如果我们想寻找一个类似于微积分中直接的原函数形式的表达式，根据 Ito 引理，我们需要修改 $G(t)$，使得剩下的时间积分部分抵消，也即
+$$
+ \frac{dG}{dt}(t) = \int_0^{x} \frac{\partial f}{\partial t}(t,y) \, dy + \frac{1}{2} \frac{\partial f}{\partial x}(t, x)
+$$
+
+#### Ito 积分的推广
+
+到目前为止，我们已经定义了适应过程 $f \in \mathcal V$ 上的 Ito 积分 $\int_S^T f(t,\omega) \, dB_t(\omega)$，并且证明了它的鞅性质和路径连续性。
+
+我们可以拓展它的定义域，使得 $f$ 适应于更复杂的滤过，不再局限于一维布朗运动。
