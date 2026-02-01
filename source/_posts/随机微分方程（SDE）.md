@@ -728,10 +728,7 @@ $$
 $$\frac{1}{2} \int_S^T \frac{\partial^2 F}{\partial x^2}(t, B_t, \omega) dt$$
 而第三项则是
 $$\int_S^T \frac{\partial F}{\partial t}(t, B_t, \omega) dt$$
-因此，我们得到
-$$\int_S^T f(t,\omega) \, dB_t(\omega) = F(T, B_T, \omega) - F(S, B_S, \omega) - \frac{{1}}{2} \int_S^T \frac{\partial^2 F}{\partial x^2}(t, B_t, \omega) dt - \int_S^T \frac{\partial F}{\partial t}(t, B_t, \omega) dt$$
-而我们希望这个等式成立对于任意的 $f$，所以我们需要
-$$f(t,\omega) = \frac{\partial F}{\partial x}(t, B_t, \omega)$$
+
 因此，我们得出 Ito 引理的基本形式： 
 
 #### Ito 引理（Ito's Lemma）
