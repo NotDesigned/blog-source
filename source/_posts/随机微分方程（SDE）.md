@@ -255,6 +255,60 @@ $$
 
 4 的详细证明这里略过，对于单点来说，考虑增量商 $\geq M$ 的概率，可以证明几乎处处存在一个无穷序列，使得增量商 $\geq M$，从而不可微。但是对于整个区间不存在可微点的概率，需要更复杂的论证。
 
+### 一些重要的概率论定理
+
+#### $\pi$-$\lambda$ 定理
+
+设 $\mathcal{P}$ 是 $\Omega$ 上的一个 $\pi$-系（即对于任意的 $A, B \in \mathcal{P}$，有 $A \cap B \in \mathcal{P}$），$\mathcal{L}$ 是包含 $\Omega$ 的一个 $\lambda$-系（即满足包含全集、补集封闭性、可列不交并封闭性）。如果 $\mathcal{P} \subseteq \mathcal{L}$，则由 $\mathcal{P}$ 生成的 $\sigma$-代数 $\sigma(\mathcal{P})$ 包含在 $\mathcal{L}$ 中，即 $\sigma(\mathcal{P}) \subseteq \mathcal{L}$。
+
+证明：
+定义 $\mathcal{L}' = \{ A \in \sigma(\mathcal{P}) : A \in \mathcal{L} \}$。显然，$\mathcal{L}'$ 是一个 $\lambda$-系，并且包含 $\mathcal{P}$。因此，由于 $\sigma(\mathcal{P})$ 是由 $\mathcal{P}$ 生成的最小的 $\sigma$-代数，必有 $\sigma(\mathcal{P}) \subseteq \mathcal{L}'$。换言之，$\sigma(\mathcal{P}) \subseteq \mathcal{L}$。
+
+> 特别地，如果一个集合族又是 $\pi$-系 又是 $\lambda$-系，则它是一个 $\sigma$-代数。
+
+#### Borel-Cantelli 引理
+
+
+设 $\{A_n\}_{n=1}^{\infty}$ 是概率空间 $(\Omega, \mathcal{F}, P)$ 上的一列事件。
+
+$\limsup_{n \to \infty} A_n = \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} A_n$ 表示事件 $A_n$ 无限次发生的事件（无论多远都能找到某个 $A_n$ 发生）。
+
+$\liminf_{n \to \infty} A_n = \bigcup_{m=1}^{\infty} \bigcap_{n=m}^{\infty} A_n$ 表示事件 $A_n$ 最终总是发生的事件（从某个时刻开始，所有的 $A_n$ 都发生）。
+
+Borel-Cantelli 引理说
+$$
+\sum_{n=1}^{\infty} P(A_n) < \infty \Rightarrow P\left( \limsup_{n \to \infty} A_n \right) = 0.\\
+$$
+$$
+\text{如果 } \{A_n\} \text{ 相互独立且 } \sum_{n=1}^{\infty} P(A_n) = \infty\Rightarrow P\left( \limsup_{n \to \infty} A_n \right) = 1.
+$$
+证明：
+$$
+P\left( \limsup_{n \to \infty} A_n \right) = P\left( \bigcap_{m=1}^{\infty} \bigcup_{n=m}^{\infty} A_n \right) = \lim_{m \to \infty} P\left( \bigcup_{n=m}^{\infty} A_n \right) \leq \lim_{m \to \infty} \sum_{n=m}^{\infty} P(A_n) = 0.
+$$
+$$
+\begin{aligned}
+P\left( \limsup_{n \to \infty} A_n \right) &= 1 - P\left( \liminf_{n \to \infty} A_n^c \right) \\
+&= 1 - \lim_{m \to \infty} P\left( \bigcap_{n=m}^{\infty} A_n^c \right)\\
+&= 1 - \lim_{m \to \infty} \prod_{n=m}^{\infty} (1 - P(A_n)) \\
+&\geq 1 - \lim_{m \to \infty} \exp\left( -\sum_{n=m}^{\infty} P(A_n) \right) = 1.
+\end{aligned}
+$$
+
+#### Kolmogorov 0-1 定理
+
+设 $\{X_n\}_{n=1}^{\infty}$ 是定义在概率空间 $(\Omega, \mathcal{F}, P)$ 上的一列独立随机变量。定义尾 $\sigma$-代数为
+$$
+\mathcal{T} = \bigcap_{n=1}^{\infty} \sigma(X_n, X_{n+1}, \ldots).
+$$
+那么对于任意的事件 $A \in \mathcal{T}$，有 $P(A) \in \{0, 1\}$。
+
+证明：
+设 $A \in \mathcal{T}$，则对于任意的 $n \in \mathbb{N}$，$A \in \sigma(X_n, X_{n+1}, \ldots)$。由于 $\{X_n\}$ 是独立的，$\sigma(X_1, X_2, \ldots, X_{n-1})$ 与 $\sigma(X_n, X_{n+1}, \ldots)$ 独立。因此，$A$ 与 $\sigma(X_1, X_2, \ldots, X_{n-1})$ 独立。由于 $n$ 是任意的，$A$ 与 $\mathcal{L}=\bigcup_{n=1}^{\infty} \sigma(X_1, X_2, \ldots, X_{n-1})$ 独立。注意到 $\mathcal{L}$ 是一个 $\pi$-系，而 $\sigma(\mathcal{L}) = \mathcal{F}$，因此由 $\pi$-$\lambda$ 定理，$A$ 与 $\mathcal{F}$ 独立。特别地，$A$ 与自身独立，因此
+$$
+P(A) = P(A \cap A) = P(A) P(A) \Rightarrow P(A) \in \{0, 1\}.
+$$
+
 ## 2. Ito 积分，Ito 引理 和 Ito 公式 (Chapter 3, 4 of Øksendal)
 
 ### Ito 积分
