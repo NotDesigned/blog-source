@@ -838,8 +838,57 @@ $$
  \frac{dG}{dt}(t) = \int_0^{x} \frac{\partial f}{\partial t}(t,y) \, dy + \frac{1}{2} \frac{\partial f}{\partial x}(t, x)
 $$
 
-#### Ito 积分的推广
+### Ito 积分的推广
 
 到目前为止，我们已经定义了适应过程 $f \in \mathcal V$ 上的 Ito 积分 $\int_S^T f(t,\omega) \, dB_t(\omega)$，并且证明了它的鞅性质和路径连续性。
 
 我们可以拓展它的定义域，使得 $f$ 适应于更复杂的滤过，不再局限于一维布朗运动。
+
+首先，在 $\mathcal{V}(S,T)$ 的定义中，对应的滤过可以改为满足以下条件的滤过 $\{\mathcal{H}_t\}$：
+1. $B_t$ 是关于 $\{\mathcal{H}_t\}$ 的鞅。
+2. $f_t$ 是关于 $\{\mathcal{H}_t\}$ 的适应过程，即对于每个 $t$，$f_t$ 是 $\mathcal{H}_t$ 可测的。
+
+注意 (1) 蕴含了 $\mathcal{F}_t \subseteq \mathcal{H}_t$。
+
+实际上，这里的意思是，我们允许 $f$ 依赖于比布朗运动更多的信息，只要布朗运动仍然是这个更大滤过下的鞅即可，因为在我们证明 Ito 积分的鞅性质时，只用到了布朗运动增量独立于过去的信息和 $f$ 的适应性，在上面证明的过程中已经标注清楚了。
+
+#### 多维 Ito 积分
+
+设 $\mathbf{B}_t = (B_t^{(1)}, B_t^{(2)}, \ldots, B_t^{(n)})$ 是一个 $n$ 维标准布朗运动，即每个分量 $B_t^{(i)}$ 都是独立的标准布朗运动。
+
+令 $\mathcal{V}^{m\times n}_{\mathcal{H}}(S,T)$ 为 $m\times n$ 矩阵 $v=[v_{i,j}(t,\omega)]$ 构成的集合，其中，每个 $v_{i,j}$ 满足以上的条件，（联合可测，对某个滤过 $\mathcal{H_t}$ 适应，$L^2$ 有界）。
+
+我们定义多维 Ito 积分为
+$$
+\int_S^T v\, d\mathbf{B}_t = \int_S^T \begin{pmatrix}
+v_{1,1} & \cdots & v_{1,n} \\
+\vdots  & \ddots & \vdots \\
+v_{m,1} & \cdots & v_{m,n}
+\end{pmatrix} \, d\begin{pmatrix}
+B_t^{(1)} \\
+\vdots \\
+B_t^{(n)}
+\end{pmatrix} = \begin{pmatrix}
+\sum_{j=1}^n \int_S^T v_{1,j}(t,\omega) \, dB_t^{(j)}(\omega) \\
+\vdots \\
+\sum_{j=1}^n \int_S^T v_{m,j}(t,\omega) \, dB_t^{(j)}(\omega)
+\end{pmatrix}
+$$
+
+这里的每个分量都是一个一维 Ito 积分。类似地，我们可以定义多维 Ito 积分的等距性质和鞅性质。
+
+1. 等距性质：
+    $$
+    \mathbb E\left[\left\|\int_S^T v \, d\mathbf{B}_t\right\|^2\right] = \mathbb E\left[\int_S^T \|v(t,\omega)\|_F^2 \, dt\right]
+    $$
+    其中 $\|v(t,\omega)\|_F$ 是矩阵 $v(t,\omega)$ 的 Frobenius 范数，定义为
+    $$
+    \|v(t,\omega)\|_F^2 = \sum_{i=1}^m \sum_{j=1}^n |v_{i,j}(t,\omega)|^2.
+    $$
+
+2. 鞅性质：
+    设 $M_t = \int_S^t v(t,\omega) \,d\mathbf{B}_t(\omega)$，则对于 $s < t$，有
+    $$
+    \mathbb E[M_t | \mathcal{H}_s] = M_s.
+    $$
+
