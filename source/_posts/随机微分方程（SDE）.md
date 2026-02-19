@@ -955,6 +955,6 @@ $$
 
 存在唯一性，也许可以通过 Banach 不动点定理来证明，但是问了问 AI 感觉证明需要各种不等式估计，就算了。
 
-如果 $B_t^{(n)}$ 是 $B_t$ 的某种平滑近似，那么 $\int_0^t \sigma(s, X_s^{(n)}) \cdot \frac{dB_s^{(n)}}{ds} ds$ 就是一个普通的 Riemann 积分。众所周知，黎曼积分取中点是作为二阶近似的。因此，随着 $n \to \infty$，取中点的黎曼积分会收敛到 Stratonovich 积分 $\int_0^t \sigma(s, X_s) \circ dB_s$。Stratonovich 积分可以看作是 Ito 积分的一种平滑近似，或者说是当我们用平滑的过程来逼近布朗运动时，自然得到的积分形式。
+如果 $B_t^{(n)}$ 是 $B_t$ 的某种平滑近似，那么 $\int_0^t \sigma(s, X_s^{(n)}) \cdot \frac{dB_s^{(n)}}{ds} ds$ 就是一个普通的 Riemann 积分。众所周知，黎曼积分取中点是作为二阶近似的。因此，随着 $n \to \infty$，取中点的黎曼积分会收敛到 Stratonovich 积分 $\int_0^t \sigma(s, X_s) \circ dB_s$，取左侧的黎曼积分则收敛到 Ito 积分 $\int_0^t \sigma(s, X_s) dB_s$。
 
-具体的收敛性证明可以查阅 Wong-Zakai 定理。
+然后在不动点迭代的过程中，最后收敛的结果是 Stratonovich 积分的解。具体的收敛性证明可以查阅 Wong-Zakai 定理。这里确实也很神奇。
