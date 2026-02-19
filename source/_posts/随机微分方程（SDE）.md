@@ -892,3 +892,69 @@ $$
     \mathbb E[M_t | \mathcal{H}_s] = M_s.
     $$
 
+我们将以上过程构成的空间分别记作 $\mathcal{W}_{\mathcal{H}}(S,T), \mathcal{W}_{\mathcal{H}}^{m\times n}(S,T)$，并记 $\mathcal{W}_{\mathcal{H}} = \bigcup_{T>0} \mathcal{W}_{\mathcal{H}}(0,T)$. 
+
+### 与 Stratonovich 积分的比较
+
+回顾之前所作的，我们可以给这样的一个随机微分方程
+$$
+\frac{d X}{dt} = b(t, X_t) + \sigma(t, X_t) \cdot W_t
+$$
+在 Ito 积分框架下一个合理的解：
+$$
+X_t = X_0 + \int_0^t b(s, X_s) \, ds + \int_0^t \sigma(s, X_s) dB_s
+$$
+其中 $W_t$ 是某种“白噪声”（看作布朗运动的“导数”）。
+
+Ito 积分的意义是，考虑简单过程 $\phi_n$ 逼近 $\sigma(t, X_t)$，$L_t = \int_0^t \sigma(s, X_s) dB_s$ 就是 $\int_0^t \phi_n(s) dB_s$ 的 $L^2$ 极限。
+
+也就是认为 $\sigma(t, X_t)$ 在每个时间点 $t$ 的取值在极小时间内保持不变并且等于左侧点的取值，然后考虑布朗运动的波动的影响并求和汇总。等距公式告诉我们，$L_t$ 的方差是 $\int_0^t \sigma(s, X_s)^2 ds$。
+
+这里取左侧点和其他点会得到不同的结果是因为布朗运动的增量可能与 $\sigma(t, X_t)$ 的取值相关联了，而 Ito 积分保证了这个增量独立于 $\sigma(t, X_t)$ 的取值，也就是鞅性质的体现。
+
+这个关联项，由上面的 Ito 引理的展开分析，我们大致知道，它意味着某种额外的漂移项的出现，对应结果中 $B_t$ 的二阶影响。
+
+现在我们来严格分析，从这样的一个展开式出发。
+$$
+\sum_j \Delta F_j \approx \sum_j \frac{\partial F}{\partial x}(t_j, B_{t_j}, \omega) \Delta B_j + \frac{1}{2} \sum_j \frac{\partial^2 F}{\partial x^2}(t_j, B_{t_j}, \omega) (\Delta B_j)^2 + \sum_j \frac{\partial F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j
+$$
+我们假设有 $\frac{\partial F}{\partial x}(t_j, B_{t_j}, \omega) = \sigma(t_j, X_{t_j})$，则第一项就是我们定义的 Ito 积分的近似表达式。
+
+这个告诉我们什么？首先 $F$ 的增量可以分成两部分，一部分关于时间的增量，另一部分关于空间（布朗运动）增量的影响。对于时间的响应，我们只需要考虑一阶就足以在分割趋于零时得到正确的结果；但是对于空间的响应，如果只取左侧点并求和，就需要额外考虑一个二阶项，才能在分割趋于零时得到正确的结果。
+
+但这样的一个二阶项展开，实际上就等价于我们使用导数在区间中点的取值了（误差一个三阶项会消失）。如果我们在定义积分时，取 $\sigma(t, X_t)$ 在区间 $[t_j, t_{j+1}]$ 的中点处的取值，那么这个二阶项就会自然地被包含在内。
+
+所以，我们有以下结论：
+$$
+\sum_j \Delta F_j \approx \sum_j \sigma\left(\frac{t_j + t_{j+1}}{2}, X_{\frac{t_j + t_{j+1}}{2}}\right) \Delta B_j + \sum_j \frac{\partial F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j
+$$
+而Stratonovich 积分按定义就是：
+$$
+\int_0^t \sigma(s, X_s) \circ dB_s = \lim_{n \to \infty} \sum_j \sigma\left(\frac{t_j + t_{j+1}}{2}, X_{\frac{t_j + t_{j+1}}{2}}\right) (B_{t_{j+1}} - B_{t_j}),
+$$
+那从微分的角度，我们简洁地有：
+$$
+dX_t = b(t, X_t) dt + \sigma(t, X_t) \circ dB_t
+$$
+因此，Stratonovich 积分的定义方式使得它在微分形式上与普通微积分的链式法则保持一致，而 Ito 积分则需要额外的二阶项来修正。
+
+利用以下公式，我们可以在 Ito 积分和 Stratonovich 积分之间进行转换：
+$$
+\sigma(t, X_t) \circ dB_t = \sigma(t, X_t) dB_t + \frac{1}{2} \frac{\partial \sigma}{\partial x}(t, X_t) dt
+$$
+
+而如果考虑一列 $t$-可微的随机过程 $B_t^{(n)}$，使得 $B_t^{(n)}$ 在 $L^2$ 意义下一致收敛到 $B_t$。
+则，以上的随机微分方程变为
+$$
+\frac{d X^{(n)}}{dt} = b(t, X_t^{(n)}) + \sigma(t, X_t^{(n)}) \cdot \frac{dB_t^{(n)}}{dt}
+$$
+它的解满足以下的积分方程：
+$$
+X_t^{(n)} = X_0 + \int_0^t b(s, X_s^{(n)}) \, ds + \int_0^t \sigma(s, X_s^{(n)}) \cdot \frac{dB_s^{(n)}}{ds} ds
+$$
+
+存在唯一性，也许可以通过 Banach 不动点定理来证明，但是问了问 AI 感觉证明需要各种不等式估计，就算了。
+
+如果 $B_t^{(n)}$ 是 $B_t$ 的某种平滑近似，那么 $\int_0^t \sigma(s, X_s^{(n)}) \cdot \frac{dB_s^{(n)}}{ds} ds$ 就是一个普通的 Riemann 积分。众所周知，黎曼积分取中点是作为二阶近似的。因此，随着 $n \to \infty$，取中点的黎曼积分会收敛到 Stratonovich 积分 $\int_0^t \sigma(s, X_s) \circ dB_s$。Stratonovich 积分可以看作是 Ito 积分的一种平滑近似，或者说是当我们用平滑的过程来逼近布朗运动时，自然得到的积分形式。
+
+具体的收敛性证明可以查阅 Wong-Zakai 定理。
