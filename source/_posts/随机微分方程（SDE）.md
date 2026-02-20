@@ -958,3 +958,32 @@ $$
 如果 $B_t^{(n)}$ 是 $B_t$ 的某种平滑近似，那么 $\int_0^t \sigma(s, X_s^{(n)}) \cdot \frac{dB_s^{(n)}}{ds} ds$ 就是一个普通的 Riemann 积分。众所周知，黎曼积分取中点是作为二阶近似的。因此，随着 $n \to \infty$，取中点的黎曼积分会收敛到 Stratonovich 积分 $\int_0^t \sigma(s, X_s) \circ dB_s$，取左侧的黎曼积分则收敛到 Ito 积分 $\int_0^t \sigma(s, X_s) dB_s$。
 
 然后在不动点迭代的过程中，最后收敛的结果是 Stratonovich 积分的解。具体的收敛性证明可以查阅 Wong-Zakai 定理。这里确实也很神奇。
+
+### 练习
+
+学而不练就完蛋了，接下来是练习环节。
+
+3.1. 用 Ito 积分的定义，证明以下的等式：
+$$
+\int_0^t s dB_s = t B_t - \int_0^t B_s ds
+$$
+
+3.2 按定义证明：
+$$
+\int_0^t B_s^2 dB_s = \frac{1}{3} B_t^3 - \int_0^t B_s ds
+$$
+
+3.3 $X_t: \Omega \to \mathbb{R}^n$ 是一个随机过程，$\mathcal{H}_t$ 是其生成的滤过（$\sigma$-代数）。试解决以下问题：
+1. 如果 $X_t$ 是关于某个滤过 $\mathcal{N}_t$ 的鞅，那么 $X_t$ 也是关于 $\mathcal{H}_t$ 的鞅。
+2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，那么 $\mathbb{E}[X_t] = \mathbb{E}[X_0], \forall t\geq 0$。
+3. 举出一例 $X_t$ 满足 (2) 但不是关于 $\mathcal{H}_t$ 的鞅。
+
+3.4 检查以下的过程是否是关于 $\mathcal{F}_t$ 的鞅：
+
+1. $X_t = B_t + 4t$
+2. $X_t = B_t^2$
+3. $X_t = t^2 B_t - 2 \int_0^t s B_s ds$
+4. $X_t = B_1(t) B_2(t)$，其中 $(B_1(t), B_2(t))$ 是一个二维布朗运动。
+
+#### 解答
+
