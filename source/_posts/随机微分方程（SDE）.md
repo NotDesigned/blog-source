@@ -987,3 +987,65 @@ $$
 
 #### 解答
 
+3.1
+
+还是展示一下直接使用 Ito 引理来证明这个等式，为了利用 Ito 引理，令 
+$$
+\frac{\partial F}{\partial x}(t,x) = t \implies F(t,x) = t x - G(t) 
+$$
+取 $G(t) = 0$，则 $F(t,x) = t x$。根据 Ito 引理，我们有
+$$
+dF(t, B_t) = B_t dt + t dB_t
+$$
+因此，
+$$
+\int_0^t s dB_s = F(t, B_t) - F(0, B_0) - \int_0^t B_s ds = t B_t - \int_0^t B_s ds
+$$
+
+直接按照定义来证明需要我们用简单过程切片分段逼近 $s$，例如 $\phi_n(s) = \sum_{j=0}^{n-1} t_j \mathbf{1}_{[t_j, t_{j+1})}(s)$，其中 $t_j = \frac{j}{n} t$，则
+$$
+\int_0^t s dB_s = \lim_{n \to \infty} \sum_{j=0}^{n-1} t_j (B_{t_{j+1}} - B_{t_j})
+$$
+
+回顾求和的 Abel 转换：
+
+对于 $\sum_{j=0}^{n} \Delta A_j b_j$，$a_j = \Delta A_j = A_{j+1} - A_j$，我们有
+$$
+\sum_{j=0}^{n} \Delta A_j b_j = A_{n+1} b_n - A_0 b_0 - \sum_{j=1}^{n} A_{j} \Delta b_{j-1}
+$$
+
+这里 $b_j=t_j$，$A_j = B_{t_j}$，则
+$$
+\begin{aligned}
+\sum_{j=0}^{n-1} t_j \Delta B_j &= t_n B_{t_{n-1}} - t_0 B_{t_0} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1} \\
+&= t B_{t} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}
+\end{aligned}
+$$
+而 $n \to \infty$ 时，$\sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}$ 就是 $\int_0^t B_s ds$ 的右端 Riemann 和的近似（或者取右端点的简单过程逼近 $B_s$，在 Lebesgue 积分的意义下也是成立的），因此
+$$
+\int_0^t s dB_s = \lim_{n \to \infty} \sum_{j=0}^{n-1} t_j (B_{t_{j+1}} - B_{t_j}) = t B_t - \int_0^t B_s ds
+$$
+
+3.2
+同样地，我们先使用 Ito 引理来证明这个等式。令
+$$
+\frac{\partial F}{\partial x}(t,x) = x^2 \implies F(t,x) = \frac{1}{3} x^3 - G(t)
+$$
+取 $G(t) = 0$，则 $F(t,x) = \frac{1}{3} x^3$。根据 Ito 引理，我们有
+$$
+dF(t, B_t) = \frac{1}{2} B_t dt + B_t^2 dB_t 
+$$
+因此，
+$$
+\int_0^t B_s^2 dB_s = F(t, B_t) - F(0, B_0) - \int_0^t \frac{1}{2} B_s ds = \frac{1}{3} B_t^3 - \int_0^t B_s ds
+$$
+
+按定义证明，我们取 $\phi_n(t,\omega) = \sum_{j=0}^{n-1} B_{t_j}^2 \mathbf{1}_{[t_j, t_{j+1})}(s)$，其中 $t_j = \frac{j}{n} t$。继续利用 Abel 转换，我们有
+$$
+\begin{aligned}
+\sum_{j=0}^{n-1} B_{t_j}^2 \Delta B_j &= B_{t_n}^2 B_{t_{n-1}} - B_{t_0}^3 - \sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1} \\
+&= B_t^2 B_{t_{n-1}} - \sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1}
+\end{aligned}
+$$
+当 $n \to \infty$ 时，$B_{t_{n-1}} \to B_t$，因此 $B_t^2 B_{t_{n-1}} \to B_t^3$，而 $\sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1}$ 就是 $\int_0^t B_s^2 ds$。
+
