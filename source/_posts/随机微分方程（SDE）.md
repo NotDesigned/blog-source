@@ -974,6 +974,7 @@ $$
 $$
 
 3.3 $X_t: \Omega \to \mathbb{R}^n$ 是一个随机过程，$\mathcal{H}_t$ 是其生成的滤过（$\sigma$-代数）。试解决以下问题：
+
 1. 如果 $X_t$ 是关于某个滤过 $\mathcal{N}_t$ 的鞅，那么 $X_t$ 也是关于 $\mathcal{H}_t$ 的鞅。
 2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，那么 $\mathbb{E}[X_t] = \mathbb{E}[X_0], \forall t\geq 0$。
 3. 举出一例 $X_t$ 满足 (2) 但不是关于 $\mathcal{H}_t$ 的鞅。
@@ -1027,6 +1028,7 @@ $$
 $$
 
 3.2
+
 同样地，我们先使用 Ito 引理来证明这个等式。令
 $$
 \frac{\partial F}{\partial x}(t,x) = x^2 \implies F(t,x) = \frac{1}{3} x^3 - G(t)
@@ -1049,3 +1051,10 @@ $$
 $$
 当 $n \to \infty$ 时，$B_{t_{n-1}} \to B_t$，因此 $B_t^2 B_{t_{n-1}} \to B_t^3$，而 $\sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1}$ 就是 $\int_0^t B_s^2 ds$。
 
+3.3
+
+1. 如果 $X_t$ 是关于某个滤过 $\mathcal{N}_t$ 的鞅，那么对于 $s < t$，有 $$\mathbb{E}[X_t | \mathcal{N}_s] = X_s.$$
+由于 $\mathcal{H}_s \subseteq \mathcal{N}_s$，根据全期望公式，我们有$$\mathbb{E}[X_t | \mathcal{H}_s] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{N}_s] | \mathcal{H}_s] = \mathbb{E}[X_s | \mathcal{H}_s] = X_s.$$
+因此，$X_t$ 也是关于 $\mathcal{H}_t$ 的鞅。
+我们理解为，一个随机过程如果在一个大信息集合下是鞅，那么在一个子信息集合下也是鞅。而 $X_t$ 本身生成的滤过是最小的满足适应性的滤过。
+2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，我们知道 $ \mathbb{E}[X_t | \mathcal{H}_0] = X_0$。然后根据全期望公式，$\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{H}_0]] = \mathbb{E}[X_0]$。
