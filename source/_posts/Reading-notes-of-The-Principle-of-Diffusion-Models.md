@@ -216,6 +216,7 @@ $$
 $$
 
 **Claim**: 
+
 > The minimizer of both is $p(x_{i-1}|x_i)$.
 
 **Proof**:

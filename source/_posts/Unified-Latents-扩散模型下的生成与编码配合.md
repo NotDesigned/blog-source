@@ -72,7 +72,7 @@ $$
 
 > 注：$\text{sigmoid}(t) = \frac{1}{1 + e^{-t}}$
 
-![手画的演示](pic.png)
+![手画的演示](pic.jpg)
 
 ### 损失函数推导 与 ELBO 重加权
 
