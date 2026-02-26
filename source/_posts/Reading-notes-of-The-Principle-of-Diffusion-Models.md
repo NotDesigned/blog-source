@@ -139,7 +139,7 @@ The Gaussian decoder reconstructs the average of these ambiguous $x$, leading to
 
 #### Model structure
 $$
-x \xleftrightarrow[\mathrm{decoder}, p_{\phi}(x|z_1)]{\mathrm{encoder}, q_{\theta}(z_1|x)} z_1 \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_1|z_2)]{\mathrm{encoder}, q_{\theta}(z_2|z_1)} z_2 \xleftrightarrow{}\cdots \xleftrightarrow[\mathrm{decoder}, p_{\phi}(z_{L-1}|z_L)]{\mathrm{encoder}, q_{\theta}(z_L|z_{L-1})}z_L
+x \xLeftrightarrow[\mathrm{decoder}, p_{\phi}(x|z_1)]{\mathrm{encoder}, q_{\theta}(z_1|x)} z_1 \xLeftrightarrow[\mathrm{decoder}, p_{\phi}(z_1|z_2)]{\mathrm{encoder}, q_{\theta}(z_2|z_1)} z_2 \xleftrightarrow{}\cdots \xLeftrightarrow[\mathrm{decoder}, p_{\phi}(z_{L-1}|z_L)]{\mathrm{encoder}, q_{\theta}(z_L|z_{L-1})}z_L
 $$
 
 #### Key formulae
@@ -169,7 +169,7 @@ where $\mathbb E_q$ means $\mathbb E_{p(x) q_{\theta}(z_{1:L}|x)}$.
 
 #### Model structure
 $$
-x_0 \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{0}|x_1)]{\mathrm{add \ noise}, q(x_1|x_{0})} x_1 \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{1}|x_2)]{\mathrm{add\ noise}, q(x_2|x_{1})} x_2 \xleftrightarrow{}\cdots \xleftrightarrow[\mathrm{denoising}, p_{\phi}(x_{T-1}|x_T)]{\mathrm{add\ noise}, q(x_{T-1}|x_T)} x_T
+x_0 \xLeftrightarrow[\mathrm{denoising}, p_{\phi}(x_{0}|x_1)]{\mathrm{add \ noise}, q(x_1|x_{0})} x_1 \xLeftrightarrow[\mathrm{denoising}, p_{\phi}(x_{1}|x_2)]{\mathrm{add\ noise}, q(x_2|x_{1})} x_2 \xLeftrightarrow{}\cdots \xLeftrightarrow[\mathrm{denoising}, p_{\phi}(x_{T-1}|x_T)]{\mathrm{add\ noise}, q(x_{T-1}|x_T)} x_T
 $$
 
 $$

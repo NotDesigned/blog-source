@@ -1057,4 +1057,5 @@ $$
 由于 $\mathcal{H}_s \subseteq \mathcal{N}_s$，根据全期望公式，我们有$$\mathbb{E}[X_t | \mathcal{H}_s] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{N}_s] | \mathcal{H}_s] = \mathbb{E}[X_s | \mathcal{H}_s] = X_s.$$
 因此，$X_t$ 也是关于 $\mathcal{H}_t$ 的鞅。
 我们理解为，一个随机过程如果在一个大信息集合下是鞅，那么在一个子信息集合下也是鞅。而 $X_t$ 本身生成的滤过是最小的满足适应性的滤过。
-2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，我们知道 $ \mathbb{E}[X_t | \mathcal{H}_0] = X_0$。然后根据全期望公式，$\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{H}_0]] = \mathbb{E}[X_0]$。
+2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，我们知道 $\mathbb{E}[X_t | \mathcal{H}_0] = X_0$。然后根据全期望公式，$\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{H}_0]] = \mathbb{E}[X_0]$。
+
