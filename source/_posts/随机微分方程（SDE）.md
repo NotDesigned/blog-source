@@ -942,9 +942,9 @@ dX_t = \frac{\partial F}{\partial t}(t, \mathbf{B}_t) dt + \nabla F(t, \mathbf{B
 $$ 
 
 如果 $\mathbf{B}_t$ 不是标准布朗运动，协方差矩阵为 $\Sigma(t)$。也就是说 
-$\mathbb{E}[\Delta B_j \Delta B_j^T] = \Sigma(t_j) \Delta t_j$，则第二阶项的变为
+$\mathbb{E}[\Delta B_j \Delta B_j^T] = \Sigma\Sigma^T(t_j)  \Delta t_j$，则第二阶项的变为
 $$
-\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma_{ik}(t_j) dt
+\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik}(t_j) dt
 $$
 
 进一步地，如果 $X_t = F(t, Y_t)$，其中 $Y_t$ 满足
@@ -954,8 +954,8 @@ $$
 则
 $$
 \begin{aligned}
-dX_t &= \frac{\partial F}{\partial t}dt + \nabla F \cdot dY_t + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma_{ik} dt \\
-&= \left( \frac{\partial F}{\partial t}+ \nabla F \cdot \mathbf{b} + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma_{ik} \right) dt + \nabla F \cdot \Sigma\, d\mathbf{B}_t
+dX_t &= \frac{\partial F}{\partial t}dt + \nabla F \cdot dY_t + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik} dt \\
+&= \left( \frac{\partial F}{\partial t}+ \nabla F \cdot \mathbf{b} + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik} \right) dt + \nabla F \cdot \Sigma\, d\mathbf{B}_t
 \end{aligned}
 $$
 
@@ -1005,7 +1005,7 @@ $$
 
 利用以下公式，我们可以在 Ito 积分和 Stratonovich 积分之间进行转换：
 $$
-\sigma(t, X_t) \circ dB_t = \sigma(t, X_t) dB_t + \frac{1}{2} \frac{\partial \sigma}{\partial x}(t, X_t) dt
+\sigma(t, X_t) \circ dB_t = \sigma(t, X_t) dB_t + \frac{1}{2} \sigma(t, X_t) \frac{\partial \sigma}{\partial x}(t, X_t) dt
 $$
 
 而如果考虑一列 $t$-可微的随机过程 $B_t^{(n)}$，使得 $B_t^{(n)}$ 在 $L^2$ 意义下一致收敛到 $B_t$。
@@ -1083,7 +1083,7 @@ $$
 这里 $b_j=t_j$，$A_j = B_{t_j}$，则
 $$
 \begin{aligned}
-\sum_{j=0}^{n-1} t_j \Delta B_j &= t_n B_{t_{n-1}} - t_0 B_{t_0} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1} \\
+\sum_{j=0}^{n-1} t_j \Delta B_j &= t_{n-1} B_{t_{n}} - t_0 B_{t_0} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1} \\
 &= t B_{t} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}
 \end{aligned}
 $$
@@ -1100,21 +1100,22 @@ $$
 $$
 取 $G(t) = 0$，则 $F(t,x) = \frac{1}{3} x^3$。根据 Ito 引理，我们有
 $$
-dF(t, B_t) = \frac{1}{2} B_t dt + B_t^2 dB_t 
+dF(t, B_t) = B_t dt + B_t^2 dB_t 
 $$
 因此，
 $$
-\int_0^t B_s^2 dB_s = F(t, B_t) - F(0, B_0) - \int_0^t \frac{1}{2} B_s ds = \frac{1}{3} B_t^3 - \int_0^t B_s ds
+\int_0^t B_s^2 dB_s = F(t, B_t) - F(0, B_0) - \int_0^t B_s ds = \frac{1}{3} B_t^3 - \int_0^t B_s ds
 $$
 
-按定义证明，我们取 $\phi_n(t,\omega) = \sum_{j=0}^{n-1} B_{t_j}^2 \mathbf{1}_{[t_j, t_{j+1})}(s)$，其中 $t_j = \frac{j}{n} t$。继续利用 Abel 转换，我们有
+按定义证明：我们取 $\phi_n(t,\omega) = \sum_{j=0}^{n-1} B_{t_j}^2 \mathbf{1}_{[t_j, t_{j+1})}(s)$，其中 $t_j = \frac{j}{n} t$。
+考虑 $B_{j+1}^3 - B_j^3 = (B_{j+1} - B_j)^3 + 3 B_j^2 (B_{j+1} - B_j) + 3 B_j (B_{j+1} - B_j)^2$，则
 $$
 \begin{aligned}
-\sum_{j=0}^{n-1} B_{t_j}^2 \Delta B_j &= B_{t_n}^2 B_{t_{n-1}} - B_{t_0}^3 - \sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1} \\
-&= B_t^2 B_{t_{n-1}} - \sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1}
+\sum_{j=0}^{n-1} B_{t_j}^2 \Delta B_j &= \frac{1}{3} \sum_{j=0}^{n-1} (B_{t_{j+1}}^3 - B_{t_j}^3) - \frac{1}{3} \sum_{j=0}^{n-1} (B_{t_{j+1}} - B_{t_j})^3 - \sum_{j=0}^{n-1} B_{t_j} (B_{t_{j+1}} - B_{t_j})^2 \\
+&= \frac{1}{3} B_t^3 - \frac{1}{3} \sum_{j=0}^{n-1} (B_{t_{j+1}} - B_{t_j})^3 - \sum_{j=0}^{n-1} B_{t_j} (B_{t_{j+1}} - B_{t_j})^2
 \end{aligned}
 $$
-当 $n \to \infty$ 时，$B_{t_{n-1}} \to B_t$，因此 $B_t^2 B_{t_{n-1}} \to B_t^3$，而 $\sum_{j=1}^{n-1} B_{t_j}^2 \Delta t_{j-1}$ 就是 $\int_0^t B_s^2 ds$。
+不难证明 $\sum_{j=0}^{n-1} (B_{t_{j+1}} - B_{t_j})^3$ 在 $L^2$ 意义下收敛到 0。而 $\sum_{j=0}^{n-1} B_{t_j} (B_{t_{j+1}} - B_{t_j})^2$ 在 $L^2$ 意义下收敛到 $\int_0^t B_s ds$。
 
 3.3
 
@@ -1123,6 +1124,7 @@ $$
 因此，$X_t$ 也是关于 $\mathcal{H}_t$ 的鞅。
 我们理解为，一个随机过程如果在一个大信息集合下是鞅，那么在一个子信息集合下也是鞅。而 $X_t$ 本身生成的滤过是最小的满足适应性的滤过。
 2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，我们知道 $\mathbb{E}[X_t | \mathcal{H}_0] = X_0$。然后根据全期望公式，$\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{H}_0]] = \mathbb{E}[X_0]$。
+3. 考虑 $X_t = B_t^3$，其中 $B_t$ 是一个标准布朗运动。不难知道 $B_t^3$ 的期望在它自己生成的 $\sigma$-代数 $\mathcal{F}_t$ 下为 0。利用 Ito 引理，$dB_t^3 = 3 B_t^2 dB_t + 3 B_t dt$，因此它不是关于 $\mathcal{F}_t$ 的鞅。
 
 3.4 
 
