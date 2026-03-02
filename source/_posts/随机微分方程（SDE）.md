@@ -838,6 +838,30 @@ $$
  \frac{dG}{dt}(t) = \int_0^{x} \frac{\partial f}{\partial t}(t,y) \, dy + \frac{1}{2} \frac{\partial f}{\partial x}(t, x)
 $$
 
+#### Ito 引理的推广
+
+在以上的讨论中，我们考虑了一个随机过程 $X_t=F(t,x)$，其中 $x$ 以 $B_t$ 的形式出现。最终我们发现 $dX_t$ 包含了 $dt$ 和 $dB_t$ 两部分的增量。
+
+我们可以令 $x=Y_t$ 以更一般的形式出现，$dY_t$ 如果仅包含 $dt$ 的增量和 $dB_t$ 的增量。那展开之后，$dX_t$ 就会包含 $dt$ 和 $dY_t$ 的增量了。我们可以继续展开 $dY_t$ 的增量，最终得到 $dX_t$ 包含 $dt$ 和 $dB_t$ 的增量。这样就构成了一族封闭的类型，我们可以在这个族中任意选择一个过程 $X_t$，它的增量 $dX_t$ 仍然可以表示为这个族中的某个过程的增量。
+
+具体地，令 $X_t = F(t, Y_t)$，其中 $Y_t$ 满足
+$$
+dY_t = b(t, Y_t) dt + \sigma(t, Y_t) dB_t,
+$$
+
+按照之前的微分法则，计算 $dX_t$，我们有
+$$
+\begin{aligned}
+dX_t &= \frac{\partial F}{\partial t}(t, Y_t) dt + \frac{\partial F}{\partial x}(t, Y_t) dY_t + \frac{1}{2} \frac{\partial^2 F}{\partial x^2}(t, Y_t) (dY_t)^2 \\
+&= \frac{\partial F}{\partial t}(t, Y_t) dt + \frac{\partial F}{\partial x}(t, Y_t) (b(t, Y_t) dt + \sigma(t, Y_t) dB_t) + \frac{1}{2} \frac{\partial^2 F}{\partial x^2}(t, Y_t) (\sigma(t, Y_t))^2 dt \\
+&= \left( \frac{\partial F}{\partial t}(t, Y_t) + \frac{\partial F}{\partial x}(t, Y_t) b(t, Y_t) + \frac{1}{2} \frac{\partial^2 F}{\partial x^2}(t, Y_t) (\sigma(t, Y_t))^2 \right) dt + \frac{\partial F}{\partial x}(t, Y_t) \sigma(t, Y_t) dB_t
+\end{aligned}
+$$
+
+$X_t$ 的漂移项（$dt$ 的系数）由三个部分组成：$F$ 自身对时间的变化率、由 $Y_t$ 的漂移引起的变化率、以及由 $Y_t$ 的扩散引起的变化率。
+
+$X_t$ 的扩散项（$dB_t$ 的系数）则由 $F$ 对 $x$ 的偏导数和 $Y_t$ 的扩散系数共同决定。
+
 ### Ito 积分的推广
 
 到目前为止，我们已经定义了适应过程 $f \in \mathcal V$ 上的 Ito 积分 $\int_S^T f(t,\omega) \, dB_t(\omega)$，并且证明了它的鞅性质和路径连续性。
@@ -893,6 +917,47 @@ $$
     $$
 
 我们将以上过程构成的空间分别记作 $\mathcal{W}_{\mathcal{H}}(S,T), \mathcal{W}_{\mathcal{H}}^{m\times n}(S,T)$，并记 $\mathcal{W}_{\mathcal{H}} = \bigcup_{T>0} \mathcal{W}_{\mathcal{H}}(0,T)$. 
+
+#### 多维情况下的 Ito 引理
+
+考虑 $X_t = F(t, \mathbf{B}_t)$，其中 $b: [0,T] \times \mathbb{R}^n \to \mathbb{R}^n$ 是一个向量值函数，$\sigma: [0,T] \times \mathbb{R}^n \to \mathbb{R}^{n \times m}$ 是一个矩阵值函数，$F \in C^{1,2}([0,T] \times \mathbb{R}^n)$。
+
+我们泰勒展开到二阶：
+$$
+\begin{aligned}
+\Delta F_j &:= F(t_{j+1}, \mathbf{B}_{t_{j+1}}) - F(t_j, \mathbf{B}_{t_j}) \\
+&= \frac{\partial F}{\partial t}(t_j, \mathbf{B}_{t_j}) \Delta t_j + \sum_{i=1}^n \frac{\partial F}{\partial x_i}(t_j, \mathbf{B}_{t_j}) \Delta B_j^{(i)} + \frac{1}{2} \sum_{i,k=1}^n \frac{\partial^2 F}{\partial x_i \partial x_k}(t_j, \mathbf{B}_{t_j}) \Delta B_j^{(i)} \Delta B_j^{(k)} + o(\Delta t_j)
+\end{aligned}
+$$
+
+如果我们假设 $\mathbf{B_t}$ 是一个 $n$ 维标准布朗运动，那么 $\Delta B_j^{(i)} \Delta B_j^{(k)}$ 的期望为 $\delta_{ik} \Delta t_j$，其中 $\delta_{ik}$ 是 Kronecker delta。因此，在极限下，第二阶项的贡献为
+$$
+\frac{1}{2} \sum_{i=1}^n \frac{\partial^2 F}{\partial x_i^2}(t_j, \mathbf{B}_{t_j}) \Delta t_j
+$$
+
+因此，多维 Ito 引理的形式为：
+设 $\mathbf{B}_t$ 是一个 $n$ 维标准布朗运动，$F: [0,T] \times \mathbb{R}^n \to \mathbb{R}$ 是一个 $C^{1,2}$ 函数，则
+$$
+dX_t = \frac{\partial F}{\partial t}(t, \mathbf{B}_t) dt + \nabla F(t, \mathbf{B}_t) \cdot d\mathbf{B}_t + \frac{1}{2} \sum_{i=1}^n \frac{\partial^2 F}{\partial x_i^2}(t, \mathbf{B}_t) dt.
+$$ 
+
+如果 $\mathbf{B}_t$ 不是标准布朗运动，协方差矩阵为 $\Sigma(t)$。也就是说 
+$\mathbb{E}[\Delta B_j \Delta B_j^T] = \Sigma(t_j) \Delta t_j$，则第二阶项的变为
+$$
+\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma_{ik}(t_j) dt
+$$
+
+进一步地，如果 $X_t = F(t, Y_t)$，其中 $Y_t$ 满足
+$$
+dY_t = \mathbf{b}(t, Y_t) dt + \Sigma(t, Y_t) d\mathbf{B}_t,
+$$
+则
+$$
+\begin{aligned}
+dX_t &= \frac{\partial F}{\partial t}dt + \nabla F \cdot dY_t + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma_{ik} dt \\
+&= \left( \frac{\partial F}{\partial t}+ \nabla F \cdot \mathbf{b} + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma_{ik} \right) dt + \nabla F \cdot \Sigma\, d\mathbf{B}_t
+\end{aligned}
+$$
 
 ### 与 Stratonovich 积分的比较
 
@@ -1058,4 +1123,16 @@ $$
 因此，$X_t$ 也是关于 $\mathcal{H}_t$ 的鞅。
 我们理解为，一个随机过程如果在一个大信息集合下是鞅，那么在一个子信息集合下也是鞅。而 $X_t$ 本身生成的滤过是最小的满足适应性的滤过。
 2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，我们知道 $\mathbb{E}[X_t | \mathcal{H}_0] = X_0$。然后根据全期望公式，$\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{H}_0]] = \mathbb{E}[X_0]$。
+
+3.4 
+
+1. $X_t = B_t + 4t$，考虑 $s<t$，则 $$\mathbb{E}[X_t | \mathcal{F}_s] = \mathbb{E}[B_t | \mathcal{F}_s] + 4t = B_s + 4t \neq X_s = B_s + 4s.$$ 因此，$X_t$ 不是关于 $\mathcal{F}_t$ 的鞅。
+
+2. $X_t = B_t^2$，类似地，$$ \mathbb E[X_t |\mathcal{F_s}]=\mathbb{E}[(B_t-B_s)^2 + B_s^2 + 2(B_t-B_s)B_s | \mathcal {F_s}] = (t-s) + B_s^2$$ 因此，不是关于 $\mathcal{F_t}$ 的鞅
+
+3. $X_t = t^2 B_t - 2 \int_0^t s B_s ds$. 计算 $X$ 的微分 $$ dX_t = 2t B_t dt + t^2 dB_t - 2 t B_t dt = t^2 dB_t $$ 因此，$X_t = \int_0^t s^2 dB_s$ 是关于 $\mathcal{F}_t$ 的鞅（Ito 积分的鞅性质）。这告诉我们一个判断随机过程是否是鞅的技巧：如果它可以表示为一个 Ito 积分，那么它就是一个鞅。（其微分只含有 $dB_t$ 项）
+
+4. 对于这样的一个二维布朗运动 $(B_1(t), B_2(t))$，它对应的滤过 $\mathcal{F}_t$ 是由 $B_1(s), B_2(s)$ 生成的 $\sigma$-代数，$s \leq t$。计算 $\mathbb{E}[X_t | \mathcal{F}_s]$，我们有$$ \begin{aligned}\mathbb{E}[B_1(t) B_2(t) | \mathcal{F}_s] &= \mathbb{E}[(B_1(t) - B_1(s) + B_1(s))(B_2(t) - B_2(s) + B_2(s)) | \mathcal{F}_s] \\ &= \underbrace{\mathbb{E}[(B_1(t) - B_1(s))(B_2(t) - B_2(s)) | \mathcal{F}_s]}_{互相独立，协方差为0} + \mathbb{E}[(B_1(t) - B_1(s)) B_2(s) | \mathcal{F}_s] + \mathbb{E}[B_1(s) (B_2(t) - B_2(s)) | \mathcal{F}_s] + B_1(s) B_2(s) \\ &= B_1(s) B_2(s) \end{aligned} $$
+因此，$X_t$ 是关于 $\mathcal{F}_t$ 的鞅。
+或者也可以直接计算 $dX_t$，$$ dX_t = B_1(t) dB_2(t) + B_2(t) dB_1(t) $$ 由于 $B_1(t)$ 和 $B_2(t)$ 是独立的布朗运动，因此 $dX_t$ 中没有 $dt$ 项，只有 $dB_t$ 项，这说明 $X_t$ 是一个鞅。
 
