@@ -240,9 +240,9 @@ t_1 I_n & t_2 I_n & \cdots & t_k I_n
 \end{bmatrix} \in \mathbb R^{nk \times nk}
 $$
 
-我们有 $\mathbb E^{x}[(B_t - x)^2] = n t$。即布朗运动的方差与时间成正比； $\mathbb E^{x}[(B_t - x) (B_s - x)] = n \min(t,s)$。即布朗运动的协方差与时间的最小值成正比。
+我们有 $\mathbb E^{x}[|(B_t - x)|^2] = n t$。即布朗运动的方差与时间成正比； $\mathbb E^{x}[\langle B_t - x, B_s - x \rangle] = n \min(t,s)$。即布朗运动的协方差与时间的最小值成正比。
 
-因此，$\mathbb E^{x}[ (B_t - B_s)^2] = n (t-s), \forall 0 \leq s < t$。
+因此，$\mathbb E^{x}[ |(B_t - B_s)|^2] = n (t-s), \forall 0 \leq s < t$。
 
 2. 具有独立增量：对于任意的 $0 \leq t_1 < t_2 < \cdots < t_k$，增量 $B_{t_2} - B_{t_1}, B_{t_3} - B_{t_2}, \ldots, B_{t_k} - B_{t_{k-1}}$ 是相互独立的随机变量。
 
@@ -932,16 +932,17 @@ $$
 
 如果我们假设 $\mathbf{B_t}$ 是一个 $n$ 维标准布朗运动，那么 $\Delta B_j^{(i)} \Delta B_j^{(k)}$ 的期望为 $\delta_{ik} \Delta t_j$，其中 $\delta_{ik}$ 是 Kronecker delta。因此，在极限下，第二阶项的贡献为
 $$
-\frac{1}{2} \sum_{i=1}^n \frac{\partial^2 F}{\partial x_i^2}(t_j, \mathbf{B}_{t_j}) \Delta t_j
+\frac{1}{2} \sum_{i=1}^n \frac{\partial^2 F}{\partial x_i^2}(t_j, \mathbf{B}_{t_j}) \Delta t_j = \frac{1}{2} \Delta F(t_j, \mathbf{B}_{t_j}) \Delta t_j
 $$
+这里的 $\Delta F$ 是 $F$ 关于空间变量的拉普拉斯算子。
 
 因此，多维 Ito 引理的形式为：
 设 $\mathbf{B}_t$ 是一个 $n$ 维标准布朗运动，$F: [0,T] \times \mathbb{R}^n \to \mathbb{R}$ 是一个 $C^{1,2}$ 函数，则
 $$
-dX_t = \frac{\partial F}{\partial t}(t, \mathbf{B}_t) dt + \nabla F(t, \mathbf{B}_t) \cdot d\mathbf{B}_t + \frac{1}{2} \sum_{i=1}^n \frac{\partial^2 F}{\partial x_i^2}(t, \mathbf{B}_t) dt.
+dX_t = \frac{\partial F}{\partial t}(t, \mathbf{B}_t) dt + \nabla_x F(t, \mathbf{B}_t) \cdot d\mathbf{B}_t + \frac{1}{2} \Delta F(t, \mathbf{B}_t) dt.
 $$ 
 
-如果 $\mathbf{B}_t$ 不是标准布朗运动，协方差矩阵为 $\Sigma(t)$。也就是说 
+如果 $\mathbf{B}_t$ 不是标准布朗运动，而是 $m$ 维标准布朗运动乘上扩散系数 $\Sigma(t)\in \mathbb R^{n\times m}$。也就是说 
 $\mathbb{E}[\Delta B_j \Delta B_j^T] = \Sigma\Sigma^T(t_j)  \Delta t_j$，则第二阶项的变为
 $$
 \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik}(t_j) dt
@@ -951,6 +952,7 @@ $$
 $$
 dY_t = \mathbf{b}(t, Y_t) dt + \Sigma(t, Y_t) d\mathbf{B}_t,
 $$
+这里的 $\mathbf{B}_t$ 是一个 $m$ 维标准布朗运动，$\Sigma(t, Y_t)$ 是一个 $n \times m$ 的矩阵，那么根据 Ito 引理，
 则
 $$
 \begin{aligned}
@@ -1124,7 +1126,7 @@ $$
 因此，$X_t$ 也是关于 $\mathcal{H}_t$ 的鞅。
 我们理解为，一个随机过程如果在一个大信息集合下是鞅，那么在一个子信息集合下也是鞅。而 $X_t$ 本身生成的滤过是最小的满足适应性的滤过。
 2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，我们知道 $\mathbb{E}[X_t | \mathcal{H}_0] = X_0$。然后根据全期望公式，$\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{H}_0]] = \mathbb{E}[X_0]$。
-3. 考虑 $X_t = B_t^3$，其中 $B_t$ 是一个标准布朗运动。不难知道 $B_t^3$ 的期望在它自己生成的 $\sigma$-代数 $\mathcal{F}_t$ 下为 0。利用 Ito 引理，$dB_t^3 = 3 B_t^2 dB_t + 3 B_t dt$，因此它不是关于 $\mathcal{F}_t$ 的鞅。
+3. 考虑 $X_t = B_t^3$，其中 $B_t$ 是一个标准布朗运动。不难知道 $B_t^3$ 的无条件期望为 0。利用 Ito 引理，$dB_t^3 = 3 B_t^2 dB_t + 3 B_t dt$，因此它不是关于 $\mathcal{F}_t$ 的鞅。
 
 3.4 
 
