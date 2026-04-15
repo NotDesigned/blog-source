@@ -61,7 +61,7 @@ Sometimes we use generalized force and displacement to charactize the work done:
 
 | System | Force | Displacement |
 | -------- | -------- | -------- |
-| Wire    | tension $F$ | length $F$ |
+| Wire    | tension $F$ | length $L$ |
 | Fluid   | pressure $-P$ | volume $V$     |
 | Chemical reaction | chemical potential $\mu$ | particle number $N$|
 
@@ -255,9 +255,9 @@ $$
 \begin{aligned}
 \Omega(E) &= \frac{1}{h^{3N} N!}\int d \omega \delta(H(\omega ) -E) \\
 &= \frac{1}{h^{3N} N!}\int \prod_{i=1}^N d^{3}q_i d^{3} p_i \delta \left(\sum_{i=1}^N \frac{p_i^2}{2m} - E\right) \\
-&= \frac{V^{3N}}{h^{3N} N!}  \int \prod_{i=1}^N d^{3} p_i \delta \left(\sum_{i=1}^N \frac{p_i^2}{2m} - E\right) \\
-&= \frac{V^{3N}}{h^{3N} N!} 2m \int \prod_{i=1}^N d^{3} p_i \delta \left(\sum_{i=1}^N p_i^2 - 2mE\right) \\
-&= \frac{V^{3N}}{h^{3N} N!} 2m \frac{\pi^{3N/2}}{\Gamma(3N/2)}(2mE)^{\frac{3}{2}N-1}\\
+&= \frac{V^{N}}{h^{3N} N!}  \int \prod_{i=1}^N d^{3} p_i \delta \left(\sum_{i=1}^N \frac{p_i^2}{2m} - E\right) \\
+&= \frac{V^{N}}{h^{3N} N!} 2m \int \prod_{i=1}^N d^{3} p_i \delta \left(\sum_{i=1}^N p_i^2 - 2mE\right) \\
+&= \frac{V^{N}}{h^{3N} N!} 2m \frac{\pi^{3N/2}}{\Gamma(3N/2)}(2mE)^{\frac{3}{2}N-1}\\
 \end{aligned}
 $$
 
