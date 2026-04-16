@@ -722,7 +722,7 @@ post:
   math:
     # 开启后文章默认可用，自定义页面如需使用，需在 Front-matter 中指定 `math: true`
     # If you want to use math on the custom page, you need to set `math: true` in Front-matter
-    enable: true
+    enable: false
 
     # 开启后，只有在文章 Front-matter 里指定 `math: true` 才会在文章页启动公式转换，以便在页面不包含公式时提高加载速度
     # If true, only set `math: true` in Front-matter will enable math, to load faster when the page does not contain math
@@ -1129,27 +1129,3 @@ static_prefix:
 
   moment: https://lib.baomitu.com/moment.js/2.29.4/
 
-inject:
-  head:
-    - >-
-      <script>
-      window.MathJax = {
-        tex: {
-          macros: {
-            p:       "\\partial",
-            avg:     ["\\left\\langle #1 \\right\\rangle", 1],
-            vareps:  "\\varepsilon",
-            d:       "\\mathrm{d}",
-            dd:      "\\,\\mathrm{d}",
-            tr:      "\\mathrm{tr}",
-            abs:     ["\\left| #1 \\right|", 1],
-            norm:    ["\\left\\| #1 \\right\\|", 1],
-            paren:   ["\\left( #1 \\right)", 1],
-            bracket: ["\\left[ #1 \\right]", 1],
-            braces:  ["\\left\\{ #1 \\right\\}", 1],
-            set:     ["\\left\\{ #1 \\right\\}", 1],
-            bm:      ["\\begin{bmatrix} #1 \\end{bmatrix}", 1]
-          }
-        }
-      };
-      </script>

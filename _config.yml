@@ -113,15 +113,30 @@ deploy:
 markdown:
   plugins:
 
+
 mathjax:
   tags: none # or 'ams' or 'all'
   single_dollars: true # enable single dollar signs as in-line math delimiters
   cjk_width: 0.9 # relative CJK char width
   normal_width: 0.6 # relative normal (monospace) width
   append_css: true # add CSS to pages rendered by MathJax
-  every_page: false # if true, every page will be rendered by MathJax regardless the `mathjax` setting in Front-matter
+  every_page: true # if true, every page will be rendered by MathJax regardless the `mathjax` setting in Front-matter
   packages: # extra packages to load
-  extension_options: {}
+  extension_options:
+    macros:
+      p: "\\partial"
+      avg: ["\\left\\langle #1 \\right\\rangle", 1]
+      vareps: "\\varepsilon"
+      d: "\\mathrm{d}"
+      dd: "\\,\\mathrm{d}"
+      tr: "\\mathrm{tr}"
+      abs: ["\\left| #1 \\right|", 1]
+      norm: ["\\left\\| #1 \\right\\|", 1]
+      paren: ["\\left( #1 \\right)", 1]
+      bracket: ["\\left[ #1 \\right]", 1]
+      braces: ["\\left\\{ #1 \\right\\}", 1]
+      set: ["\\left\\{ #1 \\right\\}", 1]
+      bm: ["\\begin{bmatrix} #1 \\end{bmatrix}", 1]
 
 pandoc:
   args:
