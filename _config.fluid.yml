@@ -1130,23 +1130,26 @@ static_prefix:
   moment: https://lib.baomitu.com/moment.js/2.29.4/
 
 inject:
-  head: []
-  body:
-    - |
-      <div style="display:none">
-      $$
-      \newcommand{\p}{\partial}
-      \newcommand{\avg}[1]{\left\langle #1 \right\rangle}
-      \newcommand{\vareps}{\varepsilon}
-      \newcommand{\d}{\mathrm{d}}
-      \newcommand{\dd}{\,\mathrm{d}}
-      \newcommand{\tr}{\mathrm{tr}}
-      \newcommand{\abs}[1]{\left| #1 \right|}
-      \newcommand{\norm}[1]{\left\| #1 \right\|}
-      \newcommand{\paren}[1]{\left( #1 \right)}
-      \newcommand{\bracket}[1]{\left[ #1 \right]}
-      \newcommand{\braces}[1]{\left\{ #1 \right\}}
-      \newcommand{\set}[1]{\left\{ #1 \right\}}
-      \newcommand{\bm}[1]{\begin{bmatrix} #1 \end{bmatrix}}
-      $$
-      </div>
+  head:
+    - >-
+      <script>
+      window.MathJax = {
+        tex: {
+          macros: {
+            p:       "\\partial",
+            avg:     ["\\left\\langle #1 \\right\\rangle", 1],
+            vareps:  "\\varepsilon",
+            d:       "\\mathrm{d}",
+            dd:      "\\,\\mathrm{d}",
+            tr:      "\\mathrm{tr}",
+            abs:     ["\\left| #1 \\right|", 1],
+            norm:    ["\\left\\| #1 \\right\\|", 1],
+            paren:   ["\\left( #1 \\right)", 1],
+            bracket: ["\\left[ #1 \\right]", 1],
+            braces:  ["\\left\\{ #1 \\right\\}", 1],
+            set:     ["\\left\\{ #1 \\right\\}", 1],
+            bm:      ["\\begin{bmatrix} #1 \\end{bmatrix}", 1]
+          }
+        }
+      };
+      </script>
