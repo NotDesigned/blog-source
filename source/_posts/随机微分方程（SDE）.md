@@ -821,7 +821,10 @@ dX_t = \frac{\partial F}{\partial t}(t, B_t) dt + f(t, B_t) dB_t + \frac{1}{2} \
 $$
 因此，Ito 积分 $\int_0^T f(t, B_t) \, dB_t$ 可以表示为
 $$
-\int_0^T f(t, B_t) \, dB_t = X_T - X_0 - \int_0^T \left( \frac{\partial F}{\partial t}(t, B_t) + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt.
+\begin{aligned}
+\int_0^T f(t, B_t) \, dB_t &= \int_0^{B_T} f(T, y) dy  - \int_0^T \left(\int_0^{B_t} \partial_t f(t,y) dy + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt \\
+&= F(T, B_T) - \int_0^T \left( \frac{\partial F}{\partial t}(t, B_t) + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt.\\
+\end{aligned}
 $$
 
 这就是我们通过 Ito 引理计算 Ito 积分的一个基本方法。首先对 $f$ 非时间依赖部分进行不定积分，得到 $F$，然后应用 Ito 引理计算 $dX_t$，最后减去时间积分部分即可得到所需的 Ito 积分表达式。
@@ -1053,6 +1056,24 @@ $$
 3. $X_t = t^2 B_t - 2 \int_0^t s B_s ds$
 4. $X_t = B_1(t) B_2(t)$，其中 $(B_1(t), B_2(t))$ 是一个二维布朗运动。
 
+3.5 证明 $M_t = B_t^2 - t$ 是关于 $\mathcal{F}_t$ 的鞅。
+
+3.6 证明 $N_t = B_t^3 - 3t B_t$ 是关于 $\mathcal{F}_t$ 的鞅。
+
+3.7 我们有以下的等式：
+$$
+n! \int \cdots \int_{0 < t_1 < \cdots < t_n < t} dB_{t_1} \cdots dB_{t_n} = H_n\left(\frac{B_t}{\sqrt{t}}\right) t^{\frac{n}{2}}
+$$
+其中 $H_n(x)$ 是第 $n$ 个 Hermite 多项式，定义为
+$$
+H_n(x) = (-1)^n e^{\frac{x^2}{2}} \frac{d^n}{dx^n} e^{-\frac{x^2}{2}};\quad n = 0, 1, 2, \ldots
+$$
+
+1. 验证这些 Ito 积分是良定义的。（即满足联合可测性，适应性，$L^2$ 有界等条件）
+2. 验证公式对于 $n=1,2,3$ 的情况是成立的。
+3. 寻找一个递归关系来证明这个等式对于任意 $n$ 都是成立的。
+4. 利用其证明 3.6
+
 #### 解答
 
 3.1
@@ -1138,5 +1159,36 @@ $$
 
 4. 对于这样的一个二维布朗运动 $(B_1(t), B_2(t))$，它对应的滤过 $\mathcal{F}_t$ 是由 $B_1(s), B_2(s)$ 生成的 $\sigma$-代数，$s \leq t$。计算 $\mathbb{E}[X_t | \mathcal{F}_s]$，我们有$$ \begin{aligned}\mathbb{E}[B_1(t) B_2(t) | \mathcal{F}_s] &= \mathbb{E}[(B_1(t) - B_1(s) + B_1(s))(B_2(t) - B_2(s) + B_2(s)) | \mathcal{F}_s] \\ &= \underbrace{\mathbb{E}[(B_1(t) - B_1(s))(B_2(t) - B_2(s)) | \mathcal{F}_s]}_{互相独立，协方差为0} + \mathbb{E}[(B_1(t) - B_1(s)) B_2(s) | \mathcal{F}_s] + \mathbb{E}[B_1(s) (B_2(t) - B_2(s)) | \mathcal{F}_s] + B_1(s) B_2(s) \\ &= B_1(s) B_2(s) \end{aligned} $$
 因此，$X_t$ 是关于 $\mathcal{F}_t$ 的鞅。
-或者也可以直接计算 $dX_t$，$$ dX_t = B_1(t) dB_2(t) + B_2(t) dB_1(t) $$ 由于 $B_1(t)$ 和 $B_2(t)$ 是独立的布朗运动，因此 $dX_t$ 中没有 $dt$ 项，只有 $dB_t$ 项，这说明 $X_t$ 是一个鞅。
+或者也可以直接计算 $dX_t$，$$dX_t = B_1(t) dB_2(t) + B_2(t) dB_1(t) $$ 由于 $B_1(t)$ 和 $B_2(t)$ 是独立的布朗运动，因此 $dX_t$ 中没有 $dt$ 项，只有 $dB_t$ 项，这说明 $X_t$ 是一个鞅。
+
+3.5
+计算 $$ dM_t = 2 B_t dB_t + (dB_t)^2 - dt = 2 B_t dB_t $$ 
+
+因此，$M_t$ 是关于 $\mathcal{F}_t$ 的鞅。
+
+3.6
+计算 $$ dN_t = - 3 B_t dt + 3 B_t^2 dB_t + 3 B_t dt = 3 B_t^2 dB_t $$ 
+因此，$N_t$ 是关于 $\mathcal{F}_t$ 的鞅。
+
+3.7
+最内层 
+$$
+\int_0^{u_1} d B_{t_1} = B_{u_1}
+$$
+第二层
+$$
+\int_0^{u_2} B_{t_2} d B_{t_2} = \frac{1}{2} B_{u_2}^2 - \frac{1}{2} u_2
+$$
+第三层
+$$
+\int_0^{u_3} \left( \frac{1}{2} B_{t_3}^2 - \frac{1}{2} t_3 \right) d B_{t_3} 
+$$
+按照上面的计算方法，$f(t,y) = \frac{1}{2} y^2 - \frac{1}{2} t$。
+下一层新的函数 $F$
+$$
+F(t,y) = \int_0^t f(s,y) ds - G(t) 
+$$
+$$
+G(t) = \int_0^t \left(\int_0^s \frac{\partial f}{\partial t}(s, B_s) ds + \frac{1}{2} \frac{\partial f}{\partial x}(s, B_s) \right) ds.
+$$
 

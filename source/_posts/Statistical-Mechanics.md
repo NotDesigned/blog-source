@@ -237,6 +237,408 @@ $$
 
 ## Kinetic Theory of Gas
 
+### Liouville Theorem
+
+$$
+q'=q+\dot q \delta t + O(\delta t^2),
+p'=p+\dot p \delta t + O(\delta t^2),
+$$
+$$
+dq'=dq+\partial_q \dot q\ dq \delta t + O(\delta t^2),
+dp'=dp+\partial_p \dot p\ dp \delta t + O(\delta t^2)
+$$
+
+$$
+d \Gamma' = \prod_{\alpha=1}^{3N} dq'_{\alpha} dp'_{\alpha} = \prod_{\alpha=1}^{3N} (1+(\partial_q \dot q+\partial_p \dot p )\delta t + O(\delta t^2))dq_{\alpha} dp_{\alpha}
+$$
+Since $\partial_q \dot q+\partial_p \dot p=\partial_{qp} H -\partial_{pq} H =0$.
+$$
+d\Gamma = d \Gamma'
+$$
+So $\frac{d\rho}{dt}=0$. 
+
+$$
+\begin{align}
+\frac{d\rho}{dt} &= \partial_t \rho + \sum_\alpha \left(\dot{q}_\alpha\,\partial_{q_\alpha}\rho + \dot{p}_\alpha\,\partial_{p_\alpha}\rho\right) = 0\\
+\partial_t \rho &= -\{\rho, \mathcal{H}\}
+\end{align}
+$$
+$$
+\{\rho,\mathcal{H}\} = \partial_{p_{\alpha}} \mathcal{H}\partial_{q_\alpha}\rho-\partial_{q_\alpha}\mathcal{H}\partial_{p_{\alpha}}\rho
+$$
+The time evolution of the ensemble average
+$$
+\begin{aligned}
+\frac{d\langle O\rangle }{dt} &= \frac{d}{dt}\int O(p,q,t) \rho(p,q,t) d\Gamma\\
+&=\int\frac{dO}{dt}\rho+\underbrace{O\frac{d\rho}{dt}}_{0} d\Gamma \\
+&=\left\langle\frac{dO}{dt}\right\rangle \\
+&=\langle \{O,H\}\rangle \quad \text{If O is not explicitly depend on time}
+\end{aligned}
+$$
+
+Now, consider the equilibrium state:
+$$
+\partial_t \rho = -\{\rho, H\} =0 
+$$
+A possible solution is 
+$$
+\rho = \rho(\mathcal{H}(p,q))
+$$
+constant on constant energy surface, etc. or $\rho =\rho(H,L,\cdots)$  for additional conserved quantities.
+
+#### non-stationary densities converge onto the stationary solution
+
+Actually, this is the fact that the solutions are in the neighborhood of $\rho_{eq}$ for the most of the time. 
+
+Need ergodicity to justify.
+
+
+### BBGKY Hierarchy
+
+Define s-partial density 
+$$
+f_s(p_1,q_1,\cdots,p_s,q_s) = \frac{N!}{(N-s)!}\int\prod_{i=s+1}^N dV_i\rho(p_1,q_1,\cdots,p_N,q_N,t)= \frac{N!}{(N-s)!}\rho_s(p_1,q_1,\cdots,p_s,q_s,t)
+$$
+Assume the Hamiltonian
+$$
+\begin{aligned}
+\mathcal{H}(p,q)&=\sum_{i=1}^N\left[\frac{p_i^2}{2m}+U(q_i)\right]+\frac{1}{2}\sum_{(i,j)=1}^N\mathcal{V}(q_i-q_j)\\
+&=\sum_{i=1}^s\left[\frac{p_i^2}{2m}+U(q_i)\right]+\frac{1}{2}\sum_{(i,j)=1}^s \mathcal{V}(q_i-q_j)\\
+&\ +\sum_{i=s+1}^{n}\left[\frac{p_i^2}{2m}+U(q_i)\right]+\frac{1}{2}\sum_{(i,j)=s+1}^N\mathcal{V}(q_i-q_j)\\
+&\ + \sum_{i=1}^s\sum_{j=s+1}^N \mathcal{V}(q_i-q_j)\\
+&=\mathcal{H}_s+\mathcal{H}_{n-s}+\mathcal{H}'\\
+\end{aligned}
+$$
+$$
+\partial_t \rho_s = -\int \prod_{i=s+1}^N dV_i\{\rho,\mathcal{H}\} = -\underbrace{\int \prod_{i=s+1}^N dV_i \{\rho,\mathcal{H}_{s}\}}_{\{\rho_s,\mathcal{H_s}\}} - \underbrace{\int \prod_{i=s+1}^N dV_i\{\rho,\mathcal{H}_{n-s}\}}_{0}-\int \prod_{i=s+1}^N dV_i\{\rho,\mathcal{H'}\} 
+$$
+
+$$
+\begin{aligned}
+-\int \prod_{i=s+1}^N dV_i \{\rho,\mathcal{H}'\} &= -\int \prod_{i=s+1}^N dV_i \left(\underbrace{\sum_{j=1}^N\partial_{p_j}{\mathcal{H}'}\partial_{q_j} \rho}_{0}-\partial_{q_j} \mathcal{H}' \partial_{p_j} \rho\right) \\
+&= \int\prod_{i=s+1}^N d V_i \left(\sum_{j=1}^N \partial_{q_j}\mathcal H' \partial_{p_j} \rho\right)\\
+&= \int\prod_{i=s+1}^N d V_i \left(\sum_{j=1}^N  \partial_{p_j} (\rho \partial_{q_j}\mathcal H')\right) \quad \text{since } \partial_{p_j} \mathcal{H'}=0\\
+&= \int\prod_{i=s+1}^N d V_i \left(\sum_{j=1}^s  \partial_{p_j} (\rho \partial_{q_j}\mathcal H')\right)\\
+&= \int\prod_{i=s+1}^N d V_i \left(\sum_{j=1}^s  \partial_{p_j} \rho \partial_{q_j}\mathcal H'\right)\\
+&= \int\prod_{i=s+1}^N d V_i \left(\sum_{j=1}^s  \partial_{p_j} \rho\sum_{n=s+1}^N \partial_{q_j} \mathcal{V}(q_j-q_n)\right)\\
+&= (N-s)\sum_{j=1}^s \int dV_{s+1}\, \frac{\partial \mathcal{V}(q_j - q_{s+1})}{\partial q_j}\cdot \frac{\partial}{\partial p_j}\underbrace{\int \prod_{i=s+2}^N dV_i\, \rho}_{\rho_{s+1}}\\
+&= (N-s)\sum_{j=1}^s \int dV_{s+1}\, \frac{\partial \mathcal{V}(q_j - q_{s+1})}{\partial q_j}\cdot \frac{\partial \rho_{s+1}}{\partial p_j}
+\end{aligned}
+$$
+
+#### BBGKY Formula
+$$
+\partial_t \rho_s - \{\mathcal H_s,\rho_s\} = (N-s)\sum_{j=1}^s \int dV_{s+1}\, \frac{\partial \mathcal{V}(q_j - q_{s+1})}{\partial q_j}\cdot \frac{\partial \rho_{s+1}}{\partial p_j}
+$$
+or 
+$$
+\partial_t f_s - \{\mathcal H_s,f_s\} = \sum_{j=1}^s \int dV_{s+1}\, \frac{\partial \mathcal{V}(q_j - q_{s+1})}{\partial q_j}\cdot \frac{\partial f_{s+1}}{\partial p_j}
+$$
+Note that the LHS is the full time derivative of $\rho_s$, or action under 
+$$
+D_t  = (\partial_t+\dot q_{\alpha}\partial_{q_\alpha}+\dot p_{\alpha}\partial_{p_\alpha})
+$$
+adjusted by a scatter term (RHS).
+
+---
+### Boltzmann Equation & H-Theorem
+
+First Level in BBGKY equation
+$\dot q= \partial_{p} H = \frac{p}{m}$
+$\dot p=-\partial_q H = \partial_q V$ 
+$$
+\begin{gather}
+\left[\partial_t + \frac{p_1}{m} \partial_{q_1} - \partial_{q_1} U \partial_{p_1}\right] f_1 = \int dV_{2} \partial_{q_1} \mathcal{V}(q_1-q_2) \partial_{p_1}  f_2\\
+\left[\partial_t + \frac{p_1}{m}\partial_{q_1} + \frac{p_2}{m}\partial_{q_2}-\partial_{q_1} U \partial_{p_1} - \partial_{q_2} U \partial_{p_2} - \partial_{q_1} \mathcal{V}(q_1-q_2) [\partial_{p_1}-\partial_{p_2}]\right] f_2  = \\
+\int dV_3 \left[\partial_{q_1}\mathcal{V}(q_1-q_3)\partial_{p_1}+\partial_{q_2}\mathcal{V}(q_2-q_3)\partial_{p_2}\right]f_3 
+\end{gather}
+$$
+
+Estimation
+$$
+\begin{gather}
+v\sim 10^2\text{ m/s}\\
+\tau_{coll} \approx r_0 / v\\
+\frac{1}{\tau_c} \sim \partial_q{\mathcal V}\partial_p \sim \frac{v}{d=10^{-10}\text{m}}\approx 10^{12}s^{-1}\\
+\frac{1}{\tau_U} \sim \partial_q{U}\partial_p  \sim \frac{v}{L=10^{-3}\text{m}}\approx 10^{5}s^{-1}\\
+\frac{1}{\tau_x} \sim \frac{nd^3}{\tau_c} \approx 10^{8} s^{-1}
+\end{gather}
+$$
+
+LHS of $(1) \sim \frac 1{\tau_U}$ 
+RHS of $(1) \sim \frac{1}{\tau_x}$
+LHS of $(2) \sim \frac{1}{\tau_\text{coll}}$
+RHS of $(2) \sim \frac{1}{\tau_x}$
+
+So we can set RHS of $(2)$ to 0.
+
+$$
+\begin{gather}
+\left[\partial_t + \frac{p_1}{m} \partial_{q_1} - \partial_{q_1} U \partial_{p_1}\right] f_1 = \int dV_{2} \partial_{q_1} \mathcal{V}(q_1-q_2) \partial_{p_1} f_2\\
+\left[\partial_t + \frac{p_1}{m}\partial_{q_1} + \frac{p_2}{m}\partial_{q_2}-\partial_{q_1} U \partial_{p_1} - \partial_{q_2} U \partial_{p_2} - \partial_{q_1} \mathcal{V}(q_1-q_2) [\partial_{p_1}-\partial_{p_2}]\right] f_2  = 0
+\end{gather}
+$$
+
+
+$$
+L f_2 =\frac{df_2}{dt}=0
+$$
+And assume when $q_1, q_2$ distant
+$$
+f_2(p_1,q_1,p_2,q_2,t) \xrightarrow{|q_1-q_2| \gg d} f_1(p_1,q_1,t) f_2(p_2,q_2,t)\quad \text{Molecular Chaos}
+$$
+So
+$$
+f_2(q_1, p_1, q_2, p_2, t) = f_1(q_1, p_1^{(-\infty)}, t) f_1(q_2, p_2^{(-\infty)}, t)
+$$
+$q_1(-\infty) \approx q_1$ since the position won't change so much.
+
+
+$$
+\begin{gather}
+\left[\partial_t + \frac{p_1}{m}\partial_{q_1} + \frac{p_2}{m}\partial_{q_2}-\partial_{q_1} U \partial_{p_1} - \partial_{q_2} U \partial_{p_2} \right] f_2  = \partial_{q_1} \mathcal{V}(q_1-q_2) [\partial_{p_1}-\partial_{p_2}] f_2 \\
+\int dV_2 \partial_{q_1}\mathcal{V}(q_1-q_2)\partial_{p_2}f_2 = \int d q_2 \partial_{q_1}\mathcal{V}(q_1-q_2) \underbrace{\int d p_2  \partial_{p_2}f_2}_{0} =0
+\end{gather}
+$$
+Therefore, substitute into RHS of $(1)$: 
+
+$$
+\begin{aligned}
+\left[\partial_t + \frac{p_1}{m} \partial_{q_1} - \partial_{q_1} U \partial_{p_1}\right] f_1 &= \int dV_2 \left[\partial_t + \frac{p_1}{m}\partial_{q_1} + \frac{p_2}{m}\partial_{q_2}-\partial_{q_1} U \partial_{p_1} - \partial_{q_2} U \partial_{p_2} \right] f_2 \\
+\end{aligned}
+$$
+
+
+
+Change variable with $r = q_1-q_2, R= \frac{q_1+q_2}{2}$ , $P=p_1+p_2$, $p=p_1-p_2$.
+
+
+$$
+\mathrm{RHS} \approx \int dp d^3r \frac{p}{m} \partial_r f_2
+$$
+Since $U$ term and $\partial_t$ term is small, $r$ now be the coord along the line.
+![[particle_coll.jpg]]
+
+$$
+\begin{align}
+&= \int dp d^2b dr \frac{|p|}{m} \partial_r f_2 \\
+&= \int dp d^2b \frac{|p|}{m} \left[f_1(p_1')f_1(p_2')-f_1(p_1)f_1(p_2)\right] \\
+&= \int dp b db d\phi \frac{|p|}{m} \left[f_1(p_1')f_1(p_2')-f_1(p_1)f_1(p_2)\right] \\
+&= \int \frac{|p_1-p_2|}{m}dp \frac{d\sigma}{d \Omega}d\Omega  \left[f_1(p_1')f_1(p_2')-f_1(p_1)f_1(p_2)\right] \\
+\end{align}
+$$
+We conclude that
+$$
+\frac{d f_1(q(t),p(t),t)}{dt}=\int \frac{p}{m}dp \frac{d\sigma}{d \Omega}d\Omega  \left[f_1(p_1')f_1(p_2')-f_1(p_1)f_1(p_2)\right] \\
+$$
+#### H Theorem
+
+$$
+H=\int d^3pd^3q f_1(p,q,t)\ln f_1(p,q,t)
+$$
+
+$$
+\frac{d H}{dt}= \int \frac{1}{m} dp \frac{d\sigma}{d\Omega} d\Omega \left[f_1(p_1')f_1(p_2')-f_1(p_1)f_1(p_2)\right]\ln f_1(p_1)
+$$
+
+By the Livouille Theorem, we can swap $p_1'$ and $p_1$, $p_2'$ and $p_2$. By the symmetricity of $p_1, p_2$, we can swap the subscript too.
+
+$$
+\frac{d H}{dt}= \int \frac{1}{4m} dp \frac{d\sigma}{d\Omega} d\Omega \left[f_1(p_1')f_1(p_2')-f_1(p_1)f_1(p_2)\right][\ln f_1(p_1)f_1(p_2)-\ln f_1(p_1') f_1(p_2')] \leq 0
+$$
+
+$$
+S_{thermo} = -k_B H 
+$$
+
+### Equilibrium properties
+
+$$
+\frac{dH}{dt} = 0
+$$
+A necessary condition for $\frac{dH}{dt}=0$ is that
+$$
+f_1(\vec p_1, \vec q_1) f_1(\vec p_2, \vec q_2) = f_1(\vec p_1', \vec q_1) f_1(\vec p_2', \vec q_2)
+$$
+at each point $\vec q$
+$$
+\ln f_1(\vec p_1, \vec q_1)+\ln f_1(\vec p_2, \vec q_2) = \ln f_1(\vec p_1', \vec q_1)+\ln  f_1(\vec p_2', \vec q_2)
+$$
+We observed additive conserved quantities in the collision. 
+
+1. Number of particles
+2. Momentum
+3. Energy
+$$
+\ln f_1 = a(q)-\alpha(q)\cdot p -\beta(q)\left(\frac{p^2}{2m}\right)
+$$
+Or with potential energy
+$$
+\ln f_1 = a(q)-\alpha(q)\cdot p -\beta(q)\left(\frac{p^2}{2m} +  U(q)\right)
+$$
+$$
+\begin{aligned}
+f_1 = \mathcal{N}(q) \exp\left(\alpha(q)\cdot p -\beta(q) \left(\frac{p^2}{2m}\right)\right)
+\end{aligned}
+$$
+Assume uniform, $\{\mathcal H,f_1\}=0$ , $f_1$ only depend on $H_1$ or any other quantity that is conserved by it .
+For example, as long as $N$, $\beta$ independent of $q$ and $\alpha=0$.
+
+
+$$
+N=\mathcal N V\int \exp\left(- \alpha(q)\cdot p -\beta(q)\left(\frac{p^2}{2m}\right)\right)  d^3p = \mathcal{N} V\left(\frac{2m\pi}{\beta}\right)^{\frac {3}{2}}\exp\left(\frac{m\alpha ^2}{2\beta}\right)
+$$
+$$
+\begin{aligned}
+\mathcal N &= \frac{N}{V} \left(\frac{\beta}{2m\pi}\right)^{\frac {3}{2}}\exp\left(-\frac{m\alpha ^2}{2\beta}\right) \\
+f_1 &= n \left(\frac{\beta}{2m\pi}\right)^{\frac {3}{2}}  \exp\left(-\frac{(p-p_0)^2}{2\frac{m}{\beta}}\right)\\
+p_0 &= \frac{m\alpha}{\beta}, n=\frac{N}{V}
+\end{aligned}
+$$
+$$
+\avg {p^2} = \frac{3m}{\beta}
+$$
+Assume $\alpha=0$.
+
+Equilibrium between two gases:
+
+$$
+\begin{gather}
+C_{a,b}=-\int d^3 p_2 d^2 \Omega \left|\frac{d\sigma_{a,b}}{d\Omega}\right| |v_1-v_2| \left[f_1^{a}(p_1,q_1)f_1^{b}(p_2,q_1) - f_1^{a}(p_1',q_1)f_1^{b}(p_2',q_1)\right]\\
+\begin{cases}
+\partial_t f_1^{(a)} =\{\mathcal{H}_1^{(a)},f_1^{(a)}\} + C_{a,a}+C_{a,b}\\
+\partial_t f_1^{(b)} =\{\mathcal{H}_1^{(b)},f_1^{(b)}\} + C_{b,b}+C_{b,a}\\
+\end{cases}
+\end{gather}
+$$
+
+Equilibrium, all right assume to be zero.
+
+$$
+\begin{gather}
+C_{a,a}=0\Rightarrow f_1^{(a)} \propto \exp(-\beta_a\mathcal H_{1}^{(a)})\\
+C_{b,b}=0\Rightarrow f_1^{(b)} \propto \exp(-\beta_b\mathcal H_{1}^{(b)})\\
+C_{a,b}=0\Rightarrow f_1^{(a)}(p_1)f_1^{(b)}(p_2)=f_1^{(a)}(p_1')f_1^{(b)}(p_2')\\
+\Rightarrow \beta_a \mathcal{H}_1^{(a)}(p_1)+\beta_b\mathcal{H}_1^{(b)}(p_2) = \beta_a \mathcal{H}_1^{(a)}(p_1')+\beta_b\mathcal{H}_1^{(b)}(p_2')
+\end{gather}
+$$
+Can be satisfied with 
+$$
+\beta_a=\beta_b=\beta
+$$
+$$
+\avg{\frac{\vec p_a^2}{2m}} = \avg{\frac{\vec p_b^2}{2m}} =\frac{3}{2\beta}
+$$
+Ideal Gas Equation
+
+$$
+\begin{gather}
+d\mathcal{N}(p)=f_1(p)d^3p (Av_x\delta t)\\
+F = \frac{1}{\delta t}  \iint_{-\infty}^{\infty} \int_0^{\infty}  f_1(p) \left(A\frac{p_x}{m}\delta t\right) 2p_x dp_x d p_ydp_z\\
+P = F/A = \int d^3 p f_1(p)\frac{p_x^2}{m} = \avg{\frac{p_x^2}{m}} = \frac{n}{\beta}
+\end{gather}
+$$
+
+
+### Conservation Law
+
+Stage 1: 
+
+Governed by the fast collision term in the right of Boltzmann equation. (reached zero)
+equilibrium.
+
+local density, governed by the local conservatives.
+
+$$
+\begin{aligned}
+n(q,t)=\int d^3p f_1(p,q,t)\\
+\avg{O(q,t)} = \frac{1}{n(q,t)} \int d^3 p f_1 O(p,q,t)
+\end{aligned}
+$$
+
+Stage 2:
+
+Governed by the streaming term
+
+It is most conveniently expressed in terms of the time evolution of conserved quantities according to hydrodynamic equations.
+
+Conserved quantity $\chi$
+
+$\chi(p_1,q,t) +\chi (p_2,q,t) = \chi(p'_1,q,t) + \chi(p'_2,q,t)$  
+
+$$
+J_{\chi}(q,t) = \int d^3 p \chi(p,q,t) \frac{df_1}{dt}\bigg|_{coll} (p,q,t) =0
+$$
+
+If conserved in collision $\Rightarrow$ does not change.
+
+Now for the left term:
+$$
+\int d^3p\,\chi \left[\partial_t  + \frac{p}{m}\cdot\partial_q+ F\cdot\partial_p \right]f_1 = \underbrace{\int d^3p\,\chi\frac{df_1}{dt}\bigg|_\text{coll}}_{=0}
+$$
+$$
+\begin{gather}
+\int d^3 p \left[\partial_t  + \frac{p}{m}\cdot\partial_q+ F\cdot\partial_p \right](\chi f_1) - f_1 \left[\partial_t  + \frac{p}{m}\cdot\partial_q+ F\cdot\partial_p \right]\chi =0 \\
+\iff n\partial_t \avg{\chi} +\partial_{q_{\alpha}}\left(n\avg{\frac{p_{\alpha}}{m}\chi}\right) - n\avg{\partial_t \chi} - n\avg{\frac{p_{\alpha}}{m}\partial_{q_{\alpha}}\chi}-nF_{\alpha}\cdot \avg{\partial_{p_{\alpha}}\chi} =0
+\end{gather}
+$$
+Particle Number ($\chi=1$)
+$$
+\partial_t \avg{n} + \partial_{q_{\alpha}}\left(nu_{\alpha}\right) = 0, u=\avg{\frac{p}{m}}
+$$
+
+Momentum ($c\equiv\frac{p}{m}-u$) 
+
+$$
+\begin{gather}
+n\underbrace{\partial_t\avg{c}}_{0}+\underbrace{\partial_{q_{\alpha}}\paren{n\avg{(c_{\alpha}+u)c}}}_{n\p_{q_{\alpha}}\avg{c_\alpha c_\beta}}-n\underbrace{\avg{\p_t c}}_{-\partial_t u}-n\underbrace{\avg{\frac{p_\alpha}{m}\p_{q_{\alpha}}c}}_{-nu_\alpha\partial_{q_\alpha}u_\beta}-nF_{\alpha}\cdot \underbrace{\avg{\p_{p_\alpha}c}}_{\frac{1}{m}}=0\\
+\partial_t u_\alpha + u_\beta\partial_{q_\beta}u_\alpha = \frac{F_\alpha}{m} - \frac{1}{mn} \partial_{q_\beta}(P_{\alpha\beta})\\
+P_{\alpha\beta} = mn\langle c_\alpha c_\beta\rangle
+\end{gather}
+$$
+
+If $P_{\alpha\beta} = P\delta_{\alpha\beta}$:
+$$
+\boxed{mn\left(\partial_t u_\alpha + u_\beta\partial_{q_\beta}u_\alpha\right) = nF_\alpha - \partial_{q_\beta}P_{\alpha\beta}}
+$$
+Kinetic Energy 
+
+Plug in the peculiar speed 
+
+$$\epsilon\equiv\avg{mc^2/2} = \avg{p^2/2m - p\cdot u+ mu^2/2}$$
+
+$$
+\begin{align}
+&n\p_t \avg {\epsilon} + \p_{q_\alpha} \paren{n\avg{\frac{p_\alpha}{m}\epsilon}} - n \avg{\p_t \epsilon} - n \avg{\frac{p_\alpha}{m}\p_{q_\alpha}\epsilon} - nF_{\alpha}\cdot \avg{\p_{p_\alpha}\epsilon}=0\\
+& 
+\end{align}
+$$
+$$
+\begin{align}
+\langle \epsilon \rangle &= \avg{\frac{p^2}{2m}}- mu^2 + \frac{mu^2}{2} = \avg{\frac{p^2}{2m}} - \frac{1}{2}mu^2\\
+\p_t \avg{\epsilon} &=\partial_t \avg{\frac{p^2}{2m}} -mu\cdot \p_t u
+\end{align}
+$$
+### Zeroth-Order Solution
+
+Assume $f_1$ is in local equilibrium:
+
+$$f_1^{(0)}(\vec{p},\vec{q},t) = \frac{n(\vec{q},t)}{\left(2\pi mk_BT(\vec{q},t)\right)^{3/2}} \exp\left(-\frac{(\vec{p}-m\vec{u})^2}{2mk_BT(\vec{q},t)}\right)$$
+
+This satisfies the collision term exactly (RHS of Boltzmann = 0), but does not satisfy the full Boltzmann equation because the streaming operator $\mathcal{L}$ acts on the slowly varying fields $n, \vec{u}, T$.
+
+### First order equation 
+
+$$
+\begin{gather}
+f_1=f^0(1+g)\\
+\frac{df_1}{dt}\bigg|_\text{coll} \approx -\frac{f_1 - f^{(0)}}{\tau} = -\frac{f^{(0)}g}{\tau}\\
+\hat{L}f^{(0)} = -\frac{f^{(0)}g}{\tau}\\
+g = -\tau \frac{\hat{L}f^{(0)}}{f^{(0)}}
+\end{gather}
+$$
+
+
 ### Liouville's Theorem
 
 ### BBGKY Hierarchy
