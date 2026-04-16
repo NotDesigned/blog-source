@@ -731,22 +731,6 @@ post:
     # Options: mathjax | katex
     engine: mathjax
 
-    mathjax:
-      custom_macro:
-        "\\p": "\\partial"
-        "\\avg": ["\\left\\langle #1 \\right\\rangle", 1]
-        "\\vareps": "\\varepsilon"
-        "\\d": "\\mathrm{d}"
-        "\\dd": "\\,\\mathrm{d}"
-        "\\tr": "\\mathrm{tr}"
-        "\\abs": ["\\left| #1 \\right|", 1]
-        "\\norm": ["\\left\\| #1 \\right\\|", 1]
-        "\\paren": ["\\left( #1 \\right)", 1]
-        "\\bracket": ["\\left[ #1 \\right]", 1]
-        "\\braces": ["\\left\\{ #1 \\right\\}", 1]
-        "\\set": ["\\left\\{ #1 \\right\\}", 1]
-        "\\bm": ["\\begin{bmatrix} #1 \\end{bmatrix}", 1]
-
   # 流程图，基于 mermaid-js，具体请见：https://hexo.fluid-dev.com/docs/guide/#mermaid-流程图
   # Flow chart, based on mermaid-js, see: https://hexo.fluid-dev.com/docs/en/guide/#mermaid
   mermaid:
@@ -1144,3 +1128,20 @@ static_prefix:
   hint: https://lib.baomitu.com/hint.css/2.7.0/
 
   moment: https://lib.baomitu.com/moment.js/2.29.4/
+
+
+mathjax:
+  custom_macro:
+    "\\p": "\\partial"
+    "\\avg": ["\\left\\langle #1 \\right\\rangle", 1]
+    "\\vareps": "\\varepsilon"
+    "\\d": "\\mathrm{d}"
+    "\\dd": "\\,\\mathrm{d}"
+    "\\tr": "\\mathrm{tr}"
+    "\\abs": ["\\left| #1 \\right|", 1]
+    "\\norm": ["\\left\\| #1 \\right\\|", 1]
+    "\\paren": ["\\left( #1 \\right)", 1]
+    "\\bracket": ["\\left[ #1 \\right]", 1]
+    "\\braces": ["\\left\\{ #1 \\right\\}", 1]
+    "\\set": ["\\left\\{ #1 \\right\\}", 1]
+    "\\bm": ["\\begin{bmatrix} #1 \\end{bmatrix}", 1]
