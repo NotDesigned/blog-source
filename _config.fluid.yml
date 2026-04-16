@@ -1128,3 +1128,28 @@ static_prefix:
   hint: https://lib.baomitu.com/hint.css/2.7.0/
 
   moment: https://lib.baomitu.com/moment.js/2.29.4/
+
+inject:
+  head:
+    - <script>...</script>
+  body:
+    - > 
+      <div style="display:none">
+      $$
+      \newcommand{\p}{\partial}
+      \newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+      \newcommand{\vareps}{\varepsilon}
+
+      \newcommand{\d}{\mathrm{d}}			%微分符号
+      \newcommand{\dd}{\,\mathrm{d}}
+      \newcommand{\tr}{\mathrm{tr}}			%矩阵迹
+
+      \newcommand{\abs}[1]{\left| #1 \right|}
+      \newcommand{\norm}[1]{\left\| #1 \right\|}
+      \newcommand{\paren}[1]{\left( #1 \right)}
+      \newcommand{\bracket}[1]{\left[ #1 \right]}
+      \newcommand{\braces}[1]{\left\{ #1 \right\}}
+      \newcommand{\set}[1]{\left\{ #1 \right\}} 
+      \newcommand{\bm}[1] {\begin{bmatrix} #1 \end{bmatrix}}
+      $$
+      </div>

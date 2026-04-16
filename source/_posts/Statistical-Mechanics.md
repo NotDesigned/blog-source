@@ -25,6 +25,51 @@ View it as some ensemble such as:
 - Thermodynamics coordinates.
 - State Variable: $P$ (Pressure), $V$ (Volume), $\mu$ (Chemical Potential), etc.
 
+### The idea of SM Thermodynamics(example):
+
+For kinetic theory of gas, the system in micro perspective can be completely described as
+$$
+(\vec p_1,\cdots, \vec p_N, \vec q_1,\cdots, \vec q_N)
+$$
+as a point in phase space of dim $6N$ (3 for 3d).
+
+And in phase space, a probability measure $P$ is introduced for each state.
+
+**The Boltzmann equation and H theorem** says that the equilibrium we can observe occurs as the maximization of entropy $S$ 
+
+$$
+\begin{aligned}
+\max&\quad S(P) = \int P \ln P d\omega\\
+\text{s.t.}&\quad \int P(\omega) d\omega =1 \quad\text{Probability Measure}\\
+&\quad \int \rho(\omega) dP = \chi\quad\text{Energy constraint, etc.}\\
+&\quad \text{more constraint }
+\end{aligned}
+$$
+
+Use Lagrangrian Multipler:
+$$
+\max \min_{\lambda_1,\lambda_2,\cdots} f(P, \lambda_1,\lambda_2,\cdots) =\int P\ln P d\omega + \lambda_1 \left(\int P(\omega) d\omega -1\right) + \lambda_2 \left( \int \rho(\omega) P d\omega - \chi\right) +\cdots
+$$
+
+$$
+\begin{aligned}
+&\frac{\delta F}{\delta P} = \ln P +1 + \lambda_1 + \lambda_2\rho(\omega) +\cdots =0 \\
+&\Rightarrow P(\omega) = \exp\left(-1-\lambda_1-\lambda_2\rho(\omega)-\cdots\right)
+\end{aligned}
+$$
+Define
+$$
+Z=\int \exp\left(-\lambda_2\rho(\omega)-\cdots\right) d\omega \\
+P(\omega) = \frac{\exp\paren{\lambda_2\rho(\omega)-\cdots}}{Z}
+$$
+to absorb $1+\lambda_1$.
+
+Question to be answered:
+
+- Why the equilibrium occurs when $S$ is maximized (and why $S$ is in this form?)
+- How to calculate the amount we care from this? (To be precise, ensemble averages $\avg{A}=\int A P d\omega$)
+
+We will go back to this later, but now we shall first look at the classical thermodynamics.
 
 #### The Zeroth Law of Thermodynamics:
 
@@ -76,12 +121,16 @@ Response functions:
 Charactizing the macroscopic behaviour of the system:
 
 Heat capacities:
+
 $$
 C_V = \frac{\bar d Q}{d T}\bigg|_V = \frac{d E + P dV}{d T}\bigg|_V= \frac{\partial E}{\partial T}\bigg|_V\\
-
 C_P = \frac{\bar d Q}{d T}\bigg|_P = \frac{d E + P dV}{d T}\bigg|_P= P\frac{\partial V}{\partial T}\bigg|_P + \frac{\partial E}{\partial V}\bigg|_P
 $$
-For ideal gas $$C_P-C_V = P \frac{\partial V}{\partial T}\bigg|_P= Nk_B$$
+
+For ideal gas 
+$$
+C_P-C_V = P \frac{\partial V}{\partial T}\bigg|_P= Nk_B
+$$
 
 Isothermal compressibility:
 $$
@@ -139,9 +188,9 @@ The best heat engine is the Carnot engine, which consists of two isothermal proc
 3. Isothermal compression: the system is in contact with the cold reservoir at temperature $T_c$, and compresses from volume $V_3$ to $V_4$.
 4. Adiabatic compression: the system is isolated and compresses from volume $V_4$ to $V_1$.
 
-See https://galileo.phys.virginia.edu/classes/152.mf1i.spring02/CarnotEngine.htm for more details.
+See [https://galileo.phys.virginia.edu/classes/152.mf1i.spring02/CarnotEngine.htm]() for more details.
 
-We argue that the efficiency of the Carnot engine is the upper bound of all heat engines, otherwise we can use the more efficient engine to run the Carnot engine in reverse to create a perpetual motion machine of the second kind (Pump heat from cold to hot without work input).
+We argue that the efficiency of the Carnot engine is the **upper bound** of all heat engines, otherwise we can use the more efficient engine to run the Carnot engine in reverse to create a perpetual motion machine of the second kind (Pump heat from cold to hot without work input).
 
 Use the ideal gas as an example, we can calculate the efficiency of the Carnot engine is 
 $$
@@ -215,15 +264,16 @@ P(\rho) =\begin{cases}
 \end{cases}
 $$
 
+$$
+\propto 1 \quad \text{Equally weighted}
+$$
+
 #### Canonical System
 
 We now fix $T$ instead of $E$, i.e. $\langle E\rangle$ is fixed.
 
 But the system can be in energy $E$ with probability $\propto\exp(-\beta H(\sigma))$
 
-$$
-\propto 1 \quad \text{Equally weighted}
-$$
 
 #### Grandcanonical System
 
@@ -314,3 +364,22 @@ $$
 
 ### Implications
 
+Show that 
+
+$$
+C_B - C_M=\frac{cB^2}{T^2}
+$$
+
+where $C_B$ and $C_M$ are heat capacities at constant $B$ and $M$, respectively.
+
+### Molecular oxygen 
+
+has a net magnetic spin $\vec S$ of unity, that is, $S^z$ is quantized to $-1,0,$ or $+1$. The Hamiltonian for an ideal gas of $N$ such molecules in a magnetic field $\vec B \hat z$.
+
+$$
+\mathcal{H} = \sum_{i=1}^N \left[\frac{p_i^2}{2m} - \mu B S_i^z\right] 
+$$
+
+where $\{\vec p_i\}$ are the center of mass momenta of the molecules. The corresponding coordinates $\{\vec q_i\}$ are confined to a volume $V$. (Ignore all other degrees of freedom.)
+
+$(a)$ Treating $\{\vec p_i, \vec q_i\}$ classically, but the spin degrees of freedom as quantized, calculate the partition function $Z(T,N,V,B)$.
