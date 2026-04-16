@@ -15,12 +15,14 @@ Thermodynamics, essentially, is a phenomenological description of macroscopic sy
 **How to idealize the system**
 
 View it as some ensemble such as:
+
 - closed system: often descripted as a closed box with adiabatic walls. (Microcanonical)
 - open system: with exchanges
     - canonical: exchanges heat. (Two system with diabatic wall)
     - grandcanonical: exchanges both heat and particles, etc.
 
 **How to describe the system**
+
 - State function
 - Thermodynamics coordinates.
 - State Variable: $P$ (Pressure), $V$ (Volume), $\mu$ (Chemical Potential), etc.
