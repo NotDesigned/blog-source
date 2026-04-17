@@ -605,18 +605,18 @@ Kinetic Energy
 
 Plug in the peculiar speed 
 
-$$\epsilon\equiv\avg{mc^2/2} = \avg{p^2/2m - p\cdot u+ mu^2/2}$$
+$$\vareps\equiv\avg{mc^2/2} = \avg{p^2/2m - p\cdot u+ mu^2/2}$$
 
 $$
 \begin{align}
-&n\p_t \avg {\epsilon} + \p_{q_\alpha} \paren{n\avg{\frac{p_\alpha}{m}\epsilon}} - n \avg{\p_t \epsilon} - n \avg{\frac{p_\alpha}{m}\p_{q_\alpha}\epsilon} - nF_{\alpha}\cdot \avg{\p_{p_\alpha}\epsilon}=0\\
+&n\p_t \avg {\vareps} + \p_{q_\alpha} \paren{n\avg{\frac{p_\alpha}{m}\vareps}} - n \avg{\p_t \vareps} - n \avg{\frac{p_\alpha}{m}\p_{q_\alpha}\vareps} - nF_{\alpha}\cdot \avg{\p_{p_\alpha}\vareps}=0\\
 & 
 \end{align}
 $$
 $$
 \begin{align}
-\langle \epsilon \rangle &= \avg{\frac{p^2}{2m}}- mu^2 + \frac{mu^2}{2} = \avg{\frac{p^2}{2m}} - \frac{1}{2}mu^2\\
-\p_t \avg{\epsilon} &=\partial_t \avg{\frac{p^2}{2m}} -mu\cdot \p_t u
+\langle \vareps \rangle &= \avg{\frac{p^2}{2m}}- mu^2 + \frac{mu^2}{2} = \avg{\frac{p^2}{2m}} - \frac{1}{2}mu^2\\
+\p_t \avg{\vareps} &=\partial_t \avg{\frac{p^2}{2m}} -mu\cdot \p_t u
 \end{align}
 $$
 ### Zeroth-Order Solution
@@ -637,19 +637,6 @@ f_1=f^0(1+g)\\
 g = -\tau \frac{\hat{L}f^{(0)}}{f^{(0)}}
 \end{gather}
 $$
-
-
-### Liouville's Theorem
-
-### BBGKY Hierarchy
-
-### Boltzmann's Equation
-
-### H Theorem
-
-### Equilibrium and Conservation Laws
-
-### Hydrodynamics
 
 ## (Classical) Statistical Mechanics
 
