@@ -153,8 +153,11 @@ $Z_{\text{soft},i}$ is the softmax denominator in the $i$-th token generation.
 
 
 Gives:
+
 1. $q_e$, Boltzmann probability indicated by the marco energy.
+
 2. $C$, partition function of marcostate's Boltzmann distribution.
+
 $$
 CE=\beta_1 \mathbb E_q[{E(x)}] = \beta_1 \mathbb E_{p_e}[\log Q_e]
 $$

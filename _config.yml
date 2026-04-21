@@ -125,6 +125,8 @@ mathjax:
   extension_options:
     macros:
       p: "\\partial"
+      R: "\\mathbb{R}"
+      E: "\\mathbb{E}"
       avg: ["\\left\\langle #1 \\right\\rangle", 1]
       vareps: "\\varepsilon"
       d: "\\mathrm{d}"
