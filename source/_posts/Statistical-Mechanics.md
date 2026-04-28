@@ -417,7 +417,8 @@ $$
 \mathrm{RHS} \approx \int dp d^3r \frac{p}{m} \partial_r f_2
 $$
 Since $U$ term and $\partial_t$ term is small, $r$ now be the coord along the line.
-![[particle_coll.jpg]]
+
+![](particle_coll.jpg)
 
 $$
 \begin{align}
@@ -431,6 +432,7 @@ We conclude that
 $$
 \frac{d f_1(q(t),p(t),t)}{dt}=\int \frac{p}{m}dp \frac{d\sigma}{d \Omega}d\Omega  \left[f_1(p_1')f_1(p_2')-f_1(p_1)f_1(p_2)\right] \\
 $$
+
 #### H Theorem
 
 $$
@@ -619,6 +621,7 @@ $$
 \p_t \avg{\vareps} &=\partial_t \avg{\frac{p^2}{2m}} -mu\cdot \p_t u
 \end{align}
 $$
+
 ### Zeroth-Order Solution
 
 Assume $f_1$ is in local equilibrium:
@@ -704,8 +707,14 @@ $$
 
 ### Partition Function and the Calculations
 
+Here we assume the hamiltonian is 
 $$
-Z = \int d \omega p(\omega) 
+H = \sum_{i=1}^N \frac{p_i^2}{2m}
+$$
+$N$ non-interacting particles in a box of volume $V$ and potential energy $U=0$.
+
+$$
+Z = \int d \omega p(\omega)
 $$
 where $p(\omega)$ is unnormalized distribution.
 
@@ -743,10 +752,32 @@ Z(\beta, V, N) &= C \int E^{3N/2-1} \exp(-\beta E) dE\\
 \end{aligned}
 $$
 
-Note:
+> The integration formula for Gamma function:
 $$
 \int x^{\alpha-1}\exp(-\beta x) dx = \frac{\Gamma(\alpha)}{\beta^{\alpha}}
 $$
+
+$$
+\ln Z = N \ln V - 3N/2 \ln \beta - 3N \ln h + 3N/2 \ln (2\pi m) - N\ln N + N  
+$$
+
+The average energy is given by:
+$$
+\begin{aligned}
+\avg{E} &=\frac{1}{Z}\int E \exp(-\beta E) dE\\
+&=-\frac{\partial \ln Z}{\partial \beta} = \frac{3N}{2\beta} = \frac{3}{2} Nk_B T
+\end{aligned}
+$$
+Or
+$$
+\avg{E} = k_B T^2\p_T \ln Z = \frac{3}{2} Nk_B T
+$$
+
+we can also calculate the one particle partition function $Z_1$:
+$$
+Z_1 = \frac{V}{\lambda^3}, Z = \frac{Z_1^N}{N!}
+$$
+where $\lambda =  \frac{h}{\sqrt{2\pi m k_B T}}$ is thermal de Broglie wavelength.
 
 In grandcanonical ensemble:
 
@@ -757,8 +788,6 @@ $$
 \end{aligned}
 $$
 
-where $\lambda =  \frac{h}{\sqrt{2\pi m k_B T}}$ is thermal de Broglie wavelength.
-
 In Gibbs ensemble:
 
 $$
@@ -767,5 +796,36 @@ G(\beta, P, N) &= \int_0^\infty dV \, e^{-\beta P V} Z_{\text{can}}(\beta, V, N)
 &= \int_0^\infty dV \, e^{-\beta P V} \cdot \frac{V^N}{h^{3N} N!} \left(\frac{2\pi m}{\beta}\right)^{3N/2} \\
 &= \frac{1}{h^{3N} N!}\left(\frac{2\pi m}{\beta}\right)^{3N/2} \int_0^\infty V^N e^{-\beta P V} dV\\
 &= \frac{1}{h^{3N}}\left(\frac{2\pi m}{\beta}\right)^{3N/2} \frac{1}{(\beta P)^{N+1}}
+\end{aligned}
+$$
+
+### Reversible Process
+
+**Definition**:
+
+> A process is reversible if carried out in such a way that the system is always infinitesimally close to the equilibrium condition.
+
+If it is not in a equilibrium state, we cannot define the temperature, pressure, etc. of the system and apply the thermodynamic math.
+
+Consider system is compressed by a piston. If we compress it very slowly, the system is always in equilibrium from $V$ to $V-\Delta V$.
+
+For a particular state $\rho$, the change of energy is given by
+$$
+\begin{aligned}
+\Delta \mathcal{H} = -\frac{\p \mathcal{H}}{\p V} \Delta V\\
+\end{aligned}
+$$
+
+And in the ensemble average, we have
+$$
+\begin{aligned}
+\Delta \mathcal{H} = P \Delta V
+\end{aligned}
+$$
+
+Therefore we derive that
+$$
+\begin{aligned}
+P = -\avg{\frac{\p \mathcal{H}}{\p V}} = - \paren{\frac{\p U}{\p V}}\bigg|_{S}
 \end{aligned}
 $$
