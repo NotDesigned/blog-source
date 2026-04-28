@@ -751,26 +751,3 @@ G(\beta, P, N) &= \int_0^\infty dV \, e^{-\beta P V} Z_{\text{can}}(\beta, V, N)
 &= \frac{1}{h^{3N}}\left(\frac{2\pi m}{\beta}\right)^{3N/2} \frac{1}{(\beta P)^{N+1}}
 \end{aligned}
 $$
-
-
-### Implications
-
-Show that 
-
-$$
-C_B - C_M=\frac{cB^2}{T^2}
-$$
-
-where $C_B$ and $C_M$ are heat capacities at constant $B$ and $M$, respectively.
-
-### Molecular oxygen 
-
-has a net magnetic spin $\vec S$ of unity, that is, $S^z$ is quantized to $-1,0,$ or $+1$. The Hamiltonian for an ideal gas of $N$ such molecules in a magnetic field $\vec B \hat z$.
-
-$$
-\mathcal{H} = \sum_{i=1}^N \left[\frac{p_i^2}{2m} - \mu B S_i^z\right] 
-$$
-
-where $\{\vec p_i\}$ are the center of mass momenta of the molecules. The corresponding coordinates $\{\vec q_i\}$ are confined to a volume $V$. (Ignore all other degrees of freedom.)
-
-$(a)$ Treating $\{\vec p_i, \vec q_i\}$ classically, but the spin degrees of freedom as quantized, calculate the partition function $Z(T,N,V,B)$.
