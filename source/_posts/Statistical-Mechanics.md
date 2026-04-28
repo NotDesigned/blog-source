@@ -418,7 +418,7 @@ $$
 $$
 Since $U$ term and $\partial_t$ term is small, $r$ now be the coord along the line.
 
-![](particle_coll.jpg)
+![coll_illustration](Statistical-Mechanics/particle_coll.jpg)
 
 $$
 \begin{align}
@@ -799,7 +799,25 @@ G(\beta, P, N) &= \int_0^\infty dV \, e^{-\beta P V} Z_{\text{can}}(\beta, V, N)
 \end{aligned}
 $$
 
+![Ensembles](Statistical-Mechanics/ensembles.png)
+
 ### Reversible Process
+
+Sometimes we use $\sigma$ be the Shannon entropy of the system, $\tau$ be the average energy.
+
+$$
+\begin{aligned}
+\sigma &= S_{thermo}/k_B = \ln \Omega(E)\\
+\tau &= k_B T\\
+\sigma \tau &= S_{thermo} T
+\end{aligned}
+$$
+
+The advantage is that $\sigma$ is dimensionless, and $\tau$ is in energy unit $J$.
+
+$$
+F = U - \tau \sigma, dF = -\sigma d\tau - P dV
+$$
 
 **Definition**:
 
@@ -826,6 +844,12 @@ $$
 Therefore we derive that
 $$
 \begin{aligned}
-P = -\avg{\frac{\p \mathcal{H}}{\p V}} = - \paren{\frac{\p U}{\p V}}\bigg|_{S}
+P = -\avg{\frac{\p \mathcal{H}}{\p V}} = - \paren{\frac{\p U}{\p V}}\bigg|_{\sigma}
 \end{aligned}
 $$
+
+If $\sigma$ is not fixed but $\tau$ is fixed, we have
+$$
+P = - \frac{\partial F}{\partial V} = - \frac{\partial U}{\partial V} + \tau \frac{\partial \sigma}{\partial V}
+$$
+
