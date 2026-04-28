@@ -661,16 +661,35 @@ $$
 
 #### Canonical System
 
-We now fix $T$ instead of $E$, i.e. $\langle E\rangle$ is fixed.
+We now fix $T$ instead of $E$ for a system in contact with a heat reservoir.
 
-But the system can be in energy $E$ with probability $\propto\exp(-\beta H(\sigma))$
+Consider the whole system $R\otimes S$, where $R$ is the heat reservior, $S$ is the canonical system we want to study.
+
+For the whole system $R\otimes S$, it is in the microcanonical ensemble.
+
+$$
+\begin{aligned}
+P(\sigma_R, \sigma_S) &\propto \delta(H_R(\sigma_R)+H_S(\sigma_S)-E)\\
+P(\sigma_S) &\propto \int d\sigma_R \delta(H_R(\sigma_R)+H_S(\sigma_S)-E)\\
+&= \int d\sigma_R \delta(H_R(\sigma_R)-E+H_S(\sigma_S))\\
+&= \Omega_R(E-H_S(\sigma_S))\\
+&\approx \Omega_R(E) \exp\left(-\beta H_S(\sigma_S)\right)
+\end{aligned}
+$$
+
+The last step is expand $\ln \Omega_R$ at $E$ to the first order, and use $\beta = \frac{\partial \ln \Omega_R}{\partial E}$.
+
+Question: 
+
+> Why not expand $\Omega_R$ directly? 
+> Hint: $\Omega_R$ is exponential in $E$. Draw $\exp x$'s expansion at $x=100$ to see the difference.
 
 
 #### Grandcanonical System
 
 We now fix $\mu$ instead of $N$.
 
-The system can be in energy $E$, particle number $N$ with probability 
+For similar reason, the system can be in energy $E$, particle number $N$ with probability:
 $$
 \propto \exp(-\beta (E -\mu N))
 $$
@@ -701,7 +720,6 @@ $$
 &= \frac{V^{N}}{h^{3N} N!} 2m \frac{\pi^{3N/2}}{\Gamma(3N/2)}(2mE)^{\frac{3}{2}N-1}\\
 \end{aligned}
 $$
-
 
 In canonical ensemble:
 
