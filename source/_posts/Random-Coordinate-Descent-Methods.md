@@ -14,7 +14,7 @@ This is a reading note on the paper "Random Coordinate Descent Methods for Minim
 
 Knowledge prerequisite on submodular function (in Chinese):
 
-[子模函数以及Lovasz拓展](https://notdesigned.github.io/2025/06/11/%E5%AD%90%E6%A8%A1%E5%87%BD%E6%95%B0%E4%BB%A5%E5%8F%8ALovasz%E6%8B%93%E5%B1%95/)
+{% post_link 子模函数以及Lovasz拓展 "子模函数以及Lovasz拓展" %}
 
 ## Preliminaries
 
@@ -68,7 +68,7 @@ $$
 
 ## Application on Densest Subgraph Problem
 
-To see the definition, please refer to the [Densest Subgraph Problem](https://notdesigned.github.io/2025/06/16/Densest-Subgraph/) post.
+To see the definition, please refer to the {% post_link Densest-Subgraph "Densest Subgraph Problem" %} post.
 
 The quadratic formulation of DDS problem is defined as follows:
 

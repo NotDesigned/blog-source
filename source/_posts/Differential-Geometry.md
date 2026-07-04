@@ -19,7 +19,7 @@ For Chinese reader, you can refer to the website http://staff.ustc.edu.cn/~wangz
 
 ## Review on Manifolds
 
-Please refer to the "[Differential Manifold](https://notdesigned.github.io/2025/08/04/Differential-Manifold/)" article.
+Please refer to the "{% post_link Differential-Manifold "Differential Manifold" %}" article.
 
 For the sake of this articles, one at least need to understand the following concept in that article.
 

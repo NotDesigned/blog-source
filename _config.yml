@@ -103,12 +103,12 @@ theme: fluid
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
-deploy:
-  type: git
-  # repo: https://github.com/NotDesigned/NotDesigned.github.io.git
-  repo: git@github.com:NotDesigned/NotDesigned.github.io.git
-  branch: main
-  token: 
+# deploy:
+#   type: git
+#   # repo: https://github.com/NotDesigned/NotDesigned.github.io.git
+#   repo: git@github.com:NotDesigned/NotDesigned.github.io.git
+#   branch: main
+#   token:
 
 markdown:
   plugins:

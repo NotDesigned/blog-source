@@ -98,7 +98,7 @@ But when the support of $p_{data}$ and $p_{g}$ has no intersection, the JS loss 
 
 Wasserstein GAN (WGAN) is a variant of GAN that addresses some of the limitations of the original GAN formulation, particularly the issues related to training stability and mode collapse. WGAN uses the Wasserstein distance (also known as Earth Mover's Distance) to measure the distance between the real data distribution and the generated data distribution.
 
-See this article for more about Wasserstein distance: [Wasserstein Distance and Optimal Transport](https://notdesigned.github.io/2025/07/16/Wasserstein-Distance-and-Optimal-Transport/)
+See this article for more about Wasserstein distance: {% post_link Wasserstein-Distance-and-Optimal-Transport "Wasserstein Distance and Optimal Transport" %}
 
 The important properties of Wasserstein distance are:
 1. **Continuity**: The Wasserstein distance is continuous with respect to the distributions.

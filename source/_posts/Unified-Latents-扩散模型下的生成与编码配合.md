@@ -12,7 +12,7 @@ categories:
 
 ## 生成与编码的权衡
 
-在生成模型设定中（详细见[此文](https://notdesigned.github.io/2025/11/03/Reading-notes-of-The-Principle-of-Diffusion-Models/) ） ，首先我们有一个在高维空间中的分布
+在生成模型设定中（详细见{% post_link Reading-notes-of-The-Principle-of-Diffusion-Models "此文" %} ） ，首先我们有一个在高维空间中的分布
 
 $$
 x\sim \mu,\ p(x):=\mathrm{Law}(\mu) : \mathbb R^n \to [0,\infty)

@@ -335,7 +335,7 @@ TODO: Weak form.
 
 ## Flow Matching Models
 
-See [Flow Matching](https://notdesigned.github.io/2025/08/09/Flow-Matching/)
+See {% post_link Flow-Matching "Flow Matching" %}
 
 ## Schrödinger Bridge Models
 
