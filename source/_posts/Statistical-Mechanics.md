@@ -125,8 +125,10 @@ Charactizing the macroscopic behaviour of the system:
 Heat capacities:
 
 $$
-C_V = \frac{\bar d Q}{d T}\bigg|_V = \frac{d E + P dV}{d T}\bigg|_V= \frac{\partial E}{\partial T}\bigg|_V\\
-C_P = \frac{\bar d Q}{d T}\bigg|_P = \frac{d E + P dV}{d T}\bigg|_P= P\frac{\partial V}{\partial T}\bigg|_P + \frac{\partial E}{\partial V}\bigg|_P
+\begin{align}
+C_V = \frac{\delta Q}{d T}\bigg|_V = \frac{d E + P dV}{d T}\bigg|_V= \frac{\partial E}{\partial T}\bigg|_V\\
+C_P = \frac{\delta Q}{d T}\bigg|_P = \frac{d E + P dV}{d T}\bigg|_P= P\frac{\partial V}{\partial T}\bigg|_P + \frac{\partial E}{\partial T}\bigg|_P
+\end{align}
 $$
 
 For ideal gas 
@@ -198,6 +200,9 @@ Use the ideal gas as an example, we can calculate the efficiency of the Carnot e
 $$
 \eta = 1 - \frac{T_c}{T_h}
 $$
+
+And the result is irrelevant to the working substance by the fact that the efficiency of the Carnot engine is most efficient.
+
 Therefore, the efficiency of any heat engine is bounded by the efficiency of the Carnot engine:
 $$
 \frac{\delta W}{\delta Q} \leq 1 - \frac{T_c}{T_h}
@@ -450,7 +455,7 @@ $$
 $$
 
 $$
-S_{thermo} = -k_B H 
+S_{thermo} = -k_B H
 $$
 
 ### Equilibrium properties
@@ -690,7 +695,7 @@ Question:
 
 #### Grandcanonical System
 
-We now fix $\mu$ instead of $N$.
+We now fix $\mu$ instead of $N$, allowing particle number to fluctuate.
 
 For similar reason, the system can be in energy $E$, particle number $N$ with probability:
 $$
@@ -852,4 +857,65 @@ If $\sigma$ is not fixed but $\tau$ is fixed, we have
 $$
 P = - \frac{\partial F}{\partial V} = - \frac{\partial U}{\partial V} + \tau \frac{\partial \sigma}{\partial V}
 $$
+
+### Interacting Particles
+
+So far we have only considered non-interacting particles $\mathcal{H} = \sum_{i=1}^N \frac{p_i^2}{2m}$.
+Now we consider the more general case where there is interaction between particles, and the hamiltonian is given by
+$$
+\mathcal{H} = \sum_{i=1}^N \frac{p_i^2}{2m} + \mathcal{U}(q_1, q_2, \cdots, q_N)
+$$
+
+The partition function is
+$$
+\begin{aligned}
+Z(\beta, V, N) &= \frac{1}{h^{3N} N!} \int \prod_{i=1}^N d^3 p_i d^3 q_i \exp\bracket{-\beta \sum_{i=1}^N \frac{p_i^2}{2m} } \exp \bracket{-\beta \mathcal{U}(q_1, q_2, \cdots, q_N)} \\
+&= Z_0\avg{\exp\bracket{-\beta \mathcal{U}(q_1, q_2, \cdots, q_N)}}^{0}
+\end{aligned}
+$$
+where $Z_0$ is the partition function for non-interacting particles, and $\avg{\cdots}^0$ is the average with respect to the non-interacting distribution.
+
+$$
+\begin{aligned}
+\ln Z &= \ln Z_0 + \ln \avg{\exp\bracket{-\beta \mathcal{U}(q_1, q_2, \cdots, q_N)}}^{0}\\
+&= \ln Z_0 + \sum_{n=1}^{\infty} \frac{(-\beta)^n}{n!} \avg{\mathcal{U}^n}^0_c
+\end{aligned}
+$$
+
+For an arbitrary operator $\mathcal{O}$, its expectation value is calculate as follows:
+$$
+\begin{aligned}
+\avg{\mathcal O} &= \frac{1}{Z}\int \prod_{i=1}^N \d^3p_i\d^3q_i \exp\bracket{-\beta \sum_{i=1}^N \frac{p_i^2}{2m} } \exp \bracket{-\beta \mathcal{U}(q_1, q_2, \cdots, q_N)} \mathcal{O} \\
+&= \frac{\avg{\mathcal{O}\exp\bracket{-\beta \mathcal{U}}}^0}{\avg{\exp\bracket{-\beta \mathcal{U}}}^0} \\
+&= i \frac{\partial}{\partial k} \ln\avg{\exp\bracket{-ik\mathcal{O} - \beta \mathcal{U}}}^0|_{k=0}
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\ln \avg{\exp\bracket{-ik\mathcal{O} - \beta \mathcal{U}}}^0 &= \sum_{l,l'=0}^{\infty} \frac{(-ik)^l}{l!} \frac{(-\beta)^{l'}}{l'!} \avg{\mathcal{O}^l \mathcal{U}^{l'}}^0_c\\
+\avg{O}^0 &= \sum_{l'=0}^{\infty} \frac{(-i\beta)^{l'}}{l'!} \avg{\mathcal{O} \mathcal{U}^{l'}}^0_c
+\end{aligned}
+$$
+
+> Note: $\avg{\mathcal{O}^0\mathcal{U}^0}^0_c = 0$.
+
+We specialize on the diluted gas, where the interaction is weak
+$$
+\mathcal{U} = \sum_{i<j} \mathcal{V}(q_i-q_j)
+$$
+
+$$
+\avg{\mathcal U}^0_c = \frac{1}{V^2} \int_{i<j} d^3 q_i d^3 q_j \mathcal{V}(q_i-q_j) \approx \frac{N(N-1)}{2V} \int d^3 q \mathcal{V}(q)
+$$
+
+$$
+\avg{\mathcal U^2}^0_c = \sum_{i<j, k<l} \bracket{\avg{\mathcal{V}(q_i-q_j)\mathcal{V}(q_k-q_l)}^0 - \avg{\mathcal{V}(q_i-q_j)}^0\avg{\mathcal{V}(q_k-q_l)}^0}
+$$
+
+We can classify the terms into three categories:
+
+1. $i,j$ and $k,l$ are disjoint. There are $\frac{N(N-1)}{2}\cdot \frac{(N-2)(N-3)}{2}$ such terms, and each term is zero.
+2. $i,j$ and $i,k$. There are $N(N-1)(N-2)$ such terms, this will also cancel out.
+3. $i,j$ and $i,j$. There are $\frac{N(N-1)}{2}$ such terms, and each term is $\avg{\mathcal{V}^2}^0 - \avg{\mathcal{V}}^2{^{0}}$.
 

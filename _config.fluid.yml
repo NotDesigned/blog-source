@@ -395,7 +395,7 @@ search:
 
   # 搜索是否扫描正文
   # If true, search will scan the post content
-  content: true
+  content: false
 
 # 首屏图片的相关配置
 # Config of the big image on the first screen
