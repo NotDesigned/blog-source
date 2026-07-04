@@ -1,9 +1,16 @@
 {
+  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "blog-source",
   "compatibility_date": "2026-07-04",
+  "observability": {
+    "enabled": true
+  },
   "assets": {
     "directory": "public"
   },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
   "workers_dev": false,
   "preview_urls": false
 }
