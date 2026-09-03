@@ -73,4 +73,4 @@ Intractable for large dimension problem. Not possible for unknown environment
 
 Value Iteration
 
-![Value Iteration](Value_Iter.png)
+![Value Iteration](Reinforcement-Learning/Value_Iteration.png)
