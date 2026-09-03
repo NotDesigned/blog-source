@@ -166,15 +166,41 @@ $$
 
 where 
 $$
-f_t(x) = \int_{z} r_{0,t}(z,x) f(z) dz, g_t(x) = \int_{y} r_{t, T}(z,y) g(y) dy
+f_t(x) = \int_{z} r_{0,t}(z,x) f(z) dz, g_t(x) = \int_{y} r_{t, T}(x,y) g(y) dy
 $$
+
+**the optimum process is biased by two reweighting function.**
 
 Or we can define 
 $$
-f_t(x) = \int_{z} r_0(z) r_{0,t}(z,x) f(z) dz, g_t(x) = \int_{y} r_{t, T}(z,y) g(y) dy
+\varphi_t(x) = \int_{z} r_0(z) r_{0,t}(z,x) f(z) dz, \psi_t(x) = \int_{y} r_{t, T}(x,y) g(y) dy
+$$
+
+Using Bayesian
+$$
+\mathbb E[f(X_0) | X_t=x] = \frac{\int f(z) r_{0,t}(z,x) r_0(z) dz }{r_t(x)} = \frac{\varphi_t(x)}{r_t(x)}
 $$
 
 then 
 $$
-\rho_t(x) = f_t(x) g_t(x)
+\rho_t(x) = \varphi_t(x) \psi_t(x)
 $$
+
+the optimum process can be seen as the product of two terms:
+
+1. forward **probability assignment** by $\mu$ twisted by $f$
+2. backward **credit assignment** by $\nu$
+
+To see this, consider the Schrodinger potential pair:
+$$
+\varphi_t = K^*_{0,t} (fr_0), \psi_t= K_{t,T}g, \rho_t =\varphi_t\psi_t
+$$
+
+$$
+(K_{s,t} h) (x) = \int r_{s,t} (x,y) h(y) dy, (K^*_{s,t} h)(y) = \int k_{s,t}(x,y)h(x) dx
+$$
+
+
+### RL perspective
+
+TBD.
