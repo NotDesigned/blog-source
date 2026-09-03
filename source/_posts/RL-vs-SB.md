@@ -188,7 +188,7 @@ $$
 
 the optimum process can be seen as the product of two terms:
 
-1. forward **probability assignment** by $\mu$ twisted by $f$
+1. forward potential (related to forward probability assigment $\rho$ / $\nu$)
 2. backward **credit assignment** by $\nu$
 
 To see this, consider the Schrodinger potential pair:
