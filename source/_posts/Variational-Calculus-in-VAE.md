@@ -32,7 +32,6 @@ $$
 S[q, \lambda] &= J[q] + \lambda\left(\int q_{\theta}(z|x) dz-1\right)\\
 &= \int \left[ q(z) \log q(z) -q(z) \log p(z|x)\right] dz+ \lambda\left(\int q(z) dz- 1\right)\\
 &= \int \left[ q(z) \log q(z) -q(z) \log p(z|x) + \lambda q(z) \right] dz - \lambda
-
 \end{align*}
 $$
 

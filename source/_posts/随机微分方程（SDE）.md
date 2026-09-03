@@ -38,6 +38,7 @@ categories:
 2. 如果 $\{A_i\}_{i=1}^{\infty}$ 是 $\mathcal{F}$ 中的可列不交集族，则 $\mu\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} \mu(A_i)$。
 
 我们可以证明测度满足以下几个有用的性质：
+
 1. 单调性：如果 $A, B \in \mathcal{F}$ 且 $A \subseteq B$，则 $\mu(A) \leq \mu(B)$。
 2. 次可加性：如果 $\{A_i\}_{i=1}^{\infty}$ 是 $\mathcal{F}$ 中的任意集合族，则 $\mu\left(\bigcup_{i=1}^{\infty} A_i\right) \leq \sum_{i=1}^{\infty} \mu(A_i)$。
 3. 上连续性：如果 $\{A_n\}_{n=1}^{\infty}$ 是 $\mathcal{F}$ 中的递增集合族，即 $A_1 \subseteq A_2 \subseteq \ldots$，则 $\mu\left(\bigcup_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)$。
@@ -112,6 +113,7 @@ $$
 容易验证，若 $X$ 和 $Y$ 独立，则 $E[XY] = E[X]E[Y]$。证明是考虑简单函数（随机变量）。
 
 设 $(\Omega, \mathcal{F}, P)$ 是一个概率空间，$\mathcal{G} \subseteq \mathcal{F}$ 是 $\sigma$-代数，$X: \Omega \to \mathbb{R}^n$ 是一个随机变量，且 $E[\|X\|] < \infty$。则条件期望 $E[X | \mathcal{G}]$ 定义为满足以下性质的 $\mathcal{G}$-可测随机变量：
+
 1. $E[X | \mathcal{G}]$ 是 $\mathcal{G}$-可测的；
 2. 对于所有 $A \in \mathcal{G}$，有 $E[X \mathbf{1}_A] = E[E[X | \mathcal{G}] \mathbf{1}_A]$。换言之，
 $$
@@ -120,6 +122,7 @@ $$
 条件期望的存在性和唯一性（几乎处处相等意义下）可以通过 Radon-Nikodym 定理来证明。
 
 条件期望的一些重要性质包括：
+
 1. 线性：对于任意的随机变量 $X, Y$ 和标量 $a, b \in \mathbb{R}$，有
 $$
 E[aX + bY | \mathcal{G}] = aE[X | \mathcal{G}] + bE[Y | \mathcal{G}].
