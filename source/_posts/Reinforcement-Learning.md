@@ -71,6 +71,6 @@ Can be iteratively computed using DP if the environment is completely known.
 Fail: 
 Intractable for large dimension problem. Not possible for unknown environment
 
-Value Iteration
+#### Value Iteration
 
-![Value Iteration](Reinforcement-Learning/Value_Iteration.png)
+![Value Iteration](Value_Iteration.png)
