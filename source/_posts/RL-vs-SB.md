@@ -89,7 +89,7 @@ This is similar to IPF in Schrodinger Bridge problems. We will explore it afterw
 
 ### Definition
 
-Given two distribution $\mu, \nu$ on base space $X$, Schrodinger Bridge problem seeks the "optimal" ways to transport between them w.r.t. a reference process $R$ on the path space $\Omega = C([0,T], X)$.
+Given two distribution $\mu, \nu$ on state space $\mathcal{X}$, Schrodinger Bridge problem seeks the "optimal" ways to transport between them w.r.t. a reference process $R$ on the path space $\Omega = C([0,T], \mathcal{X})$.
 
 $$
 \begin{align}
@@ -107,7 +107,7 @@ R(X_t \in dy | X_s =x) = r_{s,t} (y|x) dy
 \end{aligned}
 $$
 
-And the Kolmogorov Extension Theorem gives the Wiener measure $\mathbb W\in \mathcal{B}([0,T], X)$.
+And the Kolmogorov Extension Theorem gives the Wiener measure $\mathbb W\in \mathcal{B}([0,T], \mathcal{X})$.
 
 ### Solve
 
@@ -130,16 +130,21 @@ P_0=\mu_0, P_T= \mu_T
 \end{aligned}
 $$
 
-In weak form
+Rewrite it in weak form
 
 $$
 \begin{aligned}
-\int \varphi(X_0(\omega))q(\omega)\, R(d\omega) = \int \varphi(x) \mu_0(dx)\\
-\int \psi(X_T(\omega))q(\omega)\, R(d\omega) = \int \psi(x) \mu_T(dx)\\
+\int \varphi(X_0(\omega))q(\omega)\, R(d\omega) &= \int \varphi(x) \mu_0(dx)\\
+\int \psi(X_T(\omega))q(\omega)\, R(d\omega) &= \int \psi(x) \mu_T(dx)\\
+\text{where }
+X_0: C([0,T],\mathcal{X}) &\to \mathcal{X}\\
+\omega &\mapsto \omega(0)\\
+X_T: C([0,T],\mathcal{X}) &\to \mathcal{X}\\
+\omega &\mapsto \omega(T)
 \end{aligned}
 $$
 
-Use Lagrangian mutipler
+Use the Lagrangian mutipler
 $$
 \begin{aligned}
 \mathcal{L}(q) &= \int q\log q \,dR - \left(\int_{\Omega} \lambda(X_0(\omega\right) q(\omega) R\left(d\omega) - \int \lambda(x) \mu_0(dx)\right) - \left(\int_{\Omega} \eta(X_T(\omega)) q(\omega) R(d\omega) - \int \eta(y) \mu_T(dy)\right)\\ 
@@ -178,12 +183,12 @@ $$
 
 Using Bayesian
 $$
-\mathbb E[f(X_0) | X_t=x] = \frac{\int f(z) r_{0,t}(z,x) r_0(z) dz }{r_t(x)} = \frac{\varphi_t(x)}{r_t(x)}
+f_t(x)=\mathbb E[f(X_0) | X_t=x] = \frac{\int f(z) r_{0,t}(z,x) r_0(z) dz }{r_t(x)} = \frac{\varphi_t(x)}{r_t(x)} 
 $$
+Note here we replace the backward kernel with forward kernel since they are the same under brownian motion.
 
-then 
 $$
-\rho_t(x) = \varphi_t(x) \psi_t(x)
+\Rightarrow \rho_t(x) = \varphi_t(x) \psi_t(x)
 $$
 
 the optimum process can be seen as the product of two terms:
@@ -200,7 +205,38 @@ $$
 (K_{s,t} h) (x) = \int r_{s,t} (x,y) h(y) dy, (K^*_{s,t} h)(y) = \int k_{s,t}(x,y)h(x) dx
 $$
 
+Note for Brownian kernel 
+$$
+K^* = K
+$$
 
 ### RL perspective
 
-TBD.
+We start with discretization on time
+$$
+t=0,1,\cdots, T
+$$
+with state space $\mathcal {X}$
+
+We have a reference process induced by $\pi$
+
+$$
+R(x_{0:T}) = \mu_0(x_0) \prod_{i=1}^{T-1}K^{\pi}_t(x_{t+1} | x_t)
+$$
+
+after adjustment to $\pi'$
+
+$$
+P(x_{0:T}) = \mu_0(x_0) \prod_{i=1}^{T-1}K^{\pi'}_t(x_{t+1}| x_t)
+$$
+
+with constraint 
+$$
+P^{\pi}_T = \nu
+$$
+
+Use KL's pathwise property:
+$$
+D_{KL}(P^{\pi'}\| P^{\pi}) = \mathbb E_{\pi'}\left[\sum_{t=0}^{T-1} D_{KL}(\pi'(\cdot|X_t)\|\pi(\cdot|X_t))\right]
+$$
+
