@@ -258,7 +258,7 @@ $$
 
 4 的详细证明这里略过，对于单点来说，考虑增量商 $\geq M$ 的概率，可以证明几乎处处存在一个无穷序列，使得增量商 $\geq M$，从而不可微。但是对于整个区间不存在可微点的概率，需要更复杂的论证。
 
-### 一些重要的概率论定理
+### 一些重要的概率/测度定理
 
 #### $\pi$-$\lambda$ 定理
 
@@ -997,7 +997,7 @@ $$
 这里的 $\Delta F$ 是 $F$ 关于空间变量的拉普拉斯算子。
 
 因此，多维 Ito 引理的形式为：
-设 $\mathbf{B}_t$ 是一个 $n$ 维标准布朗运动，$F: [0,T] \times \mathbb{R}^n \to \mathbb{R}$ 是一个 $C^{1,2}$ 函数，则
+设 $\mathbf{B}_t$ 是一个 $n$ 维标准布朗运动，$F: [0,T] \times \mathbb{R}^n \to \mathbb{R}$ 是一个 $C^{1,2}$ 函数，则 $X_t = F(B_t, t)$ 满足
 $$
 dX_t = \frac{\partial F}{\partial t}(t, \mathbf{B}_t) dt + \nabla_x F(t, \mathbf{B}_t) \cdot d\mathbf{B}_t + \frac{1}{2} \Delta F(t, \mathbf{B}_t) dt.
 $$ 
@@ -1005,7 +1005,7 @@ $$
 如果 $\mathbf{B}_t$ 不是标准布朗运动，而是 $m$ 维标准布朗运动乘上扩散系数 $\Sigma(t)\in \mathbb R^{n\times m}$。也就是说 
 $\mathbb{E}[\Delta B_j \Delta B_j^T] = \Sigma\Sigma^T(t_j)  \Delta t_j$，则第二阶项的变为
 $$
-\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik}(t_j) dt
+\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik}(t_j) dt = \frac{1}{2} \mathrm{Tr}(\Sigma \Sigma^\top \Delta F)
 $$
 
 进一步地，如果 $X_t = F(t, Y_t)$，其中 $Y_t$ 满足
@@ -1084,7 +1084,37 @@ $$
 
 如果 $B_t^{(n)}$ 是 $B_t$ 的某种平滑近似，那么 $\int_0^t \sigma(s, X_s^{(n)}) \cdot \frac{dB_s^{(n)}}{ds} ds$ 就是一个普通的 Riemann 积分。众所周知，黎曼积分取中点是作为二阶近似的。因此，随着 $n \to \infty$，取中点的黎曼积分会收敛到 Stratonovich 积分 $\int_0^t \sigma(s, X_s) \circ dB_s$，取左侧的黎曼积分则收敛到 Ito 积分 $\int_0^t \sigma(s, X_s) dB_s$。
 
-然后在不动点迭代的过程中，最后收敛的结果是 Stratonovich 积分的解。具体的收敛性证明可以查阅 Wong-Zakai 定理。这里确实也很神奇。
+然后在不动点迭代的过程中，最后收敛的结果是 Stratonovich 积分的解。具体的收敛性证明可以查阅 Wong-Zakai 定理。这里很神奇。
+
+### 鞅表示定理
+
+如果 $v\in\mathcal{V}^n$ 我们已经知道
+
+$$
+X_t = X_0 + \int_0^t v(s,\omega) dB(s)
+$$
+是关于 $\mathcal{F}_t$ 的鞅。
+
+反过来会如何呢？
+
+#### Ito表示定理
+
+考虑任意随机变量 $F\in L^2(\mathcal F_T^{(n)},P)$，存在一个唯一的随机过程 $f(t,\omega) \in \mathcal{V}^n(0,T)$ 满足 
+$$
+F(\omega) = \mathbb E[F] + \int_0^T f(t,\omega) dB_t
+$$
+
+证明略
+
+#### 鞅表示定理
+
+如果 $M_t$ 是一个 $\mathcal F_t^{(n)}$上鞅并且 $M_t\in L^2(P), \forall t\geq 0$，那么存在唯一的 $g\in \mathcal{V}^{(n)}(0,t),\forall t\geq 0$ 满足
+
+$$
+M_t(\omega) = \mathbb E[M_0] + \int_0^t g(s,\omega) dB_s \quad \text{a.s. } \forall t\geq 0 
+$$
+
+证明略
 
 ### 练习
 
@@ -1143,6 +1173,17 @@ $M_t = \mathbb E[Y|\mathcal F_t], t\geq 0$
 
 证明: 存在 $Y\in L^{1}(P)$ 满足 $M_t = \mathbb E[Y|\mathcal{F}_t]$
 
+3.9
+
+假设 $f\in \mathcal{V}(0,T)$ 并且 $t\to f(t,\omega)$ 对几乎所有 $\omega$ 连续，我们知道对于 Ito 积分有
+$$
+\int_0^T f(t,\omega)\, \mathrm d B_t = \lim_{\Delta t_j \to 0} \sum_j f(t_j,\omega) \Delta B_j \quad \text{in } L^2 (P)
+$$
+而对于 Stratonovich 积分所得到对结果一般不一样。
+请计算
+$$
+\int_0^T B_t\circ d B_t 
+$$
 
 #### 解答
 
@@ -1286,7 +1327,7 @@ $(a)$
 只需验证
 1. $M_t$ is $\mathcal{F}_t$-adapted.
 2. $\mathbb E[M_s |\mathcal F_t] = \mathbb E[\mathbb E[Y | \mathcal F_s]|\mathcal F_t] = \mathbb E[Y|\mathcal F_t]= M_t$
-3. $M_t$ is integratable. $\mathbb E[ M_t ]= \mathbb E[\mathbb E[Y |\mathcal F_t]] \lt \infty$ 
+3. $M_t$ is integrable. $\mathbb E[ M_t ]= \mathbb E[\mathbb E[Y |\mathcal F_t]] \lt \infty$ 
 
 $(b)$
 
@@ -1299,3 +1340,150 @@ $$
 M_t \to Y \quad \text{in $L^p$} \quad (\lim_{t\to\infty} E[|M_t-Y|^p]=0)
 $$
 且 $Y \in L^{p}(P) \subseteq L^{1}(P)$
+
+3.9
+
+利用微分公式
+
+$$
+Y_t = \frac{1}{2} B_t^2, dY_t = B_t \circ \mathrm d B_t
+$$
+
+得到积分结果是
+
+$$
+\int_0^T B_t \circ dB_t = Y_T-Y_0 = \frac{1}{2} B_T^2
+$$
+
+## 3.Fokker-Planck 与 Feynman-Kac
+
+### Fokker-Planck 方程
+
+考虑随机过程 $X_t$ 满足
+$$
+d X_t = f(X_t,t) dt + \sigma_t dB_t
+$$
+则对应的边际概率密度 $\mathrm{Law}(X_t) = p_t\in \mathcal{P}(\mathbb R^d)$ 满足
+$$
+\partial_t p_t = -\nabla \cdot (f p_t) + \frac{1}{2} \sigma_t^2 \Delta p_t
+$$
+
+$$
+Lf(x) = b^T \nabla f + \frac{1}{2}\sigma^2\Delta f
+$$
+
+#### 受控 Fokker-Planck 方程
+
+$$
+d X_t^u = (f+\sigma_t u) dt + \sigma_t dB_t
+$$
+对应 $p_t$ 满足
+$$
+\partial_t p_t = -\nabla \cdot ((f+\sigma_t u) p_t) + \frac{1}{2} \sigma_t^2 \Delta p_t
+$$
+
+证明：
+
+我们知道
+$$
+\rho_t(X_t(A)) = P(A), \forall A\in \mathcal {F}
+$$
+
+在不严谨的意义上
+$$
+\frac{d}{dt} \rho_t(X_t) = \partial_t \rho_t(X_t) + \nabla \rho \cdot \frac{dX_t}{dt} =0
+$$
+
+但是我们没有办法严格地定义
+
+$$
+\frac{dX_t}{dt}
+$$
+
+转而考虑测试函数 $\phi$，
+$$
+\begin{aligned}
+\int_{\Omega} d\phi(X_t) \rho_t(x) dx &= \int_{\Omega} \rho_t(x) (f\cdot \nabla \phi + \frac{1}{2} \sigma^2 \Delta \phi ) dx dt\\
+&= \left(\int_{\Omega}  (f\rho_t ) \cdot \nabla \phi dx+ \int_{\Omega} \frac{1}{2} \sigma^2 \Delta \phi \rho_t dx \right)dt
+\end{aligned}
+$$
+
+$$
+\int F \cdot \nabla \phi = \int \nabla\cdot(F\phi) - \int_{\Omega} \phi \nabla \cdot F
+$$
+对于紧支撑函数 $\phi$ 第二项消失，从而
+
+$$
+\begin{aligned}
+\int_{\Omega}  (f\rho_t ) \cdot \nabla \phi dx = -\int_{\Omega} \phi \nabla \cdot(f\rho_t)dx
+\end{aligned}
+$$
+类似地有
+$$
+\int_{\Omega} \Delta \phi \rho_t dx = \int_{\Omega}\phi \Delta \rho_t dx
+$$
+
+所以 
+$$
+\partial_t \int_{\Omega} \phi(x) \rho_t(x) dx  = \int_{\Omega} \left(\frac{1}{2}\sigma_t^2\Delta \rho_t - \nabla \cdot (f\rho_t)\right) \phi dx
+$$
+从而得出
+$$
+\partial_t \rho_t +\nabla\cdot(f\rho_t) - \frac{1}{2}\sigma_t^2\Delta \rho_t =0 \quad \text{a.e.}
+$$
+
+#### 伴随算子理论
+
+这里简要了解一下，也方便记忆。
+
+给定 Hilbert 空间 $H=L^2(\Omega)$，内积定义为
+$$
+\langle\cdot,\cdot\rangle = \int_{\Omega} u(x) v(x) dx
+$$
+
+对于算子 $A$, 伴随算子 $A^*$ 定义为
+
+$$
+\langle Au, v\rangle = \langle u, A^* v\rangle
+$$
+
+在适当的值域和定义域限制下，算子的伴随为
+$$
+\nabla \to - \nabla \cdot , \Delta \to \Delta 
+$$
+
+而
+$$
+\langle L \phi, \rho \rangle = \langle \phi, L^* \rho\rangle
+$$
+
+$L=f\cdot \nabla +\frac{1}{2}\sigma^2 \Delta \to L^* = -\nabla \cdot f+\frac{1}{2}\sigma^2 \Delta$
+
+推导 Fokker-Planck 理论
+
+
+$d\phi(X_t) = L \phi(X_t) dt + \sigma \nabla \phi dB_t$
+
+取期望
+$$
+\frac{d}{dt}\langle \phi, \rho_t\rangle = \langle L\phi, \rho_t\rangle = \langle \phi, L^*\rho_t\rangle
+$$
+所以
+$$
+\partial_t \rho_t = L^*\rho_t
+$$
+
+Fokker-Planck方程因此可以看成随机过程方程的伴随方程。
+
+注意这里可以存在相对的ODE可以产生同样的概率分布演化。
+
+只需要构造
+
+$$
+dX_t = (f-\frac{1}{2}\sigma^2\nabla \log \rho_t) dt
+$$
+
+因为
+$$
+\partial_t \rho_t +\nabla\cdot(f\rho_t) - \frac{1}{2}\sigma_t^2\Delta \rho_t = \partial_t \rho_t + \nabla\cdot \left[(f-\frac{1}{2}\sigma_t^2\nabla\log \rho_t)\rho_t \right]
+$$
