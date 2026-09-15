@@ -640,13 +640,13 @@ $$
 $$
 于是 $\mathbb{E}[M_{\tau_2} | \mathcal{F}_{\tau_1}] = M_{\tau_1}$ 几乎处处成立，这里我们使用了均匀可积性来交换极限和期望。
 
-##### 次鞅的可选停时定理
+##### 下鞅的可选停时定理
 
-定义次鞅（submartingale）：如果对于所有的 $s < t$，都有
+定义下鞅（submartingale）：如果对于所有的 $s < t$，都有
 $$
 \mathbb E[M_t | \mathcal{F}_s] \geq M_s,
 $$
-则称 $M_t$ 是一个次鞅。而可选停时定理同样适用于次鞅，结论变为
+则称 $M_t$ 是一个下鞅。而可选停时定理同样适用于下鞅，结论变为
 $$
 \mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] \geq M_{\tau_1}, \quad \text{a.s.}
 $$
@@ -661,7 +661,7 @@ $$
 $$
 E[|M_t|^p \mid \mathcal{F}_s] \geq |E[M_t \mid \mathcal{F}_s]|^p = |M_s|^p
 $$
-因此，$|M_t|^p$ 是一个次鞅。由可选停时定理，有
+因此，$|M_t|^p$ 是一个下鞅。由可选停时定理，有
 $$
 \mathbb E[|M_{T \wedge \tau}|^p] \geq \mathbb E[|M_0|^p] = |M_0|^p.
 $$
@@ -678,6 +678,60 @@ $$
 P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) = P(\tau \leq T) \leq \frac{\mathbb E[|M_{T \wedge \tau}|^p]}{\lambda^p} \leq \frac{\mathbb E[|M_T|^p]}{\lambda^p}.
 $$
 这就完成了 Doob 鞅不等式的证明。
+
+#### Doob 鞅收敛定理
+
+若 $\mathcal {N}_t$ 是右连续的非负上鞅
+那么
+
+$$
+\sup_{t>0} \mathbb E[N_t]<\infty
+$$
+且
+$$
+N(\omega) = \lim_{t\to\infty} N_t(\omega)
+$$
+对几乎所有 $\omega$ 逐点存在并且 $\mathbb E[N]<\infty$.
+
+证明：
+逐点考虑如果 $N(\omega)$ 不收敛 $\Rightarrow$ 无限次上下穿越上下界 $a,b$。
+
+Doob 上穿不等式告诉我们离散点观测上，设 $U_n(a,b)$ 是第n个点上的穿越次数。
+$$
+(b-a)\mathbb E[U_n(a,b)] \leq \mathbb E[(X_n-a)^{-}]
+$$
+得到 $E[U_{\infty}]$有界， $P(U_{\infty}=\infty) =0 $。
+所以对于绝大多数路径有限次穿越，从而得到几乎处处逐点收敛。
+
+I.
+
+若 $\mathcal {N}_t$ 是右连续的上鞅且
+
+$$
+\sup_{t>0} \mathbb E[N^-_t]<\infty
+$$
+$N_t^- = \max (-N_t,0)$.
+
+那么
+$$
+N(\omega) = \lim_{t\to\infty} N_t(\omega)
+$$
+对几乎所有 $\omega$ 逐点存在并且 $\mathbb E[N^-]<\infty$.
+
+证明：
+$$
+X_t = N_t + \mathbb E[N^{-}_{\infty} | \mathcal{F}_t]
+$$
+后者是鞅而 $X$ 是非负上鞅
+然后利用上述结论。
+
+II.
+
+进一步，若 $\mathcal N_t$ 一致可积
+那么存在 $\mathcal N \in L^{1}(P)$, $N_t \to N \text{ a.e.} $，并且在 $L^1(P)$ 意义下 $N_t\to N$ , 即 $\int |N_t-N| dP \to 0$ 当 $t\to\infty$.
+反之亦然。
+
+这里一致可积允许我们控制积分尾部
 
 #### Ito 积分路径的连续性
 
@@ -993,7 +1047,7 @@ $$
 $$
 我们假设有 $\frac{\partial F}{\partial x}(t_j, B_{t_j}, \omega) = \sigma(t_j, X_{t_j})$，则第一项就是我们定义的 Ito 积分的近似表达式。
 
-这个告诉我们什么？首先 $F$ 的增量可以分成两部分，一部分关于时间的增量，另一部分关于空间（布朗运动）增量的影响。对于时间的响应，我们只需要考虑一阶就足以在分割趋于零时得到正确的结果；但是对于空间的响应，如果只取左侧点并求和，就需要额外考虑一个二阶项，才能在分割趋于零时得到正确的结果。
+这个告诉我们什么？首先 $F$ 的增量可以分成两部分，一部分关于时间的增量，另一部分关于空间（布朗运动）增量的影响（扩散!）。对于时间的响应，我们只需要考虑一阶就足以在分割趋于零时得到正确的结果；但是对于空间的响应，如果只取左侧点并求和，就需要额外考虑一个二阶项，才能在分割趋于零时得到正确的结果。
 
 但这样的一个二阶项展开，实际上就等价于我们使用导数在区间中点的取值了（误差一个三阶项会消失）。如果我们在定义积分时，取 $\sigma(t, X_t)$ 在区间 $[t_j, t_{j+1}]$ 的中点处的取值，那么这个二阶项就会自然地被包含在内。
 
@@ -1077,11 +1131,24 @@ $$
 3. 寻找一个递归关系来证明这个等式对于任意 $n$ 都是成立的。
 4. 利用其证明 3.6
 
+3.8
+(a)
+$Y$ 为一实值随机变量, $\mathbb E[|Y|]\lt \infty$. 
+
+$M_t = \mathbb E[Y|\mathcal F_t], t\geq 0$
+
+证明: $M_t$ 是关于 $\mathcal{F}_t$ 的鞅。
+(b)
+相反地, $M_t$ 是关于 $\mathcal{F}_t$ 的实值鞅，$\sup_{t\geq 0} \mathbb E[|M_t|^p] \lt \infty$ ，对于某个$p\gt 1$.
+
+证明: 存在 $Y\in L^{1}(P)$ 满足 $M_t = \mathbb E[Y|\mathcal{F}_t]$
+
+
 #### 解答
 
 3.1
 
-还是展示一下直接使用 Ito 引理来证明这个等式，为了利用 Ito 引理，令 
+直接使用 Ito 引理来证明这个等式，为利用 Ito 引理，令 
 $$
 \frac{\partial F}{\partial x}(t,x) = t \implies F(t,x) = t x - G(t) 
 $$
@@ -1094,7 +1161,7 @@ $$
 \int_0^t s dB_s = F(t, B_t) - F(0, B_0) - \int_0^t B_s ds = t B_t - \int_0^t B_s ds
 $$
 
-直接按照定义来证明需要我们用简单过程切片分段逼近 $s$，例如 $\phi_n(s) = \sum_{j=0}^{n-1} t_j \mathbf{1}_{[t_j, t_{j+1})}(s)$，其中 $t_j = \frac{j}{n} t$，则
+直接按照定义来证明需要用简单过程切片分段逼近 $s$，例如 $\phi_n(s) = \sum_{j=0}^{n-1} t_j \mathbf{1}_{[t_j, t_{j+1})}(s)$，其中 $t_j = \frac{j}{n} t$，则
 $$
 \int_0^t s dB_s = \lim_{n \to \infty} \sum_{j=0}^{n-1} t_j (B_{t_{j+1}} - B_{t_j})
 $$
@@ -1133,7 +1200,7 @@ $$
 \int_0^t B_s^2 dB_s = F(t, B_t) - F(0, B_0) - \int_0^t B_s ds = \frac{1}{3} B_t^3 - \int_0^t B_s ds
 $$
 
-按定义证明：我们取 $\phi_n(t,\omega) = \sum_{j=0}^{n-1} B_{t_j}^2 \mathbf{1}_{[t_j, t_{j+1})}(s)$，其中 $t_j = \frac{j}{n} t$。
+按定义证明：取 $\phi_n(t,\omega) = \sum_{j=0}^{n-1} B_{t_j}^2 \mathbf{1}_{[t_j, t_{j+1})}(s)$，其中 $t_j = \frac{j}{n} t$。
 考虑 $B_{j+1}^3 - B_j^3 = (B_{j+1} - B_j)^3 + 3 B_j^2 (B_{j+1} - B_j) + 3 B_j (B_{j+1} - B_j)^2$，则
 $$
 \begin{aligned}
@@ -1148,7 +1215,7 @@ $$
 1. 如果 $X_t$ 是关于某个滤过 $\mathcal{N}_t$ 的鞅，那么对于 $s < t$，有 $$\mathbb{E}[X_t | \mathcal{N}_s] = X_s.$$
 由于 $\mathcal{H}_s \subseteq \mathcal{N}_s$，根据全期望公式，我们有$$\mathbb{E}[X_t | \mathcal{H}_s] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{N}_s] | \mathcal{H}_s] = \mathbb{E}[X_s | \mathcal{H}_s] = X_s.$$
 因此，$X_t$ 也是关于 $\mathcal{H}_t$ 的鞅。
-我们理解为，一个随机过程如果在一个大信息集合下是鞅，那么在一个子信息集合下也是鞅。而 $X_t$ 本身生成的滤过是最小的满足适应性的滤过。
+理解为，一个随机过程如果在一个大信息集合下是鞅，那么在一个子信息集合下也是鞅。而 $X_t$ 本身生成的滤过是最小的满足适应性的滤过。
 2. 如果 $X_t$ 是关于 $\mathcal{H}_t$ 的鞅，我们知道 $\mathbb{E}[X_t | \mathcal{H}_0] = X_0$。然后根据全期望公式，$\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t | \mathcal{H}_0]] = \mathbb{E}[X_0]$。
 3. 考虑 $X_t = B_t^3$，其中 $B_t$ 是一个标准布朗运动。不难知道 $B_t^3$ 的无条件期望为 0。利用 Ito 引理，$dB_t^3 = 3 B_t^2 dB_t + 3 B_t dt$，因此它不是关于 $\mathcal{F}_t$ 的鞅。
 
@@ -1189,9 +1256,46 @@ $$
 按照上面的计算方法，$f(t,y) = \frac{1}{2} y^2 - \frac{1}{2} t$。
 下一层新的函数 $F$
 $$
-F(t,y) = \int_0^t f(s,y) ds - G(t) 
+F(t,y) = \int_0^y f(s,x) dx - G(t) 
 $$
 $$
-G(t) = \int_0^t \left(\int_0^s \frac{\partial f}{\partial t}(s, B_s) ds + \frac{1}{2} \frac{\partial f}{\partial x}(s, B_s) \right) ds.
+G(t) = \int_0^t \left(\int_0^s \frac{\partial f}{\partial t}(r, B_r) dr+ \frac{1}{2} \frac{\partial f}{\partial x}(s, B_s) \right) ds.
+$$
+$$
+G(t) = \int_0^t \left(\int_0^s -\frac {1}{2} dr + \frac{1}{2} s \right) ds =0
 $$
 
+$$
+F(t,y) = \frac{1}{6} y^3 - \frac{1}{2}ty
+$$
+
+$$
+Y_t = \frac{1}{6} B_t^3 - \frac{1}{2}tB_t
+$$
+
+By induction we know every integral result is a polynomial of $B_t$ and $t$.
+
+This verifies (a),(b).
+
+For (c).
+
+Note that $N_t = 6 Y_t$ and it can be written as Ito integral.
+
+3.8
+$(a)$
+只需验证
+1. $M_t$ is $\mathcal{F}_t$-adapted.
+2. $\mathbb E[M_s |\mathcal F_t] = \mathbb E[\mathbb E[Y | \mathcal F_s]|\mathcal F_t] = \mathbb E[Y|\mathcal F_t]= M_t$
+3. $M_t$ is integratable. $\mathbb E[ M_t ]= \mathbb E[\mathbb E[Y |\mathcal F_t]] \lt \infty$ 
+
+$(b)$
+
+证明：
+
+鞅不等式告诉我们 $L^p$ 有界蕴含 $M_t$ 一致可积。
+
+从而运用鞅收敛定理得到
+$$
+M_t \to Y \quad \text{in $L^p$} \quad (\lim_{t\to\infty} E[|M_t-Y|^p]=0)
+$$
+且 $Y \in L^{p}(P) \subseteq L^{1}(P)$
