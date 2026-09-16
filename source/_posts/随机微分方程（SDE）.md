@@ -46,7 +46,7 @@ categories:
 
 给定一族子集 $\mathcal{U} \subseteq \mathcal{P}(\Omega)$，存在唯一的最小 $\sigma$-代数 $\mathcal{H}_\mathcal{U}$，使得 $\mathcal{U} \subseteq \mathcal{H}_\mathcal{U}$，称为由 $\mathcal{U}$ 生成的 $\sigma$-代数。由此，我们可以定义 Borel $\sigma$-代数 $\mathcal{B}$ 为 拓扑空间 $\Omega$ 的所有开集生成的 $\sigma$-代数。
 
-一个概率空间是一个三元组 $(\Omega, \mathcal{F}, P)$，其中 $\Omega$ 是样本空间，$\mathcal{F}$ 是定义在 $\Omega$ 上的 $\sigma$-代数，$P$ 是定义在 $\mathcal{F}$ 上的概率测度，满足 $P(\Omega) = 1$。如果 $\mathcal{F}$ 包含所有$P$-外测度零的子集 $G \subseteq \Omega$，即 $\inf{ P(A) : A \in \mathcal{F}, G \subseteq A } = 0$ ，则称概率空间 $(\Omega, \mathcal{F}, P)$ 是完备的。
+一个概率空间是一个三元组 $(\Omega, \mathcal{F}, P)$，其中 $\Omega$ 是样本空间，$\mathcal{F}$ 是定义在 $\Omega$ 上的 $\sigma$-代数，$P$ 是定义在 $\mathcal{F}$ 上的概率测度，满足 $P(\Omega) = 1$。如果 $\mathcal{F}$ 包含所有$P$-外测度零的子集 $G \subseteq \Omega$，即 $\inf\{ P(A) : A \in \mathcal{F},\ G \subseteq A \} = 0$，则称概率空间 $(\Omega, \mathcal{F}, P)$ 是完备的。
 
 给定一个概率空间 $(\Omega, \mathcal{F}, P)$，一个函数 $X: \Omega \to \mathbb{R}$ 是 $\mathcal{F}$-可测的，如果对于所有的 Borel 集合 $B \in \mathcal{B}(\mathbb{R})$，有 $X^{-1}(B) \in \mathcal{F}$。随机变量是定义在概率空间 $(\Omega, \mathcal{F}, P)$ 上的 $\mathcal{F}$-可测函数，一般取值在 $\mathbb{R}^n$ 上。
 
@@ -54,13 +54,13 @@ categories:
 
 ### Doob-Dynkin 引理
 
-设 $X: \Omega \to \mathbb{R}^n$ 和 $Y: \Omega \to \mathbb{R}^n$ 是两个随机变量，则存在一个 Borel 可测函数 $f: \mathbb{R}^n \to \mathbb{R}^n$，使得 $Y = f(X)$ 当且仅当 $\sigma(Y) \subseteq \sigma(X)$（$Y$ 是 $\mathcal{\mathcal{H}}_X$-可测的）。
+设 $X: \Omega \to \mathbb{R}^n$ 和 $Y: \Omega \to \mathbb{R}^m$ 是两个随机变量，则存在一个 Borel 可测函数 $f: \mathbb{R}^n \to \mathbb{R}^m$，使得 $Y = f(X)$ 当且仅当 $\sigma(Y) \subseteq \sigma(X)$（$Y$ 是 $\mathcal{\mathcal{H}}_X$-可测的）。
 
 证明：
 
 ($\Rightarrow$) 如果存在 Borel 可测函数 $f$ 使得 $Y = f(X)$，则对于任意的 Borel 集合 $B \in \mathcal{B}$，$Y^{-1}(B) = X^{-1}(f^{-1}(B)).$ 由于 $f$ 是 Borel 可测的，$f^{-1}(B)$ 也是 Borel 集合，因此 $Y^{-1}(B) \in \sigma(X)$，即 $\sigma(Y) \subseteq \sigma(X)$。
 
-($\Leftarrow$) 如果 $Y = \mathbf{1}_A$ 是集合 $A \in \sigma(X)$ 的指示函数，则存在 Borel 集合 $B \in \mathcal{B}$，使得 $A = X^{-1}(B)$。定义函数 $f: \mathbb{R}^n \to \mathbb{R}$ 为 $f(x) = \mathbf{1}_B(x)$，则 $Y(\omega) = f(X(\omega))$ 对所有 $\omega \in \Omega$ 成立。然后可以将该结论推广到简单函数 $Y = \sum a_i \mathbf{1}_{A_i}$，其中 $A_i \in \sigma(X)$，再通过测度论里的套路构造逐点极限收敛序列$Y_k$，推广到非负的随机变量 $Y$，最后正负分解推广到任意随机变量 $Y$。
+($\Leftarrow$) 先证 $m = 1$（一般的 $m$ 逐分量套用即可）。如果 $Y = \mathbf{1}_A$ 是集合 $A \in \sigma(X)$ 的指示函数，则存在 Borel 集合 $B \in \mathcal{B}$，使得 $A = X^{-1}(B)$。定义函数 $f: \mathbb{R}^n \to \mathbb{R}$ 为 $f(x) = \mathbf{1}_B(x)$，则 $Y(\omega) = f(X(\omega))$ 对所有 $\omega \in \Omega$ 成立。然后可以将该结论推广到简单函数 $Y = \sum a_i \mathbf{1}_{A_i}$，其中 $A_i \in \sigma(X)$，再通过测度论里的套路构造逐点极限收敛序列$Y_k$，推广到非负的随机变量 $Y$，最后正负分解推广到任意随机变量 $Y$。
 
 这个引理的意义在于，它告诉 $Y$ 是否可以通过 $X$ 来表示，取决于 $Y$ 的信息（引导的测度）是否包含在 $X$ 的信息中。
 
@@ -98,7 +98,7 @@ $$
 L^p(P) = L^p(\Omega) = \{ X: \Omega \to \mathbb{R}^n ; X \text{ 是 } \mathcal{F}\text{-可测的且 } \|X\|_p < \infty \}.
 $$
 
-$L^p$ 空间配备范数 $\|\cdot\|_p$ 后是一个 Banach 空间。当 $p=2$ 时，$L^2$ 空间是一个 Hilbert 空间，内积定义为
+$L^p$ 空间配备 $\|\cdot\|_p$ 后是一个 Banach 空间——严格地说要先对"几乎处处相等"取商，否则 $\|X\|_p = 0$ 只推出 $X = 0$ a.s.，$\|\cdot\|_p$ 仅是半范数。当 $p=2$ 时，$L^2$ 空间是一个 Hilbert 空间，内积定义为
 $$
 \langle X, Y \rangle = E[X \cdot Y] = \int_{\Omega} X(\omega) \cdot Y(\omega) dP(\omega).
 $$
@@ -138,7 +138,7 @@ $$
 
 > Q: 一个联合可测的随机过程，和一个只对 $t$ 可测的随机过程，有什么区别？和一个只有$X_t$ 可测的随机过程，有什么区别？
 >
-> A: 对 $t$ 可测的随机过程，意味着对于每个固定的 $\omega$，函数 $t \mapsto X_t(\omega)$ 是可测的。但是，对于联合可测的随机过程，我们可以应用 Fubini 定理，这说明 $I(\omega) = \int_{[0,r]} X_t(\omega) dt$ 也是一个随机变量（$\mathcal{F}$-可测的）。而仅仅对 $t$ 可测的随机过程，不能保证这一点。
+> A: 对 $t$ 可测的随机过程，意味着对于每个固定的 $\omega$，函数 $t \mapsto X_t(\omega)$ 是可测的。但是，对于联合可测的随机过程，我们可以应用 Fubini 定理，这说明 $I(\omega) = \int_{[0,r]} X_t(\omega) dt$ 也是一个随机变量（$\mathcal{F}$-可测的）。而仅仅对 $t$ 可测的随机过程，不能保证这一点。至于"只有每个 $X_t$ 是 $\mathcal{F}$-可测"的情形，那是三者中最弱的：它对 $t \mapsto X_t(\omega)$ 的可测性一无所知，$\int_{[0,r]} X_t(\omega)\, dt$ 可能根本无从定义。
 
 我们可以将 $\omega$ 视同于路径 $t \mapsto X_t(\omega)$，从而将 $\Omega$ 视作所有从 $T$ 到 $\mathbb R^n$ 的函数空间 $\tilde \Omega = (\mathbb R^n)^T$ 上的一个子集。
 
@@ -197,7 +197,7 @@ $$
 
 证明：
 
-考虑所有二进位网格点 $\mathcal{D}_n = \{ \frac{k}{2^n} : k = 0, 1, \dots, 2^n \}$ 上的随机变量 $X_t$。利用假设的矩不等式与切比雪夫不等式
+不妨设 $T = 1$（一般情形把网格换成 $\frac{kT}{2^n}$，下面的估计只多出一个依赖 $T$ 的常数因子）。考虑所有二进位网格点 $\mathcal{D}_n = \{ \frac{k}{2^n} : k = 0, 1, \dots, 2^n \}$ 上的随机变量 $X_t$。利用假设的矩不等式与切比雪夫不等式
 $$
 P\left( |X_{\frac{k}{2^n}} - X_{\frac{k-1}{2^n}}| > \epsilon \right) \le \frac{E[|X_{\frac{k}{2^n}} - X_{\frac{k-1}{2^n}}|^\alpha]}{\epsilon^\alpha} \le \frac{C (2^{-n})^{1+\beta}}{\epsilon^\alpha}
 $$
@@ -386,6 +386,8 @@ $$
 \int_S^T X_t \circ dB_t := \lim_{|\Delta| \to 0} \sum_{j} X_{\frac{t_j + t_{j+1}}{2}} (B_{t_{j+1}} - B_{t_j})
 $$
 
+（更常用也更稳健的等价写法是取两端点的平均 $\frac{X_{t_j} + X_{t_{j+1}}}{2}$ 作为系数；对足够正则的被积过程，两者的极限相同。）
+
 那么现在我们就可以保证我们的积分在 $L^2$ 意义下收敛到一个随机变量了吗？
 为了考察这个问题，我们先考虑简单函数的情况。
 
@@ -477,7 +479,7 @@ $$
 \lim_{n\to \infty} \mathbb E \left[\int_S^T (h(t,\omega)-g_n(t,\omega))^2 dt\right] = 0
 $$
 
-证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$ 且 $\forall n, \int\phi_n=1$ ，令 $g_n(t)=(\phi_n * h)(t)=\int_S^T h(s, \omega) \phi_n(s-t)\, ds$ 作为卷积，易知有界连续且收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^-$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega)\, ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
+证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$ 且 $\forall n, \int\phi_n=1$ ，令 $g_n(t)=\int_S^T h(s, \omega) \phi_n(s-t)\, ds$（严格说这是与**反射核**的卷积 $(\check\phi_n * h)(t)$，其中 $\check\phi_n(x):=\phi_n(-x)$；写成 $\phi_n(t-s)$ 才是通常的卷积），易知有界连续且收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^-$ 的列即可——此时 $\phi_n(s-t) \neq 0$ 恰好迫使 $s \leq t$。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega)\, ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
 
 ##### Step 3
 
@@ -561,11 +563,13 @@ $$
 > \mathbb E[M_t^n | \mathcal{F}_s] &= \mathbb E\left[\int_S^s f_n(u,\omega) \, dB_u(\omega) + \int_s^t f_n(u,\omega) \, dB_u(\omega) \bigg| \mathcal{F}_s\right] \\
 > &= \int_S^s f_n(u,\omega) \, dB_u(\omega) + \mathbb E\left[\int_s^t f_n(u,\omega) \, dB_u(\omega) \bigg| \mathcal{F}_s\right] \text{ （因为左侧 $\mathcal{F}_s$ 可测）} \\
 > &= M_s^n + \mathbb E\left[\sum_{j} f_n(t_j,\omega) (B_{t_{j+1}} - B_{t_j}) \bigg| \mathcal{F}_s\right] \\
-> &= M_s^n + 0 \quad \text{（增量独立于 $\mathcal{F}_s$）} \\
+> &= M_s^n + 0 \quad \text{（对每个 $t_j \geq s$ 先用 $\mathcal{F}_{t_j}$ 的塔性质）} \\
 > &= M_s^n
 > \end{aligned}
 > $$
 > 
+> 倒数第二步不能只说"增量独立于 $\mathcal{F}_s$"：$f_n(t_j,\omega)$ 本身并不是 $\mathcal{F}_s$-可测的。正确的做法是对每一项先条件到 $\mathcal{F}_{t_j}$（$t_j \geq s$）上，$\mathbb E[f_n(t_j) \Delta B_j \mid \mathcal{F}_{t_j}] = f_n(t_j)\, \mathbb E[\Delta B_j \mid \mathcal{F}_{t_j}] = 0$，再用塔性质落回 $\mathcal{F}_s$。
+>
 > 现在令 $n \to \infty$，由于 Ito 积分在 $L^2(\Omega)$ 意义下连续，我们有
 > $$
 > \mathbb E[M_t | \mathcal{F}_s] = M_s
@@ -717,7 +721,7 @@ $$
 
 （注意这里需要的是"停下来只会更小"这个方向；反方向的 $\mathbb E[|M_{T \wedge \tau}|^p] \geq \mathbb E[|M_0|^p]$ 虽然同样成立，但在本证明里用不上。）
 
-注意到当 $\tau \leq T$ 时，$M_{T \wedge \tau} = M_\tau$，由路径连续性有 $|M_{T \wedge \tau}| = \lambda$，因此
+注意到当 $\tau \leq T$ 时，$M_{T \wedge \tau} = M_\tau$，由路径连续性有 $|M_{T \wedge \tau}| \geq \lambda$（$\tau > 0$ 时连续性给出恰好 $= \lambda$；但若 $|M_0| > \lambda$ 则 $\tau = 0$，此时是严格大于。下面用到的只是 $\geq$），因此
 $$
 \begin{aligned}
 \mathbb E[|M_{T \wedge \tau}|^p] &\geq \mathbb E[|M_{T \wedge \tau}|^p \mathbf{1}_{\{\tau \leq T\}}] \\
@@ -751,7 +755,7 @@ Doob 上穿不等式告诉我们离散点观测上，设 $U_n(a,b)$ 是第n个�
 $$
 (b-a)\mathbb E[U_n(a,b)] \leq \mathbb E[(X_n-a)^{-}]
 $$
-得到 $E[U_{\infty}]$有界， $P(U_{\infty}=\infty) =0 $。
+得到 $E[U_{\infty}]$ 有界，$P(U_{\infty}=\infty)=0$。
 所以对于绝大多数路径有限次穿越，从而得到几乎处处逐点收敛。
 
 I.
@@ -775,7 +779,7 @@ $$
 II.
 
 进一步，若 $\mathcal N_t$ 一致可积
-那么存在 $\mathcal N \in L^{1}(P)$, $N_t \to N \text{ a.e.} $，并且在 $L^1(P)$ 意义下 $N_t\to N$ , 即 $\int |N_t-N| dP \to 0$ 当 $t\to\infty$.
+那么存在 $\mathcal N \in L^{1}(P)$, $N_t \to N \text{ a.e.}$，并且在 $L^1(P)$ 意义下 $N_t\to N$，即 $\int |N_t-N| dP \to 0$ 当 $t\to\infty$.
 反之亦然。
 
 这里一致可积允许我们控制积分尾部
@@ -926,14 +930,16 @@ $$
 因此，Ito 积分 $\int_0^T f(t, B_t) \, dB_t$ 可以表示为
 $$
 \begin{aligned}
-\int_0^T f(t, B_t) \, dB_t &= \int_0^{B_T} f(T, y) dy  - \int_0^T \left(\int_0^{B_t} \partial_t f(t,y) dy + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt \\
-&= F(T, B_T) - F(0, B_0) - \int_0^T \left( \frac{\partial F}{\partial t}(t, B_t) + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt.\\
+\int_0^T f(t, B_t) \, dB_t &= F(T, B_T) - F(0, B_0) - \int_0^T \left( \frac{\partial F}{\partial t}(t, B_t) + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt \\
+&= \left( \int_0^{B_T} f(T, y) dy - G(T) + G(0) \right) - \int_0^T \left(\int_0^{B_t} \partial_t f(t,y) dy - G'(t) + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt\\
 \end{aligned}
 $$
 
+（第二行用了 $B_0 = 0$，故 $F(0, B_0) = -G(0)$。取 $G \equiv 0$ 就回到最常用的形式。）
+
 这就是我们通过 Ito 引理计算 Ito 积分的一个基本方法。首先对 $f$ 非时间依赖部分进行不定积分，得到 $F$，然后应用 Ito 引理计算 $dX_t$，最后减去时间积分部分即可得到所需的 Ito 积分表达式。
 
-在以上的例子中，我们取 $f(t,x)=x$， $G(t) = 0$，$F(t,x) = \int_0^x y \, dy = \frac{1}{2} x^2$，$ X_t = F(t, B_t)$。
+在以上的例子中，我们取 $f(t,x)=x$， $G(t) = 0$，$F(t,x) = \int_0^x y \, dy = \frac{1}{2} x^2$，$X_t = F(t, B_t)$。
 
 $$
 \int_0^T B_t \, dB_t = X_T - X_0 - \int_0^T \left( 0 + \frac{1}{2} \cdot 1 \right) dt = \frac{1}{2} B_T^2 - \frac{1}{2} T
@@ -1370,7 +1376,13 @@ $$
 Y_t = F(t, B_t) = \frac{1}{6} B_t^3 - \frac{1}{2} t B_t .
 $$
 
-这验证了 (1) 和 (2)。
+这验证了 (2) 中 $n = 1, 2, 3$ 的情形。
+
+至于 (1)：每一层的被积函数都是前一层的 Ito 积分，因而自动连续、适应；$L^2$ 有界性则由等距逐层递推，
+$$
+\mathbb E\left[ \left( \int_0^t I_{n-1}(s)\, dB_s \right)^2 \right] = \mathbb E\left[ \int_0^t I_{n-1}(s)^2\, ds \right] < \infty ,
+$$
+右端有限是因为（由下面 (3) 的结论）$I_{n-1}(s)$ 是 $B_s$ 的多项式，而高斯变量的各阶矩全部有限。所以联合可测性、适应性与 $L^2$ 有界性逐层成立，这些 Ito 积分确实都是良定义的。
 
 对 (3)：上面那个"可解性条件恰好满足"并非巧合。记
 $$
@@ -1410,9 +1422,13 @@ $(b)$
 
 证明：
 
-鞅不等式告诉我们 $L^p$ 有界蕴含 $M_t$ 一致可积。
+$p > 1$ 时，$L^p$ 有界**本身**就蕴含一致可积（de la Vallée-Poussin 判据取 $\varphi(x) = x^p$，或直接对 $\mathbb E[|M_t| \mathbf 1_{\{|M_t| > K\}}]$ 用 Hölder）。
 
-从而运用鞅收敛定理得到
+于是由鞅收敛定理，$M_t \to Y$ 几乎处处成立，且在 $L^1(P)$ 中收敛。要把它升级到 $L^p$ 收敛，才轮到 Doob 的 $L^p$ 极大不等式
+$$
+\mathbb E\Big[\sup_{t \leq T} |M_t|^p\Big] \leq \left(\frac{p}{p-1}\right)^p \mathbb E[|M_T|^p]
+$$
+出场：它给出可积控制 $\sup_{t} |M_t| \in L^p$，再用控制收敛定理即得
 $$
 M_t \to Y \quad \text{in $L^p$} \quad (\lim_{t\to\infty} E[|M_t-Y|^p]=0)
 $$
@@ -1438,7 +1454,7 @@ $$
 \int_0^T B_t \circ dB_t = Y_T-Y_0 = \frac{1}{2} B_T^2
 $$
 
-## 3.Fokker-Planck 与 Feynman-Kac
+## 3. Fokker-Planck 与 Feynman-Kac
 
 ### Fokker-Planck 方程
 
@@ -1465,28 +1481,35 @@ $$
 \partial_t p_t = -\nabla \cdot ((f+\sigma_t u) p_t) + \frac{1}{2} \sigma_t^2 \Delta p_t
 $$
 
-证明：
+证明：（以下把 $p_t$ 记作 $\rho_t$）
 
 我们知道 $\rho_t$ 就是把 $P$ 沿 $X_t$ 推前得到的测度的密度：
 $$
 \int_{B} \rho_t(x)\, dx = P(X_t \in B), \quad \forall B \in \mathcal{B}(\mathbb{R}^d)
 $$
 
-在不严谨的意义上
+先看一个纯输运的类比（$\sigma = 0$，$\dot X_t = v(X_t, t)$）。这时质量守恒给出的是**连续性方程**
 $$
-\frac{d}{dt} \rho_t(X_t) = \partial_t \rho_t(X_t) + \nabla \rho \cdot \frac{dX_t}{dt} =0
+\partial_t \rho_t + \nabla \cdot (\rho_t v) = 0 .
 $$
+注意密度沿轨迹的物质导数**一般并不为零**：
+$$
+\frac{d}{dt} \rho_t(X_t) = \partial_t \rho_t(X_t) + v \cdot \nabla \rho_t(X_t) = -\, \rho_t(X_t)\, \nabla \cdot v ,
+$$
+只有速度场无散（$\nabla \cdot v = 0$）时密度才沿轨迹守恒。所以"密度沿轨迹不变"不能拿来当出发点，要守恒的是质量而不是密度。
 
-但是我们没有办法严格地定义
+回到有扩散的情形，连速度场本身都无从谈起：
 
 $$
 \frac{dX_t}{dt}
 $$
 
-转而考虑测试函数 $\phi$，
+根本没有办法严格地定义——布朗运动的路径几乎处处不可微。
+
+转而考虑测试函数 $\phi \in C_c^\infty(\mathbb R^d)$。由 Ito 引理 $d\phi(X_t) = \left(f \cdot \nabla \phi + \frac{1}{2}\sigma^2 \Delta \phi\right) dt + \sigma \nabla \phi \cdot dB_t$，取期望时 Ito 积分项的期望为零，于是
 $$
 \begin{aligned}
-\int_{\mathbb R^d} d\phi(X_t) \rho_t(x) dx &= \int_{\mathbb R^d} \rho_t(x) (f\cdot \nabla \phi + \frac{1}{2} \sigma^2 \Delta \phi ) dx dt\\
+\mathbb E\big[d\phi(X_t)\big] &= \int_{\mathbb R^d} \rho_t(x) \left(f\cdot \nabla \phi + \frac{1}{2} \sigma^2 \Delta \phi \right) dx \, dt\\
 &= \left(\int_{\mathbb R^d}  (f\rho_t ) \cdot \nabla \phi dx+ \int_{\mathbb R^d} \frac{1}{2} \sigma^2 \Delta \phi \rho_t dx \right)dt
 \end{aligned}
 $$
@@ -1558,7 +1581,7 @@ $$
 
 Fokker-Planck 方程因此可以看成随机过程方程的伴随方程。
 
-注意这里可以存在相对的ODE可以产生同样的概率分布演化。
+注意存在相应的 ODE，可以产生同样的概率分布演化。
 
 只需要构造
 
@@ -1589,17 +1612,17 @@ $$
 
 $$
 \begin{aligned}
-\int_{\Omega} \phi_T(X_T(\omega))  dP(\omega | X_t) &= \int_{\mathbb R^d}
-\phi_T(y)
-\rho_{T|t}(y|X_t=x)dy \\
-&= \langle \phi_T(x), \rho_{T|t}\rangle \\
-&= \langle \phi_T(x), U^*_{T,t} \rho_t \rangle \\
-&= \langle U_{T,t}\phi_T(x), \rho_t \rangle \\
+\mathbb E\big[\phi_T(X_T) \,\big|\, X_t = x\big] &= \int_{\mathbb R^d} \phi_T(y)\, \rho_{T|t}(y \mid X_t = x)\, dy \\
+&= \big\langle \phi_T,\ \rho_{T|t}(\cdot \mid X_t = x) \big\rangle \\
+&= \big\langle \phi_T,\ U^*_{T,t} \delta_x \big\rangle \\
+&= \big\langle U_{T,t} \phi_T,\ \delta_x \big\rangle \ =\ \big(U_{T,t} \phi_T\big)(x) \\
 \end{aligned}
 $$
 
-这里（以下设 $f, \sigma$ 不显含时间，从而 $L$ 时齐，指数形式才有意义；含时的情形要把 $\exp((T-t)L)$ 换成时序算子 $\mathcal{T}\!\exp\left(\int_t^T L_s\, ds\right)$，不过最后得到的微分形式不变）
+这里要推前的是**点质量 $\delta_x$ 而不是边际 $\rho_t$**：我们条件在 $\{X_t = x\}$ 上，$t$ 时刻的"初值分布"就是 $\delta_x$，$U^*_{T,t}\delta_x$ 才是转移密度 $\rho_{T|t}(\cdot \mid X_t = x)$。若这里误写成 $\rho_t$，配出来的 $\langle U_{T,t}\phi_T, \rho_t \rangle = \mathbb E[\phi_T(X_T)]$ 是一个**数**，不再依赖 $x$，也就得不到我们要的函数 $\phi(t,x)$。
 
+（以下设 $f, \sigma$ 不显含时间，从而 $L$ 时齐，指数形式才有意义；含时的情形要把 $\exp((T-t)L)$ 换成时序算子 $\mathcal{T}\!\exp\left(\int_t^T L_s\, ds\right)$，不过最后得到的微分形式不变）
+    
 $$
 U^*_{T,t} = \exp\left((T-t) L^*\right) 
 $$
