@@ -40,9 +40,9 @@ categories:
 我们可以证明测度满足以下几个有用的性质：
 
 1. 单调性：如果 $A, B \in \mathcal{F}$ 且 $A \subseteq B$，则 $\mu(A) \leq \mu(B)$。
-2. 次可加性：如果 $\{A_i\}_{i=1}^{\infty}$ 是 $\mathcal{F}$ 中的任意集合族，则 $\mu\left(\bigcup_{i=1}^{\infty} A_i\right) \leq \sum_{i=1}^{\infty} \mu(A_i)$。
-3. 上连续性：如果 $\{A_n\}_{n=1}^{\infty}$ 是 $\mathcal{F}$ 中的递增集合族，即 $A_1 \subseteq A_2 \subseteq \ldots$，则 $\mu\left(\bigcup_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)$。
-4. 下连续性：如果 $\{A_n\}_{n=1}^{\infty}$ 是 $\mathcal{F}$ 中的递减集合族，即 $A_1 \supseteq A_2 \supseteq \ldots$，且 $\mu(A_1) < \infty$，则 $\mu\left(\bigcap_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)$。
+2. 次可加性：如果 $\{A_i\}_{i=1}^{\infty}$ 是 $\mathcal{F}$ 中的可列集合族，则 $\mu\left(\bigcup_{i=1}^{\infty} A_i\right) \leq \sum_{i=1}^{\infty} \mu(A_i)$。
+3. 下连续性（continuity from below）：如果 $\{A_n\}_{n=1}^{\infty}$ 是 $\mathcal{F}$ 中的递增集合族，即 $A_1 \subseteq A_2 \subseteq \ldots$，则 $\mu\left(\bigcup_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)$。
+4. 上连续性（continuity from above）：如果 $\{A_n\}_{n=1}^{\infty}$ 是 $\mathcal{F}$ 中的递减集合族，即 $A_1 \supseteq A_2 \supseteq \ldots$，且 $\mu(A_1) < \infty$，则 $\mu\left(\bigcap_{n=1}^{\infty} A_n\right) = \lim_{n \to \infty} \mu(A_n)$。
 
 给定一族子集 $\mathcal{U} \subseteq \mathcal{P}(\Omega)$，存在唯一的最小 $\sigma$-代数 $\mathcal{H}_\mathcal{U}$，使得 $\mathcal{U} \subseteq \mathcal{H}_\mathcal{U}$，称为由 $\mathcal{U}$ 生成的 $\sigma$-代数。由此，我们可以定义 Borel $\sigma$-代数 $\mathcal{B}$ 为 拓扑空间 $\Omega$ 的所有开集生成的 $\sigma$-代数。
 
@@ -50,7 +50,7 @@ categories:
 
 给定一个概率空间 $(\Omega, \mathcal{F}, P)$，一个函数是$\mathcal{F}$-可测的，如果对于所有的 Borel 集合 $B \in \mathcal{B}(\mathbb{R})$，有 $X^{-1}(B) \in \mathcal{F}$。随机变量是定义在概率空间 $(\Omega, \mathcal{F}, P)$ 上的 $\mathcal{F}$-可测函数，一般取值在 $\mathbb{R}^n$ 上。
 
-反过来，给定一个函数 $X: \Omega \to \mathbb{R}^n$，定义由 $\Omega$ 生成的 $\sigma$-代数为 $\sigma(X) = \{X^{-1}(B) : B \in \mathcal{B}\}$。 其中 $\mathcal{B}$ 是 $\mathbb{R}^n$ 上的 Borel $\sigma$-代数 （或写作 $\mathcal{H}_X$）。同时还引导一个 $\mathbb{R}^n$ 上的测度 $\mu_X$，定义为 $\mu_X(B) = P(X^{-1}(B))$，称为 $X$ 的分布（或诱导测度），又写作 $\mathrm{Law}(X)$。我们说随机变量 $X$ 服从分布 $\mu_X$，记作 $X \sim \mu_X$。
+反过来，给定一个函数 $X: \Omega \to \mathbb{R}^n$，定义由 $X$ 生成的 $\sigma$-代数为 $\sigma(X) = \{X^{-1}(B) : B \in \mathcal{B}\}$。 其中 $\mathcal{B}$ 是 $\mathbb{R}^n$ 上的 Borel $\sigma$-代数 （或写作 $\mathcal{H}_X$）。同时还引导一个 $\mathbb{R}^n$ 上的测度 $\mu_X$，定义为 $\mu_X(B) = P(X^{-1}(B))$，称为 $X$ 的分布（或诱导测度），又写作 $\mathrm{Law}(X)$。我们说随机变量 $X$ 服从分布 $\mu_X$，记作 $X \sim \mu_X$。
 
 ### Doob-Dynkin 引理
 
@@ -424,15 +424,15 @@ $$
 \mathbb E\left[\left(\int_S^T X_t dB_t\right)^2\right] = \mathbb E\left[\int_S^T X_t^2 dt\right]
 $$
 
-左边是一个 Ito 积分作为随机变量的 $L^2$ 范数，右边是一个随机过程被视作 $\Omega \times [S,T]$ 上的概率测度/随机变量的 $L^2$ 范数。因此叫做等距公式。
+左边是一个 Ito 积分作为随机变量的 $L^2$ 范数，右边是一个随机过程被视作 $\Omega \times [S,T]$ 上的测度/随机变量的 $L^2$ 范数。因此叫做等距公式。
 
 这个实际上就在告诉我们，**我们在时间这一维积分后，整体的长度是不变的。**
 
 现在我们将它推广到较为一般的过程并给出正式定义。
 
-令 $\{\mathcal{N}_t\}$ 为一族递增的 $\sigma$-代数，称为过滤（filtration）。随机过程 $X_t$ 称为适应于过滤 $\{\mathcal{N}_t\}$ 的，如果对于每个 $t$，$X_t$ 是 $\mathcal{N}_t$-可测的。
+令 $\{\mathcal{N}_t\}$ 为一族递增的 $\sigma$-代数，称为滤过（filtration）。随机过程 $X_t$ 称为适应于滤过 $\{\mathcal{N}_t\}$ 的，如果对于每个 $t$，$X_t$ 是 $\mathcal{N}_t$-可测的。
 
-令 $\mathcal{F}_t$ 为由布朗运动 $\{B_s : s \leq t\}$ 生成的自然过滤，即
+令 $\mathcal{F}_t$ 为由布朗运动 $\{B_s : s \leq t\}$ 生成的自然滤过，即
 $$
 \mathcal{F}_t = \sigma(B_s : s \leq t) = \sigma(\omega; \omega(t_1)\in B_1, \ldots, \omega(t_k) \in B_k, \text{其中 } t_i \leq t, B_i \in \mathcal{B}(\mathbb{R}^n))
 $$
@@ -440,7 +440,7 @@ $$
 
 #### 逼近过程
 
-定义空间 $\mathcal{V}=\mathcal{V}(S,T)$ 为所有适应于过滤 $\{\mathcal{F}_t\}$ 的随机过程 $X_t$（或函数 $X: [S,T] \times \Omega \to \mathbb{R}$）且满足
+定义空间 $\mathcal{V}=\mathcal{V}(S,T)$ 为所有适应于滤过 $\{\mathcal{F}_t\}$ 的随机过程 $X_t$（或函数 $X: [S,T] \times \Omega \to \mathbb{R}$）且满足
 1. $X$ 在 $[S,T] \times \Omega$ 上联合可测；
 2. $\int_S^T E[X_t^2] dt < \infty$，即 $X_t \in L^2([S,T] \times \Omega)$。
 
@@ -530,7 +530,7 @@ $$
 $$
 因为对于简单过程，每一段增量的期望均是零。
 
-更强的结果是，Ito 积分得到的过程本身是一个鞅，也就是说如果我们只考虑事件点 $t$ 之前的信息 $\mathcal{F}_t$，那么这个随机变量的期望是当前点的值。
+更强的结果是，Ito 积分得到的过程本身是一个鞅，也就是说如果我们只考虑时间点 $t$ 之前的信息 $\mathcal{F}_t$，那么这个随机变量的期望是当前点的值。
 
 具体地说，给定概率空间 $(\Omega, \mathcal{F}, P)$ 上的一个滤过 $\{\mathcal{F}_t\}$，以及一个适应于 $\{\mathcal{F}_t\}$ 的随机过程 $M_t$，并且假设对于每个 $t$，$\mathbb E[|M_t|] < \infty$。
 
@@ -577,7 +577,7 @@ $$
 
 #### Doob 鞅不等式（Doob's Martingale Inequality）
 
-设 $M_t$ 是一个鞅过程，且对于每个 $t$，$t \mapsto M_t(\omega)$ 是连续的。则对于任意的 $p > 1$，$T > 0$，$\lambda > 0$，有
+设 $M_t$ 是一个鞅过程，且对于每个 $\omega$，$t \mapsto M_t(\omega)$ 是连续的。则对于任意的 $p > 1$，$T > 0$，$\lambda > 0$，有
 $$
 P\left(\sup_{0 \leq t \leq T} |M_t| \geq \lambda\right) \leq \frac{\mathbb E[|M_T|^p]}{\lambda^p}
 $$
@@ -590,7 +590,7 @@ $$
 
 ##### 可选停时定理 （Optional Stopping Theorem）
 
-对于过滤 $\{\mathcal{F}_t\}$，随机变量 $\tau: \Omega \to [0, \infty]$ 称为一个停时 （stopping time），如果对于每个 $t \geq 0$，事件 $\{\tau \leq t\} \in \mathcal{F}_t$。
+对于滤过 $\{\mathcal{F}_t\}$，随机变量 $\tau: \Omega \to [0, \infty]$ 称为一个停时 （stopping time），如果对于每个 $t \geq 0$，事件 $\{\tau \leq t\} \in \mathcal{F}_t$。
 
 现给定随机过程 $M_t$ 和停时 $\tau$，定义截断过程 $M_{t \wedge \tau}$ 为
 $$
@@ -778,9 +778,13 @@ $$
 $$
 P\left(\sup_{0 \leq t \leq T} |I_n(t,\omega) - I_m(t,\omega)| \geq \epsilon\right) \leq \frac{1}{\epsilon^2} \mathbb{E}\left[|I_n(T,\omega) - I_m(T,\omega)|^2\right].
 $$
-根据 Ito 等距公式，我们有
+根据 Ito 等距公式，对每一组 $(n,m)$ 都有
 $$
-\lim_{n,m\to \infty} \mathbb{E}\left[|I_n(T,\omega) - I_m(T,\omega)|^2\right] = \mathbb{E}\left[\int_0^T |\phi_n(s,\omega) - \phi_m(s,\omega)|^2 \, ds\right]=0
+\mathbb{E}\left[|I_n(T,\omega) - I_m(T,\omega)|^2\right] = \mathbb{E}\left[\int_0^T |\phi_n(s,\omega) - \phi_m(s,\omega)|^2 \, ds\right].
+$$
+而 $\{\phi_n\}$ 在 $L^2([0,T]\times\Omega)$ 中都收敛到 $f$，因而是该空间中的 Cauchy 列，所以右端在 $n,m\to\infty$ 时趋于零，即
+$$
+\lim_{n,m\to \infty} \mathbb{E}\left[|I_n(T,\omega) - I_m(T,\omega)|^2\right] = 0.
 $$
 所以我们可以选取一个子序列 $\{I_{n_k}\}$，使得
 $$
@@ -906,7 +910,7 @@ $$
 
 这就是我们通过 Ito 引理计算 Ito 积分的一个基本方法。首先对 $f$ 非时间依赖部分进行不定积分，得到 $F$，然后应用 Ito 引理计算 $dX_t$，最后减去时间积分部分即可得到所需的 Ito 积分表达式。
 
-在以上的例子中，我们取 $f(x,t)=x$， $G(t) = 0$，$F(t,x) = \int_0^x y \, dy = \frac{1}{2} x^2$，$ X_t = F(t, B_t)$。
+在以上的例子中，我们取 $f(t,x)=x$， $G(t) = 0$，$F(t,x) = \int_0^x y \, dy = \frac{1}{2} x^2$，$ X_t = F(t, B_t)$。
 
 $$
 \int_0^T B_t \, dB_t = X_T - X_0 - \int_0^T \left( 0 + \frac{1}{2} \cdot 1 \right) dt = \frac{1}{2} B_T^2 - \frac{1}{2} T
@@ -996,11 +1000,11 @@ $$
     \mathbb E[M_t | \mathcal{H}_s] = M_s.
     $$
 
-我们将以上过程构成的空间分别记作 $\mathcal{W}_{\mathcal{H}}(S,T), \mathcal{W}_{\mathcal{H}}^{m\times n}(S,T)$，并记 $\mathcal{W}_{\mathcal{H}} = \bigcup_{T>0} \mathcal{W}_{\mathcal{H}}(0,T)$. 
+我们将以上过程构成的空间分别记作 $\mathcal{V}_{\mathcal{H}}(S,T), \mathcal{V}_{\mathcal{H}}^{m\times n}(S,T)$，并记 $\mathcal{V}_{\mathcal{H}} = \bigcup_{T>0} \mathcal{V}_{\mathcal{H}}(0,T)$. 
 
 #### 多维情况下的 Ito 引理
 
-考虑 $X_t = F(t, \mathbf{B}_t)$，其中 $b: [0,T] \times \mathbb{R}^n \to \mathbb{R}^n$ 是一个向量值函数，$\sigma: [0,T] \times \mathbb{R}^n \to \mathbb{R}^{n \times m}$ 是一个矩阵值函数，$F \in C^{1,2}([0,T] \times \mathbb{R}^n)$。
+考虑 $X_t = F(t, \mathbf{B}_t)$，其中 $\mathbf{B}_t$ 是 $n$ 维标准布朗运动，$F \in C^{1,2}([0,T] \times \mathbb{R}^n)$。
 
 我们泰勒展开到二阶：
 $$
@@ -1017,7 +1021,7 @@ $$
 这里的 $\Delta F$ 是 $F$ 关于空间变量的拉普拉斯算子。
 
 因此，多维 Ito 引理的形式为：
-设 $\mathbf{B}_t$ 是一个 $n$ 维标准布朗运动，$F: [0,T] \times \mathbb{R}^n \to \mathbb{R}$ 是一个 $C^{1,2}$ 函数，则 $X_t = F(B_t, t)$ 满足
+设 $\mathbf{B}_t$ 是一个 $n$ 维标准布朗运动，$F: [0,T] \times \mathbb{R}^n \to \mathbb{R}$ 是一个 $C^{1,2}$ 函数，则 $X_t = F(t, B_t)$ 满足
 $$
 dX_t = \frac{\partial F}{\partial t}(t, \mathbf{B}_t) dt + \nabla_x F(t, \mathbf{B}_t) \cdot d\mathbf{B}_t + \frac{1}{2} \Delta F(t, \mathbf{B}_t) dt.
 $$ 
@@ -1025,7 +1029,7 @@ $$
 如果 $\mathbf{B}_t$ 不是标准布朗运动，而是 $m$ 维标准布朗运动乘上扩散系数 $\Sigma(t)\in \mathbb R^{n\times m}$。也就是说 
 $\mathbb{E}[\Delta B_j \Delta B_j^T] = \Sigma\Sigma^T(t_j)  \Delta t_j$，则第二阶项的变为
 $$
-\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik}(t_j) dt = \frac{1}{2} \mathrm{Tr}(\Sigma \Sigma^\top \Delta F)
+\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik}(t_j) dt = \frac{1}{2} \mathrm{Tr}(\Sigma \Sigma^\top \nabla^2 F)
 $$
 
 进一步地，如果 $X_t = F(t, Y_t)$，其中 $Y_t$ 满足
@@ -1391,7 +1395,7 @@ $$
 $$
 
 $$
-L^*g(x) = - (\nabla\cdot f)(g) + \frac{1}{2}\sigma^2\Delta g
+L^*g(x) = - \nabla\cdot (fg) + \frac{1}{2}\sigma^2\Delta g
 $$
 
 #### 受控 Fokker-Planck 方程
@@ -1540,7 +1544,7 @@ $$
 这里
 
 $$
-U^*_{t,T} = \exp\left((T-t) L^*\right) 
+U^*_{T,t} = \exp\left((T-t) L^*\right) 
 $$
 
 于是
@@ -1555,7 +1559,7 @@ $$
 对 $t$ 求导得到
 
 $$
-\partial_t \phi_t = -L_t \exp\left((T-t) L\right)  \phi_T = -L \phi_t
+\partial_t \phi_t = -L \exp\left((T-t) L\right)  \phi_T = -L \phi_t
 $$
 
 $$
