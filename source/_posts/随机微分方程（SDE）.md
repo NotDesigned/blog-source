@@ -48,7 +48,7 @@ categories:
 
 一个概率空间是一个三元组 $(\Omega, \mathcal{F}, P)$，其中 $\Omega$ 是样本空间，$\mathcal{F}$ 是定义在 $\Omega$ 上的 $\sigma$-代数，$P$ 是定义在 $\mathcal{F}$ 上的概率测度，满足 $P(\Omega) = 1$。如果 $\mathcal{F}$ 包含所有$P$-外测度零的子集 $G \subseteq \Omega$，即 $\inf{ P(A) : A \in \mathcal{F}, G \subseteq A } = 0$ ，则称概率空间 $(\Omega, \mathcal{F}, P)$ 是完备的。
 
-给定一个概率空间 $(\Omega, \mathcal{F}, P)$，一个函数是$\mathcal{F}$-可测的，如果对于所有的 Borel 集合 $B \in \mathcal{B}(\mathbb{R})$，有 $X^{-1}(B) \in \mathcal{F}$。随机变量是定义在概率空间 $(\Omega, \mathcal{F}, P)$ 上的 $\mathcal{F}$-可测函数，一般取值在 $\mathbb{R}^n$ 上。
+给定一个概率空间 $(\Omega, \mathcal{F}, P)$，一个函数 $X: \Omega \to \mathbb{R}$ 是 $\mathcal{F}$-可测的，如果对于所有的 Borel 集合 $B \in \mathcal{B}(\mathbb{R})$，有 $X^{-1}(B) \in \mathcal{F}$。随机变量是定义在概率空间 $(\Omega, \mathcal{F}, P)$ 上的 $\mathcal{F}$-可测函数，一般取值在 $\mathbb{R}^n$ 上。
 
 反过来，给定一个函数 $X: \Omega \to \mathbb{R}^n$，定义由 $X$ 生成的 $\sigma$-代数为 $\sigma(X) = \{X^{-1}(B) : B \in \mathcal{B}\}$。 其中 $\mathcal{B}$ 是 $\mathbb{R}^n$ 上的 Borel $\sigma$-代数 （或写作 $\mathcal{H}_X$）。同时还引导一个 $\mathbb{R}^n$ 上的测度 $\mu_X$，定义为 $\mu_X(B) = P(X^{-1}(B))$，称为 $X$ 的分布（或诱导测度），又写作 $\mathrm{Law}(X)$。我们说随机变量 $X$ 服从分布 $\mu_X$，记作 $X \sim \mu_X$。
 
@@ -77,10 +77,11 @@ $$
 E[f(X)] = \int_{\Omega} f(X(\omega)) dP(\omega) = \int_{\mathbb{R}^n} f(x) d\mu_X(x),
 $$
 
-特别地，随机变量 $X$ 的 $n$ 阶矩定义为
+特别地，对**实值**随机变量 $X$，其 $k$ 阶矩定义为
 $$
-E[X^n] = \int_{\Omega} X(\omega)^n dP(\omega),
+E[X^k] = \int_{\Omega} X(\omega)^k dP(\omega),
 $$
+（这里用 $k$ 而不是 $n$，是为了避免和上文取值空间 $\mathbb{R}^n$ 的维数 $n$ 混淆；向量值的情形应改用矩张量或 $E[\|X\|^k]$。）
 
 ### $L^p$ 空间
 
@@ -141,7 +142,7 @@ $$
 
 我们可以将 $\omega$ 视同于路径 $t \mapsto X_t(\omega)$，从而将 $\Omega$ 视作所有从 $T$ 到 $\mathbb R^n$ 的函数空间 $\tilde \Omega = (\mathbb R^n)^T$ 上的一个子集。
 
-定义在 $\tilde \Omega$ 上的自然 $\sigma$-代数为 $\tilde{\mathcal{F}}$，由所有形如 $\mathbb W=\{\tilde \omega \in \tilde \Omega : \tilde \omega(t_1) \in B_1, \ldots, \tilde \omega(t_k) \in B_k\}$ 的集合生成，其中 $t_i \in T$，$B_i \in \mathcal{B}(\mathbb{R}^n)$。称为柱集（cylinder sets）。这个代数记作 $\mathcal{B}(\mathbb W)$。（注意这个实际上包含了可数点，这里的有限 $k$ 可以加强为 $1$，但是实际应用中有限比较方便）
+定义在 $\tilde \Omega$ 上的自然 $\sigma$-代数为 $\tilde{\mathcal{F}}$，由所有形如 $\mathbb W=\{\tilde \omega \in \tilde \Omega : \tilde \omega(t_1) \in B_1, \ldots, \tilde \omega(t_k) \in B_k\}$ 的集合生成，其中 $t_i \in T$，$B_i \in \mathcal{B}(\mathbb{R}^n)$。称为柱集（cylinder sets）。这个代数记作 $\mathcal{B}(\mathbb W)$。（注意由它生成的 $\sigma$-代数实际上也包含了对可数个时间点的限制；另外只用 $k=1$ 的柱集去生成会得到同一个 $\sigma$-代数——有限交本来就落在 $\sigma$-代数里——所以这里写成有限 $k$ 只是应用上方便，并没有生成更多东西）
 
 > 对于连续函数空间，这个 $\sigma$-代数恰好等于由一致收敛拓扑诱导的 Borel $\sigma$-代数。（因为连续函数的上下极限可以只考虑稠密可数的有理数点）
 
@@ -160,10 +161,19 @@ $$
 
 观测 $k\in \mathbb{N}$ 次，假定存在 $\nu_{t_1, t_2, \ldots, t_k}$ 是 $\mathbb{R}^{nk}$ 上的概率测度。
 
-满足一致性条件：对于 $\forall k \in \mathbb{N},t_1, t_2, \ldots, t_k \in T$，以及任意的 Borel 集合 $B_1, B_2, \ldots, B_k \in \mathcal{B}(\mathbb{R}^n)$，有
+满足**两条**一致性条件：对于 $\forall k \in \mathbb{N},t_1, t_2, \ldots, t_k \in T$，以及任意的 Borel 集合 $B_1, B_2, \ldots, B_k \in \mathcal{B}(\mathbb{R}^n)$，有
+
+（K1）置换不变性：对 $\{1, \ldots, k\}$ 的任意置换 $\sigma$，
+$$
+\nu_{t_{\sigma(1)}, \ldots, t_{\sigma(k)}}(B_{\sigma(1)} \times \ldots \times B_{\sigma(k)}) = \nu_{t_1, \ldots, t_k}(B_1 \times \ldots \times B_k);
+$$
+
+（K2）投影相容性：
 $$
 \nu_{t_1, t_2, \ldots, t_k}(B_1 \times B_2 \times \ldots \times B_k) = \nu_{t_1, t_2, \ldots, t_k, t_{k+1}}(B_1 \times B_2 \times \ldots \times B_k \times \mathbb{R}^n).
 $$
+
+（K1）是必需的：有限维分布本来就不该依赖我们把时间点按什么顺序列出来。
 
 那么存在 一个随机过程 $\{X_t\}$，定义在某个概率空间 $(\Omega, \mathcal{F}, P)$ 上，使得对于任意的 $k \in \mathbb{N}$ 和 $t_1, t_2, \ldots, t_k \in T$，随机变量 $(X_{t_1}, X_{t_2}, \ldots, X_{t_k})$ 的分布为 $\nu_{t_1, t_2, \ldots, t_k}$。换言之，对任意 Borel 集合 $B_1, B_2, \ldots, B_k \in \mathcal{B}(\mathbb{R}^n)$，有
 $$
@@ -216,9 +226,9 @@ p(t,x,y) = (2\pi t)^{-n/2}\cdot \exp(-\frac{|x-y|^2}{2t}) \forall y\in \mathbb R
 $$
 给定 $k$ 个观测点, $0\leq t_1 \leq t_2 \leq \cdots \leq t_k$，定义这样的概率度量为 $\nu_{t_1,\ldots, t_k}$ 在 $\mathbb R^{nk}$ 为
 $$
-v_{t_1,\ldots, t_k}(F_1\times\cdots \times F_k) = \int_{F_1\times \cdots \times F_k} p(t_1, x, x_1) p(t_2-t_1,x_1,x_2) \cdots p(t_k-t_{k-1}, x_{k-1}, x_k) d x_1 \cdots d x_k
+\nu_{t_1,\ldots, t_k}(F_1\times\cdots \times F_k) = \int_{F_1\times \cdots \times F_k} p(t_1, x, x_1) p(t_2-t_1,x_1,x_2) \cdots p(t_k-t_{k-1}, x_{k-1}, x_k) d x_1 \cdots d x_k
 $$
-并且规定 $p(0,x,y) dy = \delta_x(y)$，其中 $dy=dy_1\cdots dy_k$ 是 Lebesgue 测度。
+并且规定 $p(0,x,\cdot)\,dy = \delta_x(dy)$，其中 $dy$ 是 $\mathbb{R}^n$ 上的 Lebesgue 测度、$\delta_x$ 是集中在 $x$ 的 Dirac 测度（上式积分里的 $dx_1 \cdots dx_k$ 则是 $\mathbb{R}^{nk}$ 上的 Lebesgue 测度）。
 这些测度满足一致性条件，因此由 Kolmogorov 扩展定理，存在一个概率空间 $(\Omega, \mathcal{F}, P^{x})$ 和随机过程 $\{B_t : t \geq 0\}$，使得对于任意的 $k \in \mathbb{N}$ 和 $0 \leq t_1 \leq t_2 \leq \cdots \leq t_k$，随机变量 $(B_{t_1}, B_{t_2}, \ldots, B_{t_k})$ 的分布为 $\nu_{t_1, t_2, \ldots, t_k}$。
 这个随机过程称为从点 $x$ 开始的布朗运动（Brownian Motion），记作 $B_t^x$ 或简称 $B_t$。
 
@@ -499,9 +509,9 @@ $$
 $$
 由以上的证明保证存在性，并且由 Ito 等距公式（简单过程版），我们知道
 $$
-\mathbb E\left[\int_S^T \phi_n(t,\omega)^2 \, dt \right] = \mathbb E\left[\left(\int_S^T \phi_n(t,\omega) \, dB_t(\omega)\right)^2\right]
+\mathbb E\left[\left(\int_S^T \big(\phi_n(t,\omega) - \phi_m(t,\omega)\big) \, dB_t(\omega)\right)^2\right] = \mathbb E\left[\int_S^T \big(\phi_n(t,\omega) - \phi_m(t,\omega)\big)^2 \, dt \right]
 $$
-因此，$\left\{\int_S^T \phi_n(t,\omega) \, dB_t(\omega)\right\}$ 是 $L^2(\Omega)$ 中的 Cauchy 列，从而 $\mathcal{I}[f](\omega)$ 是良定义的。
+注意必须对**差** $\phi_n - \phi_m$ 用等距，单个 $\phi_n$ 的等距式推不出 Cauchy 性。而 $\{\phi_n\}$ 在 $L^2([S,T]\times\Omega)$ 中收敛到 $f$，故本身是该空间中的 Cauchy 列，右端在 $n,m \to \infty$ 时趋于零。因此，$\left\{\int_S^T \phi_n(t,\omega) \, dB_t(\omega)\right\}$ 是 $L^2(\Omega)$ 中的 Cauchy 列，从而 $\mathcal{I}[f](\omega)$ 是良定义的。
 
 ##### 总结
 
@@ -598,20 +608,39 @@ M_{t \wedge \tau}(\omega) = M_{\min(t, \tau(\omega))}(\omega)
 $$
 也就是在时间 $\tau(\omega)$ 之后，过程保持不变，因此称作停止过程。
 
-停止过程**保持适应性**：如果 $M_t$ 是关于 $\{\mathcal{F}_t\}$ 的适应过程，则 $M_{t \wedge \tau}$ 也是关于 $\{\mathcal{F}_t\}$ 的适应过程。
-证明：对于任意的 $t \geq 0$，有
-$$
-\{ \omega : M_{t \wedge \tau}(\omega) \in B \} = \{\omega : \tau(\omega) \leq t, M_{\tau(\omega)}(\omega) \in B\} \cup \{\omega : \tau(\omega) > t, M_t(\omega) \in B\}
-$$
-其中 $\{\omega : \tau(\omega) \leq t\} \in \cal{F}_t$，且 $\{\omega : M_{\tau(\omega)}(\omega) \in B\} \in \cal{F}_{\tau(\omega)} \subseteq \cal{F}_t$，因此第一部分在 $\cal{F}_t$ 中。同理，第二部分也在 $\cal{F}_t$ 中，因此整体也在 $\cal{F}_t$ 中。
+停止过程**保持适应性**：设 $M_t$ 适应于 $\{\mathcal{F}_t\}$ 且路径右连续，则 $M_{t \wedge \tau}$ 也适应于 $\{\mathcal{F}_t\}$。
 
-注意到 $M_{t \wedge \tau_2} - M_{t \wedge \tau_1} = \mathbf{1}_{\{\tau_1 < t\}} (M_{t \wedge \tau_2} - M_{\tau_1})$。特别地，$M_{t\wedge\tau}-M_0=\int_0^t\mathbf 1_{{s\le\tau}}\,dM_s$
+这里要小心：**单有适应性是不够的**。$\omega \mapsto M_{\tau(\omega) \wedge t}(\omega)$ 是一个时间下标与路径都随 $\omega$ 变动的复合映射，而适应性只说"对每个**固定**的 $s$，$M_s$ 是 $\mathcal{F}_s$-可测的"，管不住这种复合。我们需要更强的**循序可测性**（progressive measurability）：对每个 $t$，映射
+$$
+\big([0,t] \times \Omega,\ \mathcal{B}([0,t]) \otimes \mathcal{F}_t\big) \to \mathbb{R}, \quad (s,\omega) \mapsto M_s(\omega)
+$$
+是可测的。
 
-设 $\{M_t\}_{t \geq 0}$ 是关于 $\{\mathcal{F}_t\}$ 的右连续鞅（即对于每个 $\omega$，$t \mapsto M_t(\omega)$ 是右连续的），满足 $M_{t\wedge \tau}$ 是均匀可积的（uniformly integrable），即
+> **适应 + 右连续 $\Rightarrow$ 循序可测。** 在 $[0,t]$ 上取二进制网格 $t^k_i = i t / 2^k$，令
+> $$
+> M^{(k)}_s = M_0 \mathbf{1}_{\{0\}}(s) + \sum_i M_{t^k_{i+1}} \mathbf{1}_{(t^k_i,\, t^k_{i+1}]}(s).
+> $$
+> 每个 $M^{(k)}$ 是有限个"$s$ 的 Borel 集"与"$\mathcal{F}_t$-可测随机变量"的乘积之和，故 $\mathcal{B}([0,t]) \otimes \mathcal{F}_t$-可测。右连续性给出 $M^{(k)}_s \to M_s$ 逐点，而逐点极限保持可测性。$\square$
+
+有了循序可测性，证明只要三步：
+
+1. $\tau \wedge t$ 是 $\mathcal{F}_t$-可测的：对 $s < t$ 有 $\{\tau \wedge t \leq s\} = \{\tau \leq s\} \in \mathcal{F}_s \subseteq \mathcal{F}_t$，对 $s \geq t$ 则为 $\Omega$。
+2. 于是 $\omega \mapsto (\tau(\omega) \wedge t,\ \omega)$ 从 $(\Omega, \mathcal{F}_t)$ 可测地映到 $([0,t] \times \Omega,\ \mathcal{B}([0,t]) \otimes \mathcal{F}_t)$。
+3. 与循序可测的 $M$ 复合，即得 $M_{t \wedge \tau}$ 是 $\mathcal{F}_t$-可测的。$\square$
+
+> 一个常见的错误写法是把事件拆成
+> $$
+> \{M_{t \wedge \tau} \in B\} = \{\tau \leq t,\ M_\tau \in B\} \cup \{\tau > t,\ M_t \in B\},
+> $$
+> 再声称"$\{M_\tau \in B\} \in \mathcal{F}_{\tau(\omega)} \subseteq \mathcal{F}_t$"。这站不住：滤过的下标必须是确定性时间，$\mathcal{F}_{\tau(\omega)}$ 对每个 $\omega$ 是不同的 $\sigma$-代数，"某个固定集合属于它"这句话没有真值。随机下标对应的正确对象是后文将定义的停止 $\sigma$-代数 $\mathcal{F}_\tau$，但即便换成它，$\mathcal{F}_\tau \subseteq \mathcal{F}_t$ 一般也是假的。而且第一块 $\{\tau \leq t,\ M_\tau \in B\}$ 是**整体**才可测，拆开之后单独的 $\{M_\tau \in B\}$ 并不属于任何 $\mathcal{F}_t$。（第二块 $\{\tau > t\} \cap \{M_t \in B\}$ 倒确实是两个 $\mathcal{F}_t$-事件的交，比第一块容易。）
+
+注意到 $M_{t \wedge \tau_2} - M_{t \wedge \tau_1} = \mathbf{1}_{\{\tau_1 < t\}} (M_{t \wedge \tau_2} - M_{\tau_1})$。特别地，$M_{t\wedge\tau}-M_0=\int_0^t\mathbf 1_{\{s\le\tau\}}\,dM_s$
+
+设 $\{M_t\}_{t \geq 0}$ 是关于 $\{\mathcal{F}_t\}$ 的右连续鞅（即对于每个 $\omega$，$t \mapsto M_t(\omega)$ 是右连续的），并设停止过程族 $\{M_{t \wedge \tau_2}\}_{t \geq 0}$ 是均匀可积的（uniformly integrable），即
 $$
-\lim_{K \to \infty} \sup_{t\geq 0} \mathbb E[|M_t| \mathbf{1}_{\{|M_t| > K\}}] = 0.
+\lim_{K \to \infty} \sup_{t\geq 0} \mathbb E\big[|M_{t \wedge \tau_2}| \mathbf{1}_{\{|M_{t \wedge \tau_2}| > K\}}\big] = 0.
 $$
-（一个充分条件是 $\tau$ 是有界的，或者被某个可积随机变量控制。）
+（一个充分条件是 $\tau_2$ 有界，或者 $\sup_{t} |M_{t \wedge \tau_2}|$ 被某个可积随机变量控制。）
 
 令
 $$
@@ -632,18 +661,18 @@ $$
 首先考虑简单停时的情况。设 $\tau_1$ 和 $\tau_2$ 是简单停时，不妨设 $\tau_1\le\tau_2$ 都取值于同一个有限网格 $t_1<t_2<\cdots<t_n$（取两者取值集合的并即可，简单停时在加细网格上仍是停时）。
 $$
 \begin{aligned}
-M_{\tau_2}-M_{\tau_1}=\sum_{k=1}^{n-1}\mathbf 1_{{\tau_1\le t_k<\tau_2}}\big(M_{t_{k+1}}-M_{t_k}\big)
+M_{\tau_2}-M_{\tau_1}=\sum_{k=1}^{n-1}\mathbf 1_{\{\tau_1\le t_k<\tau_2\}}\big(M_{t_{k+1}}-M_{t_k}\big)
 \end{aligned}
 $$
 现在取任意 $A\in\mathcal F_{\tau_1}$。两个可测性事实：
 
-- ${\tau_1\le t_k<\tau_2}={\tau_1\le t_k}\setminus{\tau_2\le t_k}\in\mathcal F_{t_k}$
-- $A\cap{\tau_1\le t_k}\in\mathcal F_{t_k}$（这正是 $\mathcal F_{\tau_1}$ 的定义）
+- $\{\tau_1\le t_k<\tau_2\}=\{\tau_1\le t_k\}\setminus\{\tau_2\le t_k\}\in\mathcal F_{t_k}$
+- $A\cap\{\tau_1\le t_k\}\in\mathcal F_{t_k}$（这正是 $\mathcal F_{\tau_1}$ 的定义）
 
 于是每一项
 
 $$
-\mathbb E\Big[\mathbf 1_A\mathbf 1_{{\tau_1\le t_k<\tau_2}}(M_{t_{k+1}}-M_{t_k})\Big]=\mathbb E\Big[\mathbf 1_{A\cap{\tau_1\le t_k<\tau_2}}\underbrace{\mathbb E\big[M_{t_{k+1}}-M_{t_k}\mid\mathcal F_{t_k}\big]}_{=0}\Big]=0
+\mathbb E\Big[\mathbf 1_A\mathbf 1_{\{\tau_1\le t_k<\tau_2\}}(M_{t_{k+1}}-M_{t_k})\Big]=\mathbb E\Big[\mathbf 1_{A\cap\{\tau_1\le t_k<\tau_2\}}\underbrace{\mathbb E\big[M_{t_{k+1}}-M_{t_k}\mid\mathcal F_{t_k}\big]}_{=0}\Big]=0
 $$
 
 求和得 $\mathbb E[M_{\tau_2}\mathbf 1_A]=\mathbb E[M_{\tau_1}\mathbf 1_A]$ 对一切 $A\in\mathcal F_{\tau_1}$ 成立；再加上 $M_{\tau_1}$ 是 $\mathcal F_{\tau_1}$-可测的，即得 $\mathbb E[M_{\tau_2}\mid\mathcal F_{\tau_1}]=M_{\tau_1}$。$\square$
@@ -681,12 +710,14 @@ $$
 $$
 E[|M_t|^p \mid \mathcal{F}_s] \geq |E[M_t \mid \mathcal{F}_s]|^p = |M_s|^p
 $$
-因此，$|M_t|^p$ 是一个下鞅。由可选停时定理，有
+因此，$|M_t|^p$ 是一个下鞅。对这个下鞅取两个有界停时 $\tau_1 = T \wedge \tau \leq \tau_2 = T$，由**下鞅版本**的可选停时定理，有
 $$
-\mathbb E[|M_{T \wedge \tau}|^p] \geq \mathbb E[|M_0|^p] = |M_0|^p.
+\mathbb E[|M_{T \wedge \tau}|^p] \leq \mathbb E[|M_T|^p].
 $$
 
-注意到当 $\tau \leq T$ 时，$|M_{T \wedge \tau}| \geq \lambda$，因此
+（注意这里需要的是"停下来只会更小"这个方向；反方向的 $\mathbb E[|M_{T \wedge \tau}|^p] \geq \mathbb E[|M_0|^p]$ 虽然同样成立，但在本证明里用不上。）
+
+注意到当 $\tau \leq T$ 时，$M_{T \wedge \tau} = M_\tau$，由路径连续性有 $|M_{T \wedge \tau}| = \lambda$，因此
 $$
 \begin{aligned}
 \mathbb E[|M_{T \wedge \tau}|^p] &\geq \mathbb E[|M_{T \wedge \tau}|^p \mathbf{1}_{\{\tau \leq T\}}] \\
@@ -739,11 +770,7 @@ $$
 对几乎所有 $\omega$ 逐点存在并且 $\mathbb E[N^-]<\infty$.
 
 证明：
-$$
-X_t = N_t + \mathbb E[N^{-}_{\infty} | \mathcal{F}_t]
-$$
-后者是鞅而 $X$ 是非负上鞅
-然后利用上述结论。
+不能像"令 $X_t = N_t + \mathbb E[N^-_\infty | \mathcal{F}_t]$ 化归到非负情形"那样做——$N^-_\infty$ 正是待证存在的极限，那是循环论证。直接沿用上穿论证即可：上穿不等式 $(b-a)\,\mathbb E[U_n(a,b)] \leq \mathbb E[(X_n - a)^-]$ 对一般上鞅成立，而 $(N_n - a)^- \leq N_n^- + |a|$，由假设 $\sup_n \mathbb E[(N_n - a)^-] < \infty$，故对每一对有理数 $a < b$ 都有 $P(U_\infty(a,b) = \infty) = 0$；取可数并即得几乎处处逐点收敛。再由 Fatou 引理，$\mathbb E[N^-] \leq \liminf_{t} \mathbb E[N_t^-] < \infty$。
 
 II.
 
@@ -821,7 +848,7 @@ $$
 
 仿照之前的计算，我们希望把 $f$ 在 $t_j$ 的取值分成一些部分，每个部分都是某个不定积分的增量。我们先假定我们的积分结果形式为 
 $$
-\int_S^t f \, dB_t = F(t,B_t, \omega) - F(S,B_S, \omega)
+\int_S^t f \, dB_s = F(t,B_t, \omega) - F(S,B_S, \omega)
 $$ 
 其中 $F$ 是某个待定函数。然后我们来计算增量
 $$
@@ -831,25 +858,21 @@ $$
 &= \sum_{k=1}^\infty \frac{1}{k!} \frac{\partial^k F}{\partial x^k}(t_j, B_{t_j}, \omega) (\Delta B_j)^k + \frac{\partial F}{\partial t}(t_j, B_{t_j}, \omega) \Delta t_j + o(\Delta t_j)
 \end{aligned}
 $$
-这里的展开是对 $x$ 变量的泰勒展开加上对 $t$ 变量的线性近似。我们简单考虑一下对 $x$ 的二阶截断误差项 $R_j$ 在 $L^2$ 意义下的收敛性。我们有
-$$
-E \left[ \left( \sum_j R_j \right)^2 \right] = \sum_j E[R_j^2] + \sum_{i \neq j} E[R_i R_j]
-$$
-根据拉格朗日余项，$R_j = \frac{1}{6} F_{xxx}(\eta_j) (\Delta B_j)^3$。
-假设 $F_{xxx}$ 一致有界，则：
+这里的展开是对 $x$ 变量的泰勒展开加上对 $t$ 变量的线性近似。我们简单考虑一下对 $x$ 的三阶及以上截断误差项 $R_j$ 在 $L^2$ 意义下的收敛性。
 
-第一部分（平方项）：$E[R_j^2] \leq C \cdot E[(\Delta B_j)^6]$。由正态分布矩性质，$E[(\Delta B_j)^6] = 15(\Delta t_j)^3$。
+根据拉格朗日余项，$R_j = \frac{1}{6} F_{xxx}(\eta_j) (\Delta B_j)^3$，其中 $\eta_j$ 介于 $B_{t_j}$ 与 $B_{t_{j+1}}$ 之间。假设 $F_{xxx}$ 一致有界，由正态分布的六阶矩 $E[(\Delta B_j)^6] = 15(\Delta t_j)^3$ 得
 $$
-\sum_j E[R_j^2] \leq 15C \sum_j (\Delta t_j)^3 \leq 15C \cdot \delta^2 \sum_j \Delta t_j = 15C \cdot \delta^2 (T-S) \to 0
+E[R_j^2] \leq C \cdot E[(\Delta B_j)^6] = 15 C (\Delta t_j)^3 .
 $$
 
-第二部分（交叉项）：
+取均匀分割，共 $N$ 个子区间，$\Delta t_j = \frac{T-S}{N}$。对求和直接用 Cauchy-Schwarz：
+$$
+E \left[ \left( \sum_{j=1}^{N} R_j \right)^2 \right] \leq N \sum_{j=1}^{N} E[R_j^2] \leq N \cdot N \cdot 15C \left( \frac{T-S}{N} \right)^3 = \frac{15 C (T-S)^3}{N} \to 0 .
+$$
 
-根据全期望公式，$E[R_i R_j] = E[E[R_i R_j | \mathcal{F}_{t_{\max(i,j)}}]]$。假设 $i < j$，则
-$$E[R_i R_j | \mathcal{F}_{t_j}] = R_i E[R_j | \mathcal{F}_{t_j}] = R_i \cdot 0 = 0$$
-因为 $\Delta B_j$ 独立于 $\mathcal{F}_{t_j}$，且 $E[\Delta B_j] = 0$。所以交叉项为零。
+所以当我们对所有的增量求和时，三阶及以上的误差项在 $L^2$ 意义下收敛到零。
 
-所以当我们对所有的增量求和时，$n\geq 2$ 的误差项 在 $L^2$ 意义下收敛到零。
+> 这里**刻意没有**去论证交叉项 $E[R_i R_j]\ (i \neq j)$ 为零。一个诱人但错误的做法是：对 $i < j$ 写 $E[R_i R_j \mid \mathcal{F}_{t_j}] = R_i\, E[R_j \mid \mathcal{F}_{t_j}]$，再用 $E[(\Delta B_j)^3] = 0$ 把后者判为零。把 $R_i$ 提出来是合法的（$i<j$ 时 $t_{i+1} \leq t_j$，$R_i$ 确实 $\mathcal{F}_{t_j}$-可测），但**第二步不成立**：中值点 $\eta_j$ 落在 $B_{t_j}$ 与 $B_{t_j} + \Delta B_j$ 之间，本身就是 $\Delta B_j$ 的函数，所以 $F_{xxx}(\eta_j)$ 与 $(\Delta B_j)^3$ 并不独立，不能拆成两个期望相乘。直观上，若 $F_{xxx}$ 递增，则 $\Delta B_j$ 取正值时 $F_{xxx}(\eta_j)$ 偏大、取负值时偏小，正负立方项被不对称地加权，乘积的均值一般不为零。（另外，中值定理给出的 $\eta_j$ 也不自动是 $\omega$ 的可测函数，严格处理还需要做可测选择。）上面的 Cauchy-Schwarz 把整个问题绕开了：代价只是多出一个因子 $N$，而对角项本身有 $N^{-2}$ 的余量。
 
 我们只需要对这个展开式取前两项：
 $$
@@ -904,7 +927,7 @@ $$
 $$
 \begin{aligned}
 \int_0^T f(t, B_t) \, dB_t &= \int_0^{B_T} f(T, y) dy  - \int_0^T \left(\int_0^{B_t} \partial_t f(t,y) dy + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt \\
-&= F(T, B_T) - \int_0^T \left( \frac{\partial F}{\partial t}(t, B_t) + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt.\\
+&= F(T, B_T) - F(0, B_0) - \int_0^T \left( \frac{\partial F}{\partial t}(t, B_t) + \frac{1}{2} \frac{\partial f}{\partial x}(t, B_t) \right) dt.\\
 \end{aligned}
 $$
 
@@ -921,6 +944,14 @@ $$
 $$
  \frac{dG}{dt}(t) = \int_0^{x} \frac{\partial f}{\partial t}(t,y) \, dy + \frac{1}{2} \frac{\partial f}{\partial x}(t, x)
 $$
+
+然而右边形式上和 $x$ 相关，左边并不和 $x$ 相关。该方程可解当且仅当右侧对 $x$ 导数为0。即
+
+$$
+\partial_t f + \frac{1}{2} \partial_x^2 f =0
+$$
+
+此时可取 $G'(t)=\frac{1}{2}\partial_x f(t,0)$。
 
 #### Ito 引理的推广
 
@@ -953,12 +984,14 @@ $X_t$ 的扩散项（$dB_t$ 的系数）则由 $F$ 对 $x$ 的偏导数和 $Y_t$
 我们可以拓展它的定义域，使得 $f$ 适应于更复杂的滤过，不再局限于一维布朗运动。
 
 首先，在 $\mathcal{V}(S,T)$ 的定义中，对应的滤过可以改为满足以下条件的滤过 $\{\mathcal{H}_t\}$：
-1. $B_t$ 是关于 $\{\mathcal{H}_t\}$ 的鞅。
+1. $B_t$ 适应于 $\{\mathcal{H}_t\}$，且对 $s < t$，增量 $B_t - B_s$ 独立于 $\mathcal{H}_s$。
 2. $f_t$ 是关于 $\{\mathcal{H}_t\}$ 的适应过程，即对于每个 $t$，$f_t$ 是 $\mathcal{H}_t$ 可测的。
 
 注意 (1) 蕴含了 $\mathcal{F}_t \subseteq \mathcal{H}_t$。
 
-实际上，这里的意思是，我们允许 $f$ 依赖于比布朗运动更多的信息，只要布朗运动仍然是这个更大滤过下的鞅即可，因为在我们证明 Ito 积分的鞅性质时，只用到了布朗运动增量独立于过去的信息和 $f$ 的适应性，在上面证明的过程中已经标注清楚了。
+实际上，这里的意思是，我们允许 $f$ 依赖于比布朗运动更多的信息，只要这些额外信息不提前泄露布朗运动的未来增量即可，因为在我们证明 Ito 积分的鞅性质时，只用到了布朗运动增量独立于过去的信息和 $f$ 的适应性，在上面证明的过程中已经标注清楚了。
+
+> 这里**不能**把 (1) 弱化成"$B_t$ 是 $\{\mathcal{H}_t\}$-鞅"：鞅性只给出 $\mathbb E[\Delta B_j \mid \mathcal{H}_{t_j}] = 0$，够用来证鞅性质，但等距公式还需要 $\mathbb E[(\Delta B_j)^2 \mid \mathcal{H}_{t_j}] = \Delta t_j$，也即 $B_t^2 - t$ 同样得是 $\{\mathcal{H}_t\}$-鞅。独立增量条件把这两件事一次性给全了。
 
 #### 多维 Ito 积分
 
@@ -995,7 +1028,7 @@ $$
     $$
 
 2. 鞅性质：
-    设 $M_t = \int_S^t v(t,\omega) \,d\mathbf{B}_t(\omega)$，则对于 $s < t$，有
+    设 $M_t = \int_S^t v(s,\omega) \,d\mathbf{B}_s(\omega)$，则对于 $s < t$，有
     $$
     \mathbb E[M_t | \mathcal{H}_s] = M_s.
     $$
@@ -1016,20 +1049,20 @@ $$
 
 如果我们假设 $\mathbf{B_t}$ 是一个 $n$ 维标准布朗运动，那么 $\Delta B_j^{(i)} \Delta B_j^{(k)}$ 的期望为 $\delta_{ik} \Delta t_j$，其中 $\delta_{ik}$ 是 Kronecker delta。因此，在极限下，第二阶项的贡献为
 $$
-\frac{1}{2} \sum_{i=1}^n \frac{\partial^2 F}{\partial x_i^2}(t_j, \mathbf{B}_{t_j}) \Delta t_j = \frac{1}{2} \Delta F(t_j, \mathbf{B}_{t_j}) \Delta t_j
+\frac{1}{2} \sum_{i=1}^n \frac{\partial^2 F}{\partial x_i^2}(t_j, \mathbf{B}_{t_j}) \Delta t_j = \frac{1}{2} \Delta_x F(t_j, \mathbf{B}_{t_j}) \Delta t_j
 $$
-这里的 $\Delta F$ 是 $F$ 关于空间变量的拉普拉斯算子。
+这里的 $\Delta_x$ 是关于空间变量的拉普拉斯算子；加下标 $x$ 是为了和上面表示增量的 $\Delta$（如 $\Delta F_j$、$\Delta t_j$）区分开。
 
 因此，多维 Ito 引理的形式为：
 设 $\mathbf{B}_t$ 是一个 $n$ 维标准布朗运动，$F: [0,T] \times \mathbb{R}^n \to \mathbb{R}$ 是一个 $C^{1,2}$ 函数，则 $X_t = F(t, B_t)$ 满足
 $$
-dX_t = \frac{\partial F}{\partial t}(t, \mathbf{B}_t) dt + \nabla_x F(t, \mathbf{B}_t) \cdot d\mathbf{B}_t + \frac{1}{2} \Delta F(t, \mathbf{B}_t) dt.
+dX_t = \frac{\partial F}{\partial t}(t, \mathbf{B}_t) dt + \nabla_x F(t, \mathbf{B}_t) \cdot d\mathbf{B}_t + \frac{1}{2} \Delta_x F(t, \mathbf{B}_t) dt.
 $$ 
 
 如果 $\mathbf{B}_t$ 不是标准布朗运动，而是 $m$ 维标准布朗运动乘上扩散系数 $\Sigma(t)\in \mathbb R^{n\times m}$。也就是说 
 $\mathbb{E}[\Delta B_j \Delta B_j^T] = \Sigma\Sigma^T(t_j)  \Delta t_j$，则第二阶项的变为
 $$
-\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik}(t_j) dt = \frac{1}{2} \mathrm{Tr}(\Sigma \Sigma^\top \nabla^2 F)
+\frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \cdot (\Sigma \Sigma^\top)_{ik}(t_j)\, dt = \frac{1}{2} \mathrm{Tr}\!\left(\Sigma \Sigma^\top \nabla^2 F\right) dt
 $$
 
 进一步地，如果 $X_t = F(t, Y_t)$，其中 $Y_t$ 满足
@@ -1040,8 +1073,8 @@ $$
 则
 $$
 \begin{aligned}
-dX_t &= \frac{\partial F}{\partial t}dt + \nabla F \cdot dY_t + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik} dt \\
-&= \left( \frac{\partial F}{\partial t}+ \nabla F \cdot \mathbf{b} + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \Sigma\Sigma^T_{ik} \right) dt + \nabla F \cdot \Sigma\, d\mathbf{B}_t
+dX_t &= \frac{\partial F}{\partial t}dt + \nabla F \cdot dY_t + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \cdot (\Sigma\Sigma^\top)_{ik}\, dt \\
+&= \left( \frac{\partial F}{\partial t}+ \nabla F \cdot \mathbf{b} + \frac{1}{2} \sum_{i,k=1}^n \partial_{i,k} F \cdot (\Sigma\Sigma^\top)_{ik} \right) dt + \nabla F \cdot \Sigma\, d\mathbf{B}_t
 \end{aligned}
 $$
 
@@ -1134,7 +1167,7 @@ $$
 
 #### 鞅表示定理
 
-如果 $M_t$ 是一个 $\mathcal F_t^{(n)}$上鞅并且 $M_t\in L^2(P), \forall t\geq 0$，那么存在唯一的 $g\in \mathcal{V}^{(n)}(0,t),\forall t\geq 0$ 满足
+如果 $M_t$ 是一个关于 $\mathcal F_t^{(n)}$ 的鞅并且 $M_t\in L^2(P), \forall t\geq 0$，那么存在唯一的 $g\in \mathcal{V}^{(n)}(0,t),\forall t\geq 0$ 满足
 
 $$
 M_t(\omega) = \mathbb E[M_0] + \int_0^t g(s,\omega) dB_s \quad \text{a.s. } \forall t\geq 0 
@@ -1244,10 +1277,10 @@ $$
 $$
 \begin{aligned}
 \sum_{j=0}^{n-1} t_j \Delta B_j &= t_{n-1} B_{t_{n}} - t_0 B_{t_0} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1} \\
-&= t B_{t} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}
+&= t_{n-1} B_{t} - \sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}
 \end{aligned}
 $$
-而 $n \to \infty$ 时，$\sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}$ 就是 $\int_0^t B_s ds$ 的右端 Riemann 和的近似（或者取右端点的简单过程逼近 $B_s$，在 Lebesgue 积分的意义下也是成立的），因此
+注意这里是 $t_{n-1} = \frac{n-1}{n}t$ 而非 $t$，只有取极限后才有 $t_{n-1} B_t \to t B_t$。而 $n \to \infty$ 时，$\sum_{j=1}^{n-1} B_{t_j} \Delta t_{j-1}$ 就是 $\int_0^t B_s ds$ 的右端 Riemann 和的近似（或者取右端点的简单过程逼近 $B_s$，在 Lebesgue 积分的意义下也是成立的），因此
 $$
 \int_0^t s dB_s = \lim_{n \to \infty} \sum_{j=0}^{n-1} t_j (B_{t_{j+1}} - B_{t_j}) = t B_t - \int_0^t B_s ds
 $$
@@ -1321,39 +1354,57 @@ $$
 \int_0^{u_3} \left( \frac{1}{2} B_{t_3}^2 - \frac{1}{2} t_3 \right) d B_{t_3} 
 $$
 按照上面的计算方法，$f(t,y) = \frac{1}{2} y^2 - \frac{1}{2} t$。
-下一层新的函数 $F$
+先检查可解性条件：
 $$
-F(t,y) = \int_0^y f(s,x) dx - G(t) 
+\partial_t f + \frac{1}{2} \partial_y^2 f = -\frac{1}{2} + \frac{1}{2} \cdot 1 = 0 ,
+$$
+所以原函数形式存在，且
+$$
+G'(t) = \frac{1}{2} \partial_y f(t, 0) = \frac{1}{2} \cdot 0 = 0 \implies G \equiv 0 .
+$$
+于是下一层的 $F$ 为
+$$
+F(t,y) = \int_0^y f(t,x)\, dx - G(t) = \int_0^y \left( \frac{1}{2} x^2 - \frac{1}{2} t \right) dx = \frac{1}{6} y^3 - \frac{1}{2} t y ,
 $$
 $$
-G(t) = \int_0^t \left(\int_0^s \frac{\partial f}{\partial t}(r, B_r) dr+ \frac{1}{2} \frac{\partial f}{\partial x}(s, B_s) \right) ds.
-$$
-$$
-G(t) = \int_0^t \left(\int_0^s -\frac {1}{2} dr + \frac{1}{2} s \right) ds =0
-$$
-
-$$
-F(t,y) = \frac{1}{6} y^3 - \frac{1}{2}ty
-$$
-
-$$
-Y_t = \frac{1}{6} B_t^3 - \frac{1}{2}tB_t
+Y_t = F(t, B_t) = \frac{1}{6} B_t^3 - \frac{1}{2} t B_t .
 $$
 
-By induction we know every integral result is a polynomial of $B_t$ and $t$.
+这验证了 (1) 和 (2)。
 
-This verifies (a),(b).
+对 (3)：上面那个"可解性条件恰好满足"并非巧合。记
+$$
+h_n(t,x) := t^{n/2} H_n\!\left( \frac{x}{\sqrt t} \right), \qquad I_n(t) := n! \int \cdots \int_{0 < t_1 < \cdots < t_n < t} dB_{t_1} \cdots dB_{t_n} ,
+$$
+则 $h_n$ 满足两条性质：
 
-For (c).
+- $\partial_x h_n = n\, h_{n-1}$（由 Hermite 多项式的 $H_n' = n H_{n-1}$ 直接得到）；
+- $\partial_t h_n + \frac{1}{2} \partial_x^2 h_n = 0$，即 $h_n$ 是**时空调和**的。这一条从生成函数一眼可见：
+$$
+\sum_{n \geq 0} \frac{u^n}{n!} h_n(t,x) = \exp\left( u x - \frac{1}{2} u^2 t \right) ,
+$$
+右端对每个 $u$ 都满足倒向热方程（$-\frac12 u^2 + \frac12 u^2 = 0$），逐项比较即得。
 
-Note that $N_t = 6 Y_t$ and it can be written as Ito integral.
+对 $h_n(t, B_t)$ 用 Ito 引理，$dt$ 项正好被第二条杀掉：
+$$
+d\, h_n(t, B_t) = \underbrace{\left( \partial_t h_n + \frac{1}{2} \partial_x^2 h_n \right)}_{= 0} dt + \partial_x h_n (t,B_t)\, dB_t = n\, h_{n-1}(t, B_t)\, dB_t ,
+$$
+即
+$$
+h_n(t, B_t) = n \int_0^t h_{n-1}(s, B_s)\, dB_s .
+$$
+而由定义 $I_n$ 满足同一个递归 $I_n(t) = n \int_0^t I_{n-1}(s)\, dB_s$，且 $I_0 = h_0 = 1$。对 $n$ 归纳即得 $I_n(t) = h_n(t, B_t)$，这就是要证的等式。
+
+顺带说明了为什么每一层的**可解性条件都自动成立**：每一层的被积函数都正比于某个 $h_m$，而 $h_m$ 时空调和。至于 $G$ 本身，未必为零——由 $G'(t) = \frac{1}{2} \partial_x f(t,0)$ 及 $\partial_x h_m = m\, h_{m-1}$ 知，$G' \propto h_{m-1}(t,0) = t^{(m-1)/2} H_{m-1}(0)$，它在 $m-1$ 为奇数时为零、为偶数时非零。上面第三层取 $f \propto h_2$，$\partial_x h_2(t,0) = 2 h_1(t,0) = 0$，故 $G \equiv 0$；而第二层取 $f = h_1 = x$，得 $G'(t) = \frac{1}{2}$、$G(t) = \frac{t}{2}$，这正是 $\frac{1}{2} B_{u_2}^2 - \frac{1}{2} u_2$ 里那个 $-\frac{1}{2} u_2$ 的来源。
+
+对 (4)：取 $n = 3$，$h_3(t,x) = x^3 - 3tx$，于是 $N_t = B_t^3 - 3t B_t = 6 Y_t = 3! \int\!\!\int\!\!\int dB dB dB$ 可写成 Ito 积分 $N_t = 3\int_0^t (B_s^2 - s)\, dB_s$，由 Ito 积分的鞅性质即知 $N_t$ 是鞅。
 
 3.8
 $(a)$
 只需验证
 1. $M_t$ is $\mathcal{F}_t$-adapted.
 2. $\mathbb E[M_s |\mathcal F_t] = \mathbb E[\mathbb E[Y | \mathcal F_s]|\mathcal F_t] = \mathbb E[Y|\mathcal F_t]= M_t$
-3. $M_t$ is integrable. $\mathbb E[ M_t ]= \mathbb E[\mathbb E[Y |\mathcal F_t]] \lt \infty$ 
+3. $M_t$ is integrable. 由条件 Jensen 不等式，$\mathbb E[|M_t|] = \mathbb E\big[\big|\mathbb E[Y |\mathcal F_t]\big|\big] \leq \mathbb E\big[\mathbb E[|Y| \,|\,\mathcal F_t]\big] = \mathbb E[|Y|] \lt \infty$ 
 
 $(b)$
 
@@ -1365,7 +1416,13 @@ $(b)$
 $$
 M_t \to Y \quad \text{in $L^p$} \quad (\lim_{t\to\infty} E[|M_t-Y|^p]=0)
 $$
-且 $Y \in L^{p}(P) \subseteq L^{1}(P)$
+且 $Y \in L^{p}(P) \subseteq L^{1}(P)$。
+
+最后还要回到题目要的等式：对固定的 $t$ 与任意 $s > t$ 有 $M_t = \mathbb E[M_s \mid \mathcal F_t]$。由条件期望是 $L^1$ 上的压缩，
+$$
+\mathbb E\big[\big|\mathbb E[M_s \mid \mathcal F_t] - \mathbb E[Y \mid \mathcal F_t]\big|\big] \leq \mathbb E[|M_s - Y|] \to 0 \quad (s \to \infty),
+$$
+令 $s \to \infty$ 即得 $M_t = \mathbb E[Y \mid \mathcal F_t]$。$\square$
 
 3.9
 
@@ -1410,9 +1467,9 @@ $$
 
 证明：
 
-我们知道
+我们知道 $\rho_t$ 就是把 $P$ 沿 $X_t$ 推前得到的测度的密度：
 $$
-\rho_t(X_t(A)) = P(A), \forall A\in \mathcal {F}
+\int_{B} \rho_t(x)\, dx = P(X_t \in B), \quad \forall B \in \mathcal{B}(\mathbb{R}^d)
 $$
 
 在不严谨的意义上
@@ -1429,29 +1486,29 @@ $$
 转而考虑测试函数 $\phi$，
 $$
 \begin{aligned}
-\int_{\Omega} d\phi(X_t) \rho_t(x) dx &= \int_{\Omega} \rho_t(x) (f\cdot \nabla \phi + \frac{1}{2} \sigma^2 \Delta \phi ) dx dt\\
-&= \left(\int_{\Omega}  (f\rho_t ) \cdot \nabla \phi dx+ \int_{\Omega} \frac{1}{2} \sigma^2 \Delta \phi \rho_t dx \right)dt
+\int_{\mathbb R^d} d\phi(X_t) \rho_t(x) dx &= \int_{\mathbb R^d} \rho_t(x) (f\cdot \nabla \phi + \frac{1}{2} \sigma^2 \Delta \phi ) dx dt\\
+&= \left(\int_{\mathbb R^d}  (f\rho_t ) \cdot \nabla \phi dx+ \int_{\mathbb R^d} \frac{1}{2} \sigma^2 \Delta \phi \rho_t dx \right)dt
 \end{aligned}
 $$
 
 $$
-\int F \cdot \nabla \phi = \int \nabla\cdot(F\phi) - \int_{\Omega} \phi \nabla \cdot F
+\int_{\mathbb R^d} F \cdot \nabla \phi = \int_{\mathbb R^d} \nabla\cdot(F\phi) - \int_{\mathbb R^d} \phi \nabla \cdot F
 $$
-对于紧支撑函数 $\phi$ 第二项消失，从而
+对于紧支撑函数 $\phi$ 第一项消失，从而
 
 $$
 \begin{aligned}
-\int_{\Omega}  (f\rho_t ) \cdot \nabla \phi dx = -\int_{\Omega} \phi \nabla \cdot(f\rho_t)dx
+\int_{\mathbb R^d}  (f\rho_t ) \cdot \nabla \phi dx = -\int_{\mathbb R^d} \phi \nabla \cdot(f\rho_t)dx
 \end{aligned}
 $$
 类似地有
 $$
-\int_{\Omega} \Delta \phi \rho_t dx = \int_{\Omega}\phi \Delta \rho_t dx
+\int_{\mathbb R^d} \Delta \phi \rho_t dx = \int_{\mathbb R^d}\phi \Delta \rho_t dx
 $$
 
 所以 
 $$
-\partial_t \int_{\Omega} \phi(x) \rho_t(x) dx  = \int_{\Omega} \left(\frac{1}{2}\sigma_t^2\Delta \rho_t - \nabla \cdot (f\rho_t)\right) \phi dx
+\partial_t \int_{\mathbb R^d} \phi(x) \rho_t(x) dx  = \int_{\mathbb R^d} \left(\frac{1}{2}\sigma_t^2\Delta \rho_t - \nabla \cdot (f\rho_t)\right) \phi dx
 $$
 从而得出
 $$
@@ -1462,9 +1519,9 @@ $$
 
 这里简要了解一下，也方便记忆。
 
-给定 Hilbert 空间 $H=L^2(\Omega)$，内积定义为
+给定 Hilbert 空间 $H=L^2(\mathbb R^d)$，内积定义为
 $$
-\langle\cdot,\cdot\rangle = \int_{\Omega} u(x) v(x) dx
+\langle\cdot,\cdot\rangle = \int_{\mathbb R^d} u(x) v(x) dx
 $$
 
 对于算子 $A$, 伴随算子 $A^*$ 定义为
@@ -1541,7 +1598,7 @@ $$
 \end{aligned}
 $$
 
-这里
+这里（以下设 $f, \sigma$ 不显含时间，从而 $L$ 时齐，指数形式才有意义；含时的情形要把 $\exp((T-t)L)$ 换成时序算子 $\mathcal{T}\!\exp\left(\int_t^T L_s\, ds\right)$，不过最后得到的微分形式不变）
 
 $$
 U^*_{T,t} = \exp\left((T-t) L^*\right) 
