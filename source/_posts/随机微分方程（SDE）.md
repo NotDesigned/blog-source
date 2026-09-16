@@ -1365,11 +1365,11 @@ d X_t = f(X_t,t) dt + \sigma_t dB_t
 $$
 则对应的边际概率密度 $\mathrm{Law}(X_t) = p_t\in \mathcal{P}(\mathbb R^d)$ 满足
 $$
-\partial_t p_t = -\nabla \cdot (f p_t) + \frac{1}{2} \sigma_t^2 \Delta p_t
+\partial_t p_t = -\nabla \cdot (f p_t) + \frac{1}{2} \sigma_t^2 \Delta p_t = L^* p_t
 $$
 
 $$
-Lf(x) = b^T \nabla f + \frac{1}{2}\sigma^2\Delta f
+L^*g(x) = - (\nabla\cdot f)(g) + \frac{1}{2}\sigma^2\Delta g
 $$
 
 #### 受控 Fokker-Planck 方程
@@ -1459,7 +1459,7 @@ $$
 
 $L=f\cdot \nabla +\frac{1}{2}\sigma^2 \Delta \to L^* = -\nabla \cdot f+\frac{1}{2}\sigma^2 \Delta$
 
-推导 Fokker-Planck 理论
+推导 Fokker-Planck 方程
 
 
 $d\phi(X_t) = L \phi(X_t) dt + \sigma \nabla \phi dB_t$
@@ -1473,7 +1473,7 @@ $$
 \partial_t \rho_t = L^*\rho_t
 $$
 
-Fokker-Planck方程因此可以看成随机过程方程的伴随方程。
+Fokker-Planck 方程因此可以看成随机过程方程的伴随方程。
 
 注意这里可以存在相对的ODE可以产生同样的概率分布演化。
 
@@ -1487,3 +1487,66 @@ $$
 $$
 \partial_t \rho_t +\nabla\cdot(f\rho_t) - \frac{1}{2}\sigma_t^2\Delta \rho_t = \partial_t \rho_t + \nabla\cdot \left[(f-\frac{1}{2}\sigma_t^2\nabla\log \rho_t)\rho_t \right]
 $$
+
+与 continuity equation 相比较就可以了。
+
+### Feynman-Kac 方程
+
+如果我们只知道密度测度，这是没有用的，我们往往关心的是其上的观测量。
+
+所以自然考虑以下问题，假定我们关心的观测量 $\phi_T$ 定义在 $X_T$ 上。
+
+现在我们想问，能否找到一个 $\phi: (t, x) \to \mathbb R$ 使得对于任意时刻有
+$$
+\phi(t, X_t) = \mathbb E[\phi_T(X_T) | X_t ]
+$$
+即 $Y_t = \phi(t, X_t)$ 是鞅
+
+右边是
+
+$$
+\begin{aligned}
+\int_{\Omega} \phi_T(X_T(\omega))  dP(\omega | X_t) &= \int_{\mathbb R^d}
+\phi_T(y)
+\rho_{T|t}(y|X_t=x)dy \\
+&= \langle \phi_T(x), \rho_{T|t}\rangle \\
+&= \langle \phi_T(x), U^*_{T,t} \rho_t \rangle \\
+&= \langle U_{T,t}\phi_T(x), \rho_t \rangle \\
+\end{aligned}
+$$
+
+这里
+
+$$
+U^*_{t,T} = \exp\left((T-t) L^*\right) 
+$$
+
+于是
+$$
+U_{T,t} = \exp\left((T-t) L\right)
+$$
+
+$$
+\phi_t = \exp\left((T-t)L\right) \phi_T
+$$
+
+对 $t$ 求导得到
+
+$$
+\partial_t \phi_t = -L_t \exp\left((T-t) L\right)  \phi_T = -L \phi_t
+$$
+
+$$
+\partial_t \phi_t + f\cdot \nabla \phi + \frac{1}{2}\sigma^2 \Delta \phi =0
+$$
+
+这就是最简单的 Feynman-Kac 方程。
+
+#### 和 Ito 公式的关系
+
+令 $Y_t=\phi(t, X_t)$ 是鞅，则漂移项为0。
+
+自然解出 $\phi$ 需要的微分方程。
+
+- Ito 公式：给定函数 $\phi$，求它沿随机轨迹的演化。
+- Feynman-Kac：给定终点函数 $\phi_T$，反推出一个特殊的 $\phi(t,x)$，使它沿随机轨迹为鞅。
