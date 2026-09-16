@@ -1656,3 +1656,7 @@ $$
 
 - Ito 公式：给定函数 $\phi$，求它沿随机轨迹的演化。
 - Feynman-Kac：给定终点函数 $\phi_T$，反推出一个特殊的 $\phi(t,x)$，使它沿随机轨迹为鞅。
+
+### Girsanov Theorem
+
+TODO.
