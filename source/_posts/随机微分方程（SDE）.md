@@ -264,10 +264,16 @@ $$
 
 设 $\mathcal{P}$ 是 $\Omega$ 上的一个 $\pi$-系（即对于任意的 $A, B \in \mathcal{P}$，有 $A \cap B \in \mathcal{P}$），$\mathcal{L}$ 是包含 $\Omega$ 的一个 $\lambda$-系（即满足包含全集、补集封闭性、可列不交并封闭性）。如果 $\mathcal{P} \subseteq \mathcal{L}$，则由 $\mathcal{P}$ 生成的 $\sigma$-代数 $\sigma(\mathcal{P})$ 包含在 $\mathcal{L}$ 中，即 $\sigma(\mathcal{P}) \subseteq \mathcal{L}$。
 
-证明：
-定义 $\mathcal{L}' = \{ A \in \sigma(\mathcal{P}) : A \in \mathcal{L} \}$。显然，$\mathcal{L}'$ 是一个 $\lambda$-系，并且包含 $\mathcal{P}$。因此，由于 $\sigma(\mathcal{P})$ 是由 $\mathcal{P}$ 生成的最小的 $\sigma$-代数，必有 $\sigma(\mathcal{P}) \subseteq \mathcal{L}'$。换言之，$\sigma(\mathcal{P}) \subseteq \mathcal{L}$。
+> ##### 引理: 一个既是 $\pi$-系又是 $\lambda$-系的集合族是 $\sigma$-代数
+> 证明：
+> 有限并：$A\cup B=(A^c\cap B^c)^c$
+> 可列并：把 ${A_n}$ 不交化，$B_n=A_n\cap(A_1\cup\cdots\cup A_{n-1})^c$，由上一条与 $\pi$ 性质知 $B_n$ 在里面，它们两两不交且 $\bigsqcup B_n=\bigcup A_n$ 
 
-> 特别地，如果一个集合族又是 $\pi$-系 又是 $\lambda$-系，则它是一个 $\sigma$-代数。
+证明：
+
+记 $\ell(\mathcal P)$ 为含 $\mathcal P$ 的最小 $\lambda$-系，则 $\ell(\mathcal P)\subseteq\mathcal L$。往证 $\ell(\mathcal P)$ 是 $\pi$-系，从而由引理是 $\sigma$-代数，于是 $\sigma(\mathcal P)\subseteq\ell(\mathcal P)\subseteq\mathcal L$。
+
+为此固定 $A$，考察 $\mathcal D_A=\{B\in\ell(\mathcal P):A\cap B\in\ell(\mathcal P)\}$，它总是 $\lambda$-系。第一轮取 $A\in\mathcal P$：由 $\mathcal P$ 的 $\pi$ 性质得 $\mathcal P\subseteq\mathcal D_A$，故 $\ell(\mathcal P)\subseteq\mathcal D_A$。第二轮取 $A\in\ell(\mathcal P)$：由第一轮结论仍有 $\mathcal P\subseteq\mathcal D_A$，故 $\ell(\mathcal P)\subseteq\mathcal D_A$，即 $\ell(\mathcal P)$ 对交封闭。$\square$
 
 #### Borel-Cantelli 引理
 
@@ -307,7 +313,7 @@ $$
 那么对于任意的事件 $A \in \mathcal{T}$，有 $P(A) \in \{0, 1\}$。
 
 证明：
-设 $A \in \mathcal{T}$，则对于任意的 $n \in \mathbb{N}$，$A \in \sigma(X_n, X_{n+1}, \ldots)$。由于 $\{X_n\}$ 是独立的，$\sigma(X_1, X_2, \ldots, X_{n-1})$ 与 $\sigma(X_n, X_{n+1}, \ldots)$ 独立。因此，$A$ 与 $\sigma(X_1, X_2, \ldots, X_{n-1})$ 独立。由于 $n$ 是任意的，$A$ 与 $\mathcal{L}=\bigcup_{n=1}^{\infty} \sigma(X_1, X_2, \ldots, X_{n-1})$ 独立。注意到 $\mathcal{L}$ 是一个 $\pi$-系，而 $\sigma(\mathcal{L}) = \mathcal{F}$，因此由 $\pi$-$\lambda$ 定理，$A$ 与 $\mathcal{F}$ 独立。特别地，$A$ 与自身独立，因此
+设 $A \in \mathcal{T}$，则对于任意的 $n \in \mathbb{N}$，$A \in \sigma(X_n, X_{n+1}, \ldots)$。由于 $\{X_n\}$ 是独立的，$\sigma(X_1, X_2, \ldots, X_{n-1})$ 与 $\sigma(X_n, X_{n+1}, \ldots)$ 独立。因此，$A$ 与 $\sigma(X_1, X_2, \ldots, X_{n-1})$ 独立。由于 $n$ 是任意的，$A$ 与 $\mathcal{L}=\bigcup_{n=1}^{\infty} \sigma(X_1, X_2, \ldots, X_{n-1})$ 独立。注意到 $\mathcal{L}$ 是一个 $\pi$-系，而 $\sigma(\mathcal L)=\sigma(X_1,X_2,\ldots)$，由 $\pi$-$\lambda$ 定理 $A$ 与 $\sigma(X_1,X_2,\ldots)$ 独立。而 $A\in\mathcal T\subseteq\sigma(X_1,X_2,\ldots)$，故 $A$ 与自身独立。
 $$
 P(A) = P(A \cap A) = P(A) P(A) \Rightarrow P(A) \in \{0, 1\}.
 $$
@@ -461,7 +467,7 @@ $$
 \lim_{n\to \infty} \mathbb E \left[\int_S^T (h(t,\omega)-g_n(t,\omega))^2 dt\right] = 0
 $$
 
-证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$，令 $g_n(t)=(\phi_n * h)(t)=\int_S^T h(s, \omega) \phi_n(s-t)\, ds$ 作为卷积，易知有界连续且弱收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^+$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega)\, ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
+证明：在实分析中，任取非负连续列 $\{\phi_n(x)\}$ 弱收敛到 $\delta_0(x)$ 且 $\forall n, \int\phi_n=1$ ，令 $g_n(t)=(\phi_n * h)(t)=\int_S^T h(s, \omega) \phi_n(s-t)\, ds$ 作为卷积，易知有界连续且收敛到 $h$。但是这里不可利用未来信息，所以取支撑在 $\mathbb R^-$的列即可。而 $g_n(t, \cdot)$是 $\mathcal{F_t}$ 可测的，因为 $F(s, \omega) = h(s, \omega) \phi_n(s-t)$ 是 $\mathcal{B}([S,T]) \otimes \mathcal{F_t}$ 上可测的，所以 $\int_{S}^{T}F(s,\omega)\, ds$ 根据 Fubini 定理也是 $\mathcal{F_t}$ 上可测的。
 
 ##### Step 3
 
@@ -599,7 +605,7 @@ $$
 $$
 其中 $\{\omega : \tau(\omega) \leq t\} \in \cal{F}_t$，且 $\{\omega : M_{\tau(\omega)}(\omega) \in B\} \in \cal{F}_{\tau(\omega)} \subseteq \cal{F}_t$，因此第一部分在 $\cal{F}_t$ 中。同理，第二部分也在 $\cal{F}_t$ 中，因此整体也在 $\cal{F}_t$ 中。
 
-注意到 $M_{t \wedge \tau_2} - M_{t \wedge \tau_1} = \mathbf{1}_{\{\tau_1 < t\}} (M_{t \wedge \tau_2} - M_{\tau_1})$。特别地，$M_{t \wedge \tau} - M_0 = \mathbf{1}_{\{\tau < t\}} (M_{t \wedge \tau} - M_0)$。
+注意到 $M_{t \wedge \tau_2} - M_{t \wedge \tau_1} = \mathbf{1}_{\{\tau_1 < t\}} (M_{t \wedge \tau_2} - M_{\tau_1})$。特别地，$M_{t\wedge\tau}-M_0=\int_0^t\mathbf 1_{{s\le\tau}}\,dM_s$
 
 设 $\{M_t\}_{t \geq 0}$ 是关于 $\{\mathcal{F}_t\}$ 的右连续鞅（即对于每个 $\omega$，$t \mapsto M_t(\omega)$ 是右连续的），满足 $M_{t\wedge \tau}$ 是均匀可积的（uniformly integrable），即
 $$
@@ -607,7 +613,12 @@ $$
 $$
 （一个充分条件是 $\tau$ 是有界的，或者被某个可积随机变量控制。）
 
-则对于两个有限停时（$P(\tau<\infty) = 1$） $\tau_1 \leq \tau_2$，有
+令
+$$
+\mathcal F_\tau=\{A\in\mathcal F:\ A\cap\{\tau\le t\}\in\mathcal F_t,\ \forall t\ge0\}
+$$
+
+对于两个有限停时（$P(\tau<\infty) = 1$） $\tau_1 \leq \tau_2$，有
 $$
 \mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] = M_{\tau_1}, \quad \text{a.s.}
 $$
@@ -618,16 +629,25 @@ $$
 
 
 证明：
-首先考虑简单停时的情况。设 $\tau_1$ 和 $\tau_2$ 是简单停时，分别取值于有限集合 $\{t_1, t_2, \ldots, t_n\}$ 和 $\{s_1, s_2, \ldots, s_m\}$。则
+首先考虑简单停时的情况。设 $\tau_1$ 和 $\tau_2$ 是简单停时，不妨设 $\tau_1\le\tau_2$ 都取值于同一个有限网格 $t_1<t_2<\cdots<t_n$（取两者取值集合的并即可，简单停时在加细网格上仍是停时）。
 $$
 \begin{aligned}
-\mathbb E[M_{\tau_2} | \mathcal{F}_{\tau_1}] &= \sum_{i=1}^n \mathbb E[M_{\tau_2} | \mathcal{F}_{t_i}] \mathbf{1}_{\tau_1 = t_i} \\
-&= \sum_{i=1}^n \left( \sum_{j=1}^m \mathbb E[M_{s_j} | \mathcal{F}_{t_i}] \mathbf{1}_{\tau_2 = s_j} \right) \mathbf{1}_{\tau_1 = t_i} \\
-&= \sum_{i=1}^n \left( \sum_{j=1}^m M_{t_i} \mathbf{1}_{\tau_2 = s_j} \right) \mathbf{1}_{\tau_1 = t_i} \quad \text{（鞅性质）} \\
-&= \sum_{i=1}^n M_{t_i} \mathbf{1}_{\tau_1 = t_i} \\
-&= M_{\tau_1}
+M_{\tau_2}-M_{\tau_1}=\sum_{k=1}^{n-1}\mathbf 1_{{\tau_1\le t_k<\tau_2}}\big(M_{t_{k+1}}-M_{t_k}\big)
 \end{aligned}
 $$
+现在取任意 $A\in\mathcal F_{\tau_1}$。两个可测性事实：
+
+- ${\tau_1\le t_k<\tau_2}={\tau_1\le t_k}\setminus{\tau_2\le t_k}\in\mathcal F_{t_k}$
+- $A\cap{\tau_1\le t_k}\in\mathcal F_{t_k}$（这正是 $\mathcal F_{\tau_1}$ 的定义）
+
+于是每一项
+
+$$
+\mathbb E\Big[\mathbf 1_A\mathbf 1_{{\tau_1\le t_k<\tau_2}}(M_{t_{k+1}}-M_{t_k})\Big]=\mathbb E\Big[\mathbf 1_{A\cap{\tau_1\le t_k<\tau_2}}\underbrace{\mathbb E\big[M_{t_{k+1}}-M_{t_k}\mid\mathcal F_{t_k}\big]}_{=0}\Big]=0
+$$
+
+求和得 $\mathbb E[M_{\tau_2}\mathbf 1_A]=\mathbb E[M_{\tau_1}\mathbf 1_A]$ 对一切 $A\in\mathcal F_{\tau_1}$ 成立；再加上 $M_{\tau_1}$ 是 $\mathcal F_{\tau_1}$-可测的，即得 $\mathbb E[M_{\tau_2}\mid\mathcal F_{\tau_1}]=M_{\tau_1}$。$\square$
+
 而对于一般的停时 $\tau_1, \tau_2$，我们可以找到一列简单停时 $\{\tau_1^n\}, \{\tau_2^n\}$，使得 $\tau_1^n \downarrow \tau_1$，$\tau_2^n \downarrow \tau_2$。
 
 对于每一组 $\tau_1^n, \tau_2^n$，我们已经知道：
@@ -1082,9 +1102,11 @@ $$
 
 存在唯一性，也许可以通过 Banach 不动点定理来证明，但是问了问 AI 感觉证明需要各种不等式估计，就算了。
 
-如果 $B_t^{(n)}$ 是 $B_t$ 的某种平滑近似，那么 $\int_0^t \sigma(s, X_s^{(n)}) \cdot \frac{dB_s^{(n)}}{ds} ds$ 就是一个普通的 Riemann 积分。众所周知，黎曼积分取中点是作为二阶近似的。因此，随着 $n \to \infty$，取中点的黎曼积分会收敛到 Stratonovich 积分 $\int_0^t \sigma(s, X_s) \circ dB_s$，取左侧的黎曼积分则收敛到 Ito 积分 $\int_0^t \sigma(s, X_s) dB_s$。
+如果 $B^{(n)}_t$ 是 $B_t$ 的某种平滑近似，那么 $\int_0^t\sigma(s,X^{(n)}_s)\dot B^{(n)}_s,ds$ 是一个普通的黎曼积分——注意此时取左端点还是中点已经无所谓了，因为 $\dot B^{(n)}$ 对固定的 $n$ 有界，两者只差 $O(\delta)$。前文中取点位置之所以有影响，是因为对真正的布朗运动 $\Delta B_j\sim\sqrt{\Delta t}$，交叉项在求和后不消失
 
-然后在不动点迭代的过程中，最后收敛的结果是 Stratonovich 积分的解。具体的收敛性证明可以查阅 Wong-Zakai 定理。这里很神奇。
+当 $n\to\infty$：$B^{(n)}$ 在 $s$ 处的值依赖于 $s$ 附近两侧的 $B$，即对称地使用了未来信息，而这恰好产生 $\frac12\sigma\partial_x\sigma$ 的修正。（以分段线性插值直接计算可见，见上式。）因此 $X^{(n)}$ 收敛到的是 Stratonovich 方程 $dX=b\,dt+\sigma\circ dB$ 的解，而不是 Itô 解。
+
+具体见 Wong–Zakai 定理。
 
 ### 鞅表示定理
 
@@ -1278,7 +1300,7 @@ $$
 因此，$M_t$ 是关于 $\mathcal{F}_t$ 的鞅。
 
 3.6
-计算 $$ dN_t = - 3 B_t dt + 3 B_t^2 dB_t + 3 B_t dt = 3 B_t^2 dB_t $$ 
+计算 $$ dN_t = - 3 B_t dt - 3t dB_t + 3 B_t^2 dB_t + 3 B_t dt = (3 B_t^2 -3t) dB_t $$ 
 因此，$N_t$ 是关于 $\mathcal{F}_t$ 的鞅。
 
 3.7
